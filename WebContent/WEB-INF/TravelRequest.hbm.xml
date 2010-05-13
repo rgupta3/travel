@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2010 7:36:48 PM by Hibernate Tools 3.3.0.GA -->
+<hibernate-mapping>
+	<class name="com.sony.travelRequest.model.TravelRequest" table="TRAVELREQUEST">
+		<id name="id" type="int" column="ID">
+			<generator class="increment" />
+		</id>
+		<property name="status" type="java.lang.String">
+			<column name="STATUS" />
+		</property>
+		<property name="amount" type="float">
+			<column name="AMOUNT" />
+		</property>
+		<property name="type" type="java.lang.String">
+			<column name="TYPE" />
+		</property>
+		<property name="payment" type="java.lang.String">
+			<column name="PAYMENT" />
+		</property>
+		<property name="date" type="java.util.Date">
+			<column name="DATE" />
+		</property>
+		<list name="hotelResv" inverse="false" table="HOTELRESV"
+			lazy="true">
+			<key>
+				<column name="ID" />
+			</key>
+			<list-index column="idx"></list-index>
+			<composite-element
+				class="com.sony.travelRequest.model.HotelResv">
+				<property name="place" type="java.lang.String">
+					<column name="PLACE" />
+				</property>
+				<property name="name" type="java.lang.String">
+					<column name="NAME" />
+				</property>
+				<property name="checkIn" type="java.lang.String">
+					<column name="CHECKIN" />
+				</property>
+				<property name="checkOut" type="java.lang.String">
+					<column name="CHECKOUT" />
+				</property>
+				<property name="amount" type="float">
+					<column name="AMOUNT" />
+				</property>
+			</composite-element>
+		</list>
+		<list name="travelResv" inverse="false" table="TRAVELRESV"
+			lazy="true">
+			<key>
+				<column name="ID" />
+			</key>
+			<list-index column="idx"></list-index>
+			<composite-element
+				class="com.sony.travelRequest.model.TravelResv">
+				<property name="travelDate" type="java.util.Date">
+					<column name="TRAVELDATE" />
+				</property>
+				<property name="travelFrom" type="java.lang.String">
+					<column name="TRAVELFROM" />
+				</property>
+				<property name="travelTo" type="java.lang.String">
+					<column name="TRAVELTO" />
+				</property>
+				<property name="modeType" type="java.lang.String">
+					<column name="MODETYPE" />
+				</property>
+				<property name="classType" type="java.lang.String">
+					<column name="CLASSTYPE" />
+				</property>
+				<property name="depTime" type="java.lang.String">
+					<column name="DEPTIME" />
+				</property>
+				<property name="arrTime" type="java.lang.String">
+					<column name="ARRTIME" />
+				</property>
+				<property name="amount" type="float">
+					<column name="AMOUNT" />
+				</property>
+			</composite-element>
+		</list>
+		<list name="requestApprovals" inverse="false"
+			table="REQUESTAPPROVALS" lazy="true">
+			<key>
+				<column name="ID" />
+			</key>
+			<list-index column="idx"></list-index>
+			<composite-element
+				class="com.sony.travelRequest.model.RequestApproval">
+				<property name="approvorType" type="java.lang.String">
+					<column name="APPROVORTYPE" />
+				</property>
+				<property name="approved" type="boolean">
+					<column name="approved" />
+				</property>
+				<property name="comments" type="java.lang.String">
+					<column name="COMMENTS" />
+				</property>
+				<property name="processed" type="boolean">
+					<column name="PROCESSED" />
+				</property>
+			</composite-element>
+		</list>
+		<component name="travelDetails"
+			class="com.sony.travelRequest.model.TravelDetails" >
+			<property name="authorisedEmpMailId"
+				type="java.lang.String">
+				<column name="AUTHORISEDEMPMAILID" />
+			</property>
+			<property name="purpose" type="java.lang.String">
+				<column name="PURPOSE" />
+			</property>
+			<property name="startDate" type="java.util.Date">
+				<column name="STARTDATE" />
+			</property>
+			<property name="endDate" type="java.util.Date">
+				<column name="ENDDATE" />
+			</property>
+			<property name="recommndedEmpMailId"
+				type="java.lang.String">
+				<column name="RECOMMNDEDEMPMAILID" />
+			</property>
+			<component name="allowance"
+				class="com.sony.travelRequest.model.Allowance" >
+				<property name="perDayAllowance" type="float">
+					<column name="PERDAYALLOWANCE" />
+				</property>
+				<property name="dailyAllowance" type="float">
+					<column name="DAILYALLOWANCE" />
+				</property>
+				<property name="miscAllowance" type="float">
+					<column name="MISCALLOWANCE" />
+				</property>
+				<property name="days" type="float">
+					<column name="DAYS" />
+				</property>
+			</component>
+		</component>
+		<many-to-one name="employee"
+			class="com.sony.travelRequest.model.Employee" column="EMPLOYEE_ID"
+			not-null="true" cascade="all" unique="true" />
+	</class>
+</hibernate-mapping>

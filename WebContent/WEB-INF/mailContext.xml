@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+	<!--for sending emails-->
+<beans>
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" singleton="true">
+		<property name="host" value="43.88.67.14" />
+		<property name="port" value="25" />
+		<property name="username" value="501200I573" />
+		<property name="password" value="$drg601^" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">false</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="emailComponent" class="com.sony.travelRequest.util.EmailComponent" singleton="true">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+
+</beans>
