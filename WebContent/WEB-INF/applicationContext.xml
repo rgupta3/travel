@@ -36,6 +36,7 @@
 		<property name="dataSource">
 			<ref bean="dataSource" />
 		</property>
+		<property name="exposeTransactionAwareSessionFactory"><value>false</value></property>
 	</bean>
 
 	<!-- Hibernate Template Defintion -->

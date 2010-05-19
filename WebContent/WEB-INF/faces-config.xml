@@ -1,94 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<javaee:faces-config version="1.2"
-	xmlns:javaee="http://java.sun.com/xml/ns/javaee" xmlns:xml="http://www.w3.org/XML/1998/namespace"
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd ">
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
+	version="1.2">
 
-	<javaee:lifecycle>
-		<javaee:phase-listener>
-			com.sony.travelRequest.listener.RedirectPhaseListener</javaee:phase-listener>
-	</javaee:lifecycle>
+	<application>
+		<variable-resolver>
+			org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+		<locale-config>
+			<default-locale>en</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>resourceMessage</base-name>
+			<var>message</var>
+		</resource-bundle>
+	</application>
 
-	<javaee:application>
-		<javaee:variable-resolver>
-			org.springframework.web.jsf.DelegatingVariableResolver</javaee:variable-resolver>
-		<javaee:locale-config>
-			<javaee:default-locale>en</javaee:default-locale>
-		</javaee:locale-config>
-		<javaee:resource-bundle>
-			<javaee:base-name>resourceMessage</javaee:base-name>
-			<javaee:var>message</javaee:var>
-		</javaee:resource-bundle>
-	</javaee:application>
+	<validator>
+		<validator-id>emailValidator</validator-id>
+		<validator-class>com.sony.travelRequest.validator.EmailValidator</validator-class>
+	</validator>
 
-	<javaee:validator>
-		<javaee:validator-id>emailValidator</javaee:validator-id>
-		<javaee:validator-class>
-			com.sony.travelRequest.validator.EmailValidator</javaee:validator-class>
-	</javaee:validator>
+	<validator>
+		<validator-id>reqIdValidator</validator-id>
+		<validator-class>com.sony.travelRequest.validator.EmailValidator</validator-class>
+	</validator>
 
-	<javaee:managed-bean>
-		<javaee:managed-bean-name>travelProcessor</javaee:managed-bean-name>
-		<javaee:managed-bean-class>
-			com.sony.travelRequest.action.TravelProcessor</javaee:managed-bean-class>
-		<javaee:managed-bean-scope>session</javaee:managed-bean-scope>
-		<javaee:managed-property>
-			<javaee:property-name>travelRequest</javaee:property-name>
-			<javaee:property-class>com.sony.travelRequest.model.TravelRequest</javaee:property-class>
-			<javaee:value>#{travelRequest}</javaee:value>
-		</javaee:managed-property>
-		<javaee:managed-property>
-			<javaee:property-name>travelRequestDao</javaee:property-name>
-			<javaee:value>#{travelRequestDao}</javaee:value>
-		</javaee:managed-property>
-		<javaee:managed-property>
-			<javaee:property-name>emailComponent</javaee:property-name>
-			<javaee:value>#{emailComponent}</javaee:value>
-		</javaee:managed-property>
-	</javaee:managed-bean>
-
-	<javaee:managed-bean>
-		<javaee:managed-bean-name>TableBean</javaee:managed-bean-name>
-		<javaee:managed-bean-class>com.sony.travelRequest.test.TableBean</javaee:managed-bean-class>
-		<javaee:managed-bean-scope>session</javaee:managed-bean-scope>
-	</javaee:managed-bean>
-
-	<javaee:managed-bean>
-		<javaee:managed-bean-name>travelRequest</javaee:managed-bean-name>
-		<javaee:managed-bean-class>com.sony.travelRequest.model.TravelRequest</javaee:managed-bean-class>
-		<javaee:managed-bean-scope>session</javaee:managed-bean-scope>
-	</javaee:managed-bean>
+	<validator>
+		<validator-id>roleValidator</validator-id>
+		<validator-class>com.sony.travelRequest.validator.RoleValidator</validator-class>
+	</validator>
 
 	<managed-bean>
-		<managed-bean-name>navigationBean</managed-bean-name>
-		<managed-bean-class>com.sony.travelRequest.listener.NavigationBean</managed-bean-class>
+		<managed-bean-name>travelProcessor</managed-bean-name>
+		<managed-bean-class>com.sony.travelRequest.action.TravelProcessor</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 		<managed-property>
-			<property-name>reqId</property-name>
-			<value>#{param.reqId}</value>
-			<property-name>role</property-name>
-			<value>#{param.role}</value>
+			<property-name>travelRequest</property-name>
+			<property-class>com.sony.travelRequest.model.TravelRequest</property-class>
+			<value>#{travelRequest}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>travelParamBean</property-name>
+			<property-class>com.sony.travelRequest.model.TravelParamBean</property-class>
+			<value>#{travelParamBean}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>travelRequestDao</property-name>
+			<value>#{travelRequestDao}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>emailComponent</property-name>
+			<value>#{emailComponent}</value>
 		</managed-property>
 	</managed-bean>
 
-	<javaee:navigation-rule>
-		<javaee:from-view-id>travelForm.jsp</javaee:from-view-id>
-		<javaee:navigation-case>
-			<javaee:from-outcome>result</javaee:from-outcome>
-			<javaee:to-view-id>travelFormSum.jsp</javaee:to-view-id>
-		</javaee:navigation-case>
-		<javaee:navigation-case>
-			<javaee:from-outcome>invalid</javaee:from-outcome>
-			<javaee:to-view-id>travelForm.jsp</javaee:to-view-id>
-		</javaee:navigation-case>
-	</javaee:navigation-rule>
+	<managed-bean>
+		<managed-bean-name>TableBean</managed-bean-name>
+		<managed-bean-class>com.sony.travelRequest.test.TableBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 
-	<javaee:navigation-rule>
-		<javaee:from-view-id>travelFormSum.jsp</javaee:from-view-id>
-		<javaee:navigation-case>
-			<javaee:from-outcome>travelSummary</javaee:from-outcome>
-			<javaee:to-view-id>travelFormSum.jsp</javaee:to-view-id>
-		</javaee:navigation-case>
-	</javaee:navigation-rule>
+	<managed-bean>
+		<managed-bean-name>travelRequest</managed-bean-name>
+		<managed-bean-class>com.sony.travelRequest.model.TravelRequest</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 
-</javaee:faces-config>
+	<managed-bean>
+		<managed-bean-name>travelParamBean</managed-bean-name>
+		<managed-bean-class>com.sony.travelRequest.model.TravelParamBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<navigation-rule>
+		<from-view-id>/travelForm.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>result</from-outcome>
+			<to-view-id>/travelFormSum.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>invalid</from-outcome>
+			<to-view-id>/travelForm.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/travelFormSum.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>/travelSummary</from-outcome>
+			<to-view-id>/travelFormSum.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>

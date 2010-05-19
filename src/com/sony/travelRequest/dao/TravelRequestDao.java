@@ -96,12 +96,13 @@ public class TravelRequestDao extends HibernateDaoSupport {
 		log.debug("getting TravelRequest instance with id: " + id);
 		try {
 			//TravelRequest instance = (TravelRequest) getHibernateTemplate().get("com.sony.travelRequest.model.TravelRequest", id);
-			TravelRequest instance = (TravelRequest)getHibernateTemplate().getSessionFactory().getCurrentSession().createCriteria(TravelRequest.class).add( Restrictions.like("id", id) ).uniqueResult();
+			TravelRequest instance = (TravelRequest)getHibernateTemplate().getSessionFactory().openSession().createCriteria(TravelRequest.class).add( Restrictions.like("id", id) ).uniqueResult();
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
 				log.debug("get successful, instance found");
 			}
+			getHibernateTemplate().getSessionFactory().close();
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);

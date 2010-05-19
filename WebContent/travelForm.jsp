@@ -10,7 +10,7 @@
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<!-- set focus to a field -->
 	<script type="text/javascript">
     function setfocus() {
