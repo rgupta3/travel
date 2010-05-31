@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#travelForm.jsp" PATH="/travelForm.jsp"
+  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#travelForm.jsp:0" NAME="item"
+   PATH="/travelForm.jsp" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="result::#travelFormSum.jsp" NAME="output"
+    PATH="/travelFormSum.jsp" TARGET="rules:#travelFormSum.jsp"
+    TITLE="result" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="invalid::#travelForm.jsp" NAME="output1"
+    PATH="/travelForm.jsp" TARGET="rules:#travelForm.jsp"
+    TITLE="invalid" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#travelFormSum.jsp" PATH="/travelFormSum.jsp"
+  SHAPE="256,33,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#travelFormSum.jsp:0" NAME="item"
+   PATH="/travelFormSum.jsp" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="#travelSummary::#travelFormSum.jsp"
+    NAME="output" PATH="/travelFormSum.jsp"
+    TARGET="rules:#travelFormSum.jsp" TITLE="/travelSummary" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

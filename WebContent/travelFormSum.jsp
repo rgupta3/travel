@@ -7,7 +7,7 @@
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<link href="/style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href=".../style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 	<body>
 	<div id="wrapper">

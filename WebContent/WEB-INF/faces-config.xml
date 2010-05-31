@@ -5,6 +5,7 @@
 	version="1.2">
 
 	<application>
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 		<variable-resolver>
 			org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
 		<locale-config>
@@ -31,6 +32,21 @@
 		<validator-class>com.sony.travelRequest.validator.RoleValidator</validator-class>
 	</validator>
 
+
+
+<managed-bean>
+		<description>
+			Current logged in user's authentication information
+		</description>
+		<managed-bean-name>loginBean</managed-bean-name>
+		<managed-bean-class>
+			com.ocpsoft.pages.login.LoginBean
+		</managed-bean-class>
+		<managed-bean-scope>
+		request</managed-bean-scope>
+	</managed-bean>
+	
+	
 	<managed-bean>
 		<managed-bean-name>travelProcessor</managed-bean-name>
 		<managed-bean-class>com.sony.travelRequest.action.TravelProcessor</managed-bean-class>
@@ -40,11 +56,13 @@
 			<property-class>com.sony.travelRequest.model.TravelRequest</property-class>
 			<value>#{travelRequest}</value>
 		</managed-property>
+
 		<managed-property>
 			<property-name>travelParamBean</property-name>
 			<property-class>com.sony.travelRequest.model.TravelParamBean</property-class>
 			<value>#{travelParamBean}</value>
 		</managed-property>
+
 		<managed-property>
 			<property-name>travelRequestDao</property-name>
 			<value>#{travelRequestDao}</value>

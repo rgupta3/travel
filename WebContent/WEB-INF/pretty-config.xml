@@ -1,40 +1,22 @@
-<pretty-config
-	xmlns="http://ocpsoft.com/prettyfaces-xsd"
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces-xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
 	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
-	
-	<!-- Begin RewriteRules --><!--
-	<rewrite trailingSlash="append" />
-	<rewrite toCase="lowercase" />
-	<rewrite match="^/good_news/(\w+)/$" url="http://ocpsoft.com/$1/"
-		redirect="301" outbound="false" />
 
-	--><!-- Begin UrlMappings -->
-	<!--
-		<url-mapping id="store"> <pattern value="/store/" />
-		<view-id>/faces/shop/store.jsf</view-id> </url-mapping> <url-mapping
-		id="viewCategory"> <pattern value="/store/#{cat:categoryBean.catId}/"
-		/> <view-id>/faces/shop/store.jsf</view-id> </url-mapping>
-	-->
+
 	<url-mapping id="viewItem">
 		<pattern>
 			/summary/#{travelParamBean.role}/#{travelParamBean.reqId}
-			<!--<validate index="0" validatorIds="reqIdValidator"
-				onError="#{travelProcessor.errorInvalidReqId}" />
-			<validate index="1" validatorIds="roleValidator"
-				onError="#{travelProcessor.errorInvalidRole}" />
-		--></pattern>
+			</pattern>
 		<view-id>/travelFormSum.jsf</view-id>
 		<action phaseId="RENDER_RESPONSE"> #{travelProcessor.sendReqId} </action>
 	</url-mapping>
 	<url-mapping id="blah">
-		<pattern> /blah/shoo		</pattern>
+		<pattern> /blah/shoo</pattern>
 		<view-id>/travelForm.jsf</view-id>
-		<!--<action phaseId="RENDER_RESPONSE"> #{travelProcessor.sendReqId} </action>
-	--></url-mapping>
+	</url-mapping>
 	<url-mapping id="demo">
-		<pattern> /demo </pattern>
+		<pattern> /demo</pattern>
 		<view-id> /travelForm.jsf </view-id>
 	</url-mapping>
 </pretty-config>
