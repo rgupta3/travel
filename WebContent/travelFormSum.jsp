@@ -44,8 +44,9 @@
 	<h1>Travel Summary</h1>
 	
 	<h:form id="travelForm"> <h:messages />
-		<label>Initiator Name  <h:outputText id="initiator" value="xyz"
-			/></label>
+		<label>Initiator Name  <h:outputText id="initiator" value="xyz"/>
+		</label><br><br>Type of travel * <h:outputText id="type" value="#{travelRequest.type}"/>
+		<br><br>Grade *    <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>
 		<table style="width: 883px; height: 122px">
 			<tr>
 				<td></td>
@@ -70,6 +71,16 @@
 				</h:outputText></td>
 			</tr>
 			<tr>
+				<td style="width: 116px">Unit </td>
+				<td style="width: 346px"><h:outputText id="unit" 
+					value="#{travelRequest.employee.unit}" >
+				</h:outputText> </td>
+				<td style="width: 122px">Project Name *</td>
+				<td style="width: 170px"><h:outputText id="projectName" 
+					value="#{travelRequest.employee.projectName}" >
+				</h:outputText> </td>
+			</tr>
+			<tr>
 				<td>Email Id </td>
 				<td style="width: 389px"><h:outputText id="emailId"
 					value="#{travelRequest.employee.emailId}" >
@@ -85,11 +96,16 @@
 					value="#{travelRequest.employee.department}" >
 					
 				</h:outputText></td>
+				<td style="width: 136px">Mobile Number *</td>
+				<td style="width: 161px"><h:outputText id="mobileNumber"
+					value="#{travelRequest.employee.mobileNumber}" /></td>
+			</tr>
+			<tr>				
 				<td style="width: 169px">Purpose of travel </td>
-				<td><h:outputText id="purpose"
-					value="#{travelRequest.travelDetails.purpose}">
-					
-				</h:outputText></td>
+				<td><h:outputText id="purpose" 
+					value="#{travelRequest.travelDetails.purpose}" >
+				</h:outputText> </td>
+				<td>Country *</td><td><h:outputText id="country" value="#{travelRequest.country}" ></h:outputText></td>
 			</tr>
 			<tr>
 				<td style="width: 140px">Duration: From </td>
@@ -108,21 +124,16 @@
 			</tr>
 		</table>
 		<table>
+
 			<tr>
-				<td>Type of travel : </td>
-				<td style="width: 247px"><h:outputText id="type"
-					value="#{travelRequest.type}" >
-					
+				<td>Chargeable Type :</td>
+				<td style="width: 247px"><h:outputText id="chargeableType"
+					value="#{travelRequest.chargeableType}">
+
 				</h:outputText></td>
 				<td></td>
 			</tr>
-			<tr>
-				<td>Grade : </td>
-				<td><h:outputText id="grade"
-					value="#{travelRequest.employee.grade}">
-					
-				</h:outputText></td>
-			</tr>
+
 		</table>
 		<br>
 		<h:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
@@ -263,51 +274,51 @@
 		</h:dataTable>
 		<table>
 			<tr>
-				<td>Direct Payment (Advance Amt.) </td>
+				<td>Airport Transport (Advance Amt.)</td>
 				<td><h:outputText id="perDayAllowance"
-					value="#{travelRequest.travelDetails.allowance.perDayAllowance}"
-					>
+					value="#{travelRequest.travelDetails.allowance.perDayAllowance}">
 					<f:convertNumber type="number" />
 				</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Days </td>
+				<td>Days</td>
 				<td><h:outputText id="days"
-					value="#{travelRequest.travelDetails.allowance.days}"
-					>
+					value="#{travelRequest.travelDetails.allowance.days}">
 					<f:convertNumber type="number" />
 				</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Daily Allowance </td>
+				<td>Daily Allowance</td>
 				<td><h:outputText id="dailyAllowance"
-					value="#{travelRequest.travelDetails.allowance.dailyAllowance}"
-					>
+					value="#{travelRequest.travelDetails.allowance.dailyAllowance}">
 					<f:convertNumber type="number" />
 				</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Misc. Expenses </td>
-				<td><h:outputText id="miscAllowance" 
-					value="#{travelRequest.travelDetails.allowance.miscAllowance}"
-					>
+				<td>Conveyance*</td>
+				<td><h:outputText id="miscAllowance"
+					value="#{travelRequest.travelDetails.allowance.miscAllowance}">
 					<f:convertNumber type="number" />
 				</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Recommended by </td>
-				<td><h:outputText id="recommendedEmpMailId" 
-					value="#{travelRequest.travelDetails.recommndedEmpMailId}"
-					>
-					
+				<td>Amount</td>
+				<td><h:outputText id="totalAllowance" value="#{travelRequest.amount}">
+					<f:convertNumber type="number" />
 				</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Authorised by </td>
+				<td>Recommended by</td>
+				<td><h:outputText id="recommendedEmpMailId"
+					value="#{travelRequest.travelDetails.recommndedEmpMailId}">
+
+				</h:outputText></td>
+			</tr>
+			<tr>
+				<td>Authorised by</td>
 				<td><h:outputText id="authorisedEmpMailId"
-					value="#{travelRequest.travelDetails.authorisedEmpMailId}"
-					>
-					
+					value="#{travelRequest.travelDetails.authorisedEmpMailId}">
+
 				</h:outputText></td>
 			</tr>
 		</table>

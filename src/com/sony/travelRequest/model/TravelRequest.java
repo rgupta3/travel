@@ -15,6 +15,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+
 
 public class TravelRequest {
 	
@@ -22,6 +26,7 @@ public class TravelRequest {
 	private String status;
 	private float amount;
 	private String type;
+	private String chargeableType;
 	private String payment;
 	private Date date;
 	private boolean control;
@@ -31,11 +36,37 @@ public class TravelRequest {
 	private TravelDetails travelDetails = new TravelDetails();
 	private Employee employee = new Employee();
 	private boolean showTravelApproval;
+	private String country;
+	private boolean disable1;
+	private boolean disable2;
+/*
+	public void setOptions(String[] options) {
+		this.options = options;
+	}
+	*/
+	public boolean getDisable1() {
+		return disable1;
+	}
+
+	public void setDisable1(boolean disable1) {
+		this.disable1 = disable1;
+	}
+	
+	public boolean getDisable2() {
+		return disable2;
+	}
+
+	public void setDisable2(boolean disable2) {
+		this.disable2 = disable2;
+	}
 	
 	public TravelRequest() {
 		this.date = Calendar.getInstance().getTime();
 		hotelResv.add(new HotelResv());
 		travelResv.add(new TravelResv());
+		chargeableType="chargeable";
+		disable1=true;
+		disable2=true;
 	}
 
 	public int getId() {
@@ -68,6 +99,14 @@ public class TravelRequest {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String getChargeableType() {
+		return chargeableType;
+	}
+
+	public void setChargeableType(String chargeableType) {
+		this.chargeableType = chargeableType;
 	}
 
 	public String getPayment() {
@@ -132,6 +171,14 @@ public class TravelRequest {
 
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+	
+	public String getCountry() {
+		return country;
+	}
+	
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public void calcStatus() {
@@ -208,5 +255,4 @@ public class TravelRequest {
 		StringBuilder emailBody = new StringBuilder("Travel request Id ").append(getId()).append(" waiting for your action");
 		return emailBody.toString();
 	}
-
 }

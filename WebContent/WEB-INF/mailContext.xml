@@ -5,8 +5,8 @@
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" singleton="true">
 		<property name="host" value="43.88.67.14" />
 		<property name="port" value="25" />
-		<property name="username" value="501200I573" />
-		<property name="password" value="$drg601^" />
+		<property name="username" value="501200I647" />
+		<property name="password" value="bnm786" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.smtp.auth">true</prop>

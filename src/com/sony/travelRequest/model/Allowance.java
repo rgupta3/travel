@@ -12,11 +12,12 @@
 package com.sony.travelRequest.model;
 
 public class Allowance {
-	
+	//private TravelRequest travelRequest;
 	private float perDayAllowance;
 	private float dailyAllowance;
 	private float miscAllowance;
 	private float days;
+	
 	
 	public float getPerDayAllowance() {
 		return perDayAllowance;

@@ -17,14 +17,21 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
+import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.jsf.FacesContextUtils;
 
 import com.ocpsoft.pretty.util.FacesElUtils;
 import com.sony.travelRequest.dao.TravelRequestDao;
+import com.sony.travelRequest.model.Allowance;
 import com.sony.travelRequest.model.EmailConstants;
 import com.sony.travelRequest.model.HotelResv;
 import com.sony.travelRequest.model.RequestApproval;
+import com.sony.travelRequest.model.TravelDetails;
 import com.sony.travelRequest.model.TravelParamBean;
 import com.sony.travelRequest.model.TravelRequest;
 import com.sony.travelRequest.model.TravelResv;
@@ -38,7 +45,10 @@ public class TravelProcessor {
 	private String focusFieldSize;
 	private EmailComponent emailComponent;
 	private TravelParamBean travelParamBean;
-
+	private String countryClassA[]={"Japan","Europe","Russia","USA","UK","Canada"};
+	private String countryClassB[]={"North America ex. USA & Canada","South America","Australia","New Zealand","Middle-East/Gulf Countries"};
+	private String countryClassC[]={"Singapore","HongKong","Malaysia","Thailand","Phillipines","Indonesia","Vietnam","China","South Korea","Taiwan","North Korea","SAARC Countries","Afghanistan","Africa"};
+	
 	public TravelProcessor() {
 		focusField = "travel";
 		focusFieldSize = "0";
@@ -75,7 +85,7 @@ public class TravelProcessor {
 	public void setTravelRequest(TravelRequest travelRequest) {
 		this.travelRequest = travelRequest;
 	}
-
+	
 	public String errorInvalidReqId() {
 		System.out.println("Invalid request Id");
 		return print();
@@ -85,26 +95,130 @@ public class TravelProcessor {
 		System.out.println("Invalid role Id");
 		return print();
 	}
+	
+	public char findClass(String country)
+	{
+		for(int i=0;i<countryClassA.length;i++)
+		{
+			if(countryClassA[i].equals(country))
+			{
+				return 'A';
+			}
+		}
+		for(int i=0;i<countryClassB.length;i++)
+		{
+			if(countryClassB[i].equals(country))
+			{
+				return 'B';
+			}
+		}
+		for(int i=0;i<countryClassC.length;i++)
+		{
+			if(countryClassC[i].equals(country))
+			{
+				return 'C';
+			}
+		}
+		return 'X';
+	}
+	
+	//business or economy
+	public void findClass()
+	{
+		String grade=travelRequest.getEmployee().getGrade().trim();
+		if(grade.equals("SM2") || grade.equals("SM3"))
+		{
+			//travelRequest.getTravelResv().
+		}
+	}
+	
+	public void processAllowance() {
+		String grade=travelRequest.getEmployee().getGrade().trim();
+		float dailyAllowance=0;
+		if(travelRequest.getType().trim().equals("international"))
+		{
+			switch(findClass(travelRequest.getCountry().trim()))
+			{
+				case 'A':	
+				if(grade.equals("SM3"))
+					dailyAllowance=80;	
+				else if(grade.equals("SM2"))
+					dailyAllowance=70;
+				else if(grade.equals("SM1") || grade.equals("M3")|| grade.equals("M4"))
+					dailyAllowance=60;
+				else if(grade.equals("M2") || grade.equals("M1"))
+					dailyAllowance=50;	
+				break;
+				
+				case 'B':
+				if(grade.equals("SM3"))
+					dailyAllowance=55;	
+				else if(grade.equals("SM2"))
+					dailyAllowance=50;
+				else if(grade.equals("SM1") || grade.equals("M3")|| grade.equals("M4"))
+					dailyAllowance=45;
+				else if(grade.equals("M2") || grade.equals("M1"))
+					dailyAllowance=40;	
+				break;
+			
+				case 'C':
+				if(grade.equals("SM3"))
+					dailyAllowance=50;	
+				else if(grade.equals("SM2"))
+					dailyAllowance=40;
+				else if(grade.equals("SM1") || grade.equals("M3")|| grade.equals("M4"))
+					dailyAllowance=35;
+				else if(grade.equals("M2") || grade.equals("M1"))
+					dailyAllowance=30;	
+				break;
+			}
+		}
+		
+		//domestic
+		else
+		{
+			if(grade.equals("SM3") || grade.equals("SM2") || grade.equals("SM1"))
+				dailyAllowance=1000;	
+			else if(grade.equals("M3") || grade.equals("M4"))
+				dailyAllowance=800;
+			else if(grade.equals("M1") || grade.equals("M2"))
+				dailyAllowance=600;	
+		}
+		travelRequest.getTravelDetails().getAllowance().setDailyAllowance(dailyAllowance);
+		//total allowances
+		
+	}
 
+	public void enableFields1(ValueChangeEvent event)throws AbortProcessingException {
+		travelRequest.setDisable1(false);
+	}
+	
+	public void enableFields2(ValueChangeEvent event)throws AbortProcessingException {
+		travelRequest.setDisable2(false);
+	}
+	
 	public String print() {
-
+		System.out.println("In waeqwe");
 		if (travelRequest.getDate() == null
-				|| travelRequest.getEmployee().getName() == null
+				|| travelRequest.getEmployee().getName().trim().equals("")
+				|| travelRequest.getEmployee().getUnit() == null
 				|| travelRequest.getEmployee().getDesignation() == null
 				|| travelRequest.getEmployee().getEmailId() == null
 				|| travelRequest.getEmployee().getDepartment() == null
+				|| travelRequest.getEmployee().getProjectName() == null
+				|| travelRequest.getEmployee().getMobileNumber() == null
 				|| travelRequest.getTravelDetails().getPurpose() == null
 				|| travelRequest.getTravelDetails().getStartDate() == null
 				|| travelRequest.getTravelDetails().getEndDate() == null
 				|| travelRequest.getType() == null
 				|| travelRequest.getEmployee().getGrade() == null
-				|| travelRequest.getTravelDetails().getAllowance().getDays() == 0
+				/*|| travelRequest.getTravelDetails().getAllowance().getDays() == 0
 				|| travelRequest.getTravelDetails().getAllowance()
 						.getPerDayAllowance() == 0
 				|| travelRequest.getTravelDetails().getAllowance()
 						.getDailyAllowance() == 0
 				|| travelRequest.getTravelDetails().getAllowance()
-						.getMiscAllowance() == 0) {
+						.getMiscAllowance() == 0*/) {
 			FacesContext.getCurrentInstance().addMessage(
 					"travelForm:initiator",
 					new FacesMessage("Invalid inputs", "Invalid inputs"));
@@ -200,13 +314,13 @@ public class TravelProcessor {
 		RequestApproval approval = new RequestApproval();
 		approval.setApprovorType("finance");
 		travelRequest.getRequestApprovals().add(approval);
-
-		float amount = (float) (travelRequest.getTravelDetails().getAllowance()
-				.getPerDayAllowance()
-				+ travelRequest.getTravelDetails().getAllowance()
-						.getDailyAllowance() + travelRequest.getTravelDetails()
-				.getAllowance().getMiscAllowance())
-				* travelRequest.getTravelDetails().getAllowance().getDays();
+		processAllowance();
+		float amount = (float) (
+				travelRequest.getTravelDetails().getAllowance()
+						.getDailyAllowance() )
+				* travelRequest.getTravelDetails().getAllowance().getDays()+travelRequest.getTravelDetails().getAllowance()
+				.getPerDayAllowance()+ travelRequest.getTravelDetails()
+				.getAllowance().getMiscAllowance();
 
 		itr = travelRequest.getTravelResv().iterator();
 		while (itr.hasNext()) {
@@ -234,6 +348,7 @@ public class TravelProcessor {
 		}
 
 		// Send email
+		
 		return "result";
 	}
 

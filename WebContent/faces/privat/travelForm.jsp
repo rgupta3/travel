@@ -10,6 +10,8 @@
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
+	<script language="javaScript" 
+    type="text/javascript" src="calendar.js"></script>
 	<link href="../style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<!-- set focus to a field -->
 	<script type="text/javascript">
@@ -38,6 +40,7 @@
 		<li><a href="#">About</a></li>
 		<li><a href="#">Links</a></li>
 		<li><a href="#">Contact</a></li>
+		<li><a href="logout.jsf">Logout</a></li>
 	</ul>
 	</div>
 	<!-- end #menu -->
@@ -61,82 +64,112 @@
 	<h:message for="initiator" style="color:red"></h:message><br>
 		<label>Initiator Name <h:inputText id="initiator" value="xyz"
 			readonly="true" /></label>
+			<br><br>Type of travel * <h:selectOneRadio id="type" value="#{travelRequest.type}" onclick="this.form.submit();" valueChangeListener="#{travelProcessor.enableFields1}">
+					<f:selectItem id="domestic" itemLabel="Domestic" itemValue="domestic" />
+					<f:selectItem id="international" itemLabel="International" itemValue="international" />
+				</h:selectOneRadio>
+		<br><br>Grade *    <h:selectOneMenu id="grade" 
+					value="#{travelRequest.employee.grade}" disabled="#{travelRequest.disable1}" onchange="this.form.submit()" valueChangeListener="#{travelProcessor.enableFields2}">
+					<f:selectItem id="M1" itemLabel="M1" itemValue="M1" />
+					<f:selectItem id="M2" itemLabel="M2" itemValue="M2" />
+					<f:selectItem id="M3" itemLabel="M3" itemValue="M3" />
+					<f:selectItem id="M4" itemLabel="M4" itemValue="M4" />
+					<f:selectItem id="SM1" itemLabel="SM1" itemValue="SM1" />
+					<f:selectItem id="SM2" itemLabel="SM2" itemValue="SM2" />
+					<f:selectItem id="SM3" itemLabel="SM3" itemValue="SM3" />
+				</h:selectOneMenu><br>
 		<table style="width: 883px; height: 122px">
 			<tr>
+				
 				<td></td>
 				<td></td>
 				<td style="width: 121px">Date *</td>
 				<td style="width: 252px"><h:inputText id="date1" 
-					value="#{travelRequest.date}" >
+					value="#{travelRequest.date}" disabled="#{travelRequest.disable2}">
 					<f:convertDateTime type="date" dateStyle="short" />
 				</h:inputText> <h:message for="date" style="color:red"></h:message> </td>
 			</tr>
 			<tr>
 				<td style="width: 116px">Name *</td>
 				<td style="width: 346px"><h:inputText id="name" 
-					value="#{travelRequest.employee.name}" >
-				</h:inputText> </td>
+					value="#{travelRequest.employee.name}" disabled="#{travelRequest.disable2}">
+				</h:inputText>	
+				</td>
 				<td style="width: 122px">Designation *</td>
 				<td style="width: 170px"><h:inputText id="designation" 
-					value="#{travelRequest.employee.designation}" >
+					value="#{travelRequest.employee.designation}" disabled="#{travelRequest.disable2}">
+				</h:inputText> </td>
+			</tr>
+			<tr>
+				<td style="width: 116px">Unit *</td>
+				<td style="width: 346px">
+				<h:selectOneMenu id="unit" 
+					value="#{travelRequest.employee.unit}" disabled="#{travelRequest.disable2}" >
+					<f:selectItem id="GDC" itemLabel="GDC" itemValue="GDC" />
+					<f:selectItem id="GSC" itemLabel="GSC" itemValue="GSC" />
+				</h:selectOneMenu> </td>
+				<td style="width: 122px">Project Name *</td>
+				<td style="width: 170px"><h:inputText id="projectName" 
+					value="#{travelRequest.employee.projectName}" disabled="#{travelRequest.disable2}">
 				</h:inputText> </td>
 			</tr>
 			<tr>
 				<td>Email Id *</td>
 				<td style="width: 389px"><h:inputText id="emailId" 
-					value="#{travelRequest.employee.emailId}" >
+					value="#{travelRequest.employee.emailId}" disabled="#{travelRequest.disable2}">
 					<f:validator validatorId="emailValidator" />
 				</h:inputText> <h:message for="emailId" style="color:red"></h:message> </td>
 				<td style="width: 136px">Tel.Ext.No </td>
 				<td style="width: 161px"><h:inputText id="telExt"
-					value="#{travelRequest.employee.telephoneExt}" /></td>
+					value="#{travelRequest.employee.telephoneExt}" disabled="#{travelRequest.disable2}"/></td>
 			</tr>
 			<tr>
 				<td>Department *</td>
-				<td><h:inputText id="department" 
-					value="#{travelRequest.employee.department}" >
-				</h:inputText> </td>
+				<td><h:selectOneMenu id="department" 
+					value="#{travelRequest.employee.department}" disabled="#{travelRequest.disable2}">
+					<f:selectItem id="ORMC" itemLabel="ORMC" itemValue="ORMC" />
+					<f:selectItem id="SARD" itemLabel="SARD" itemValue="SARD" />
+				</h:selectOneMenu> </td>
+				<td style="width: 136px">Mobile Number *</td>
+				<td style="width: 161px"><h:inputText id="mobileNumber"
+					value="#{travelRequest.employee.mobileNumber}" disabled="#{travelRequest.disable2}"/></td>
+			</tr>
+			<tr>				
 				<td style="width: 169px">Purpose of travel *</td>
 				<td><h:inputText id="purpose" 
-					value="#{travelRequest.travelDetails.purpose}" >
+					value="#{travelRequest.travelDetails.purpose}" disabled="#{travelRequest.disable2}">
 				</h:inputText> </td>
+				<td>Country *</td>
+				<td><h:inputText id="country" value="#{travelRequest.country}" disabled="#{travelRequest.disable2}" ></h:inputText></td>
 			</tr>
 			<tr>
 				<td style="width: 140px">Duration: From *</td>
 				<td><h:inputText id="startDate" 
-					value="#{travelRequest.travelDetails.startDate}"
+					value="#{travelRequest.travelDetails.startDate}" disabled="#{travelRequest.disable2}"
 					>
 					<f:convertDateTime type="date" dateStyle="short" />
 				</h:inputText> </td>
 				<td>To *</td>
 				<td><h:inputText id="endDate" 
-					value="#{travelRequest.travelDetails.endDate}" >
+					value="#{travelRequest.travelDetails.endDate}" disabled="#{travelRequest.disable2}">
 					<f:convertDateTime type="date" dateStyle="short" />
 				</h:inputText> </td>
 			</tr>
 		</table>
 		<table>
 			<tr>
-				<td>Type of travel *</td>
-				<td style="width: 247px"><h:selectOneRadio id="type" 
-					value="#{travelRequest.type}"  >
-					<f:selectItem id="domestic" itemLabel="Domestic"
-						itemValue="domestic" />
-					<f:selectItem id="international" itemLabel="International"
-						itemValue="international" />
+				<td></td>
+				<td style="width: 247px"><h:selectOneRadio id="chargeableType" 
+					value="#{travelRequest.chargeableType}" disabled="#{travelRequest.disable2}"> 
+					<f:selectItem id="chargeable" itemLabel="Chargeable" 
+						itemValue="chargeable" />
+					<f:selectItem id="non-chargeable" itemLabel="Non-chargeable"
+						itemValue="non-chargeable" />
 				</h:selectOneRadio></td>
 				<td></td>
 			</tr>
 			<tr>
-				<td>Grade *</td>
-				<td><h:selectOneMenu id="grade" 
-					value="#{travelRequest.employee.grade}" >
-					<f:selectItem id="L1" itemLabel="L1" itemValue="L1" />
-					<f:selectItem id="L2" itemLabel="L2" itemValue="L2" />
-					<f:selectItem id="L3" itemLabel="L3" itemValue="L3" />
-					<f:selectItem id="L4" itemLabel="L4" itemValue="L4" />
-					<f:selectItem id="L5" itemLabel="L5" itemValue="L5" />
-				</h:selectOneMenu></td>
+				
 			</tr>
 		</table>
 		<br>
@@ -151,53 +184,53 @@
 				<f:facet name="header">
 					<h:outputText value="Date" />
 				</f:facet>
-				<h:inputText id="date2" value="#{travelResvItem.travelDate}">
+				<h:inputText id="date2" value="#{travelResvItem.travelDate}" disabled="#{travelRequest.disable2}">
 					<f:convertDateTime type="date" dateStyle="short" />
-				</h:inputText>
+				</h:inputText>				
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Sector" />
 				</f:facet>
-				<h:inputText id="from" value="#{travelResvItem.travelFrom}">
+				<h:inputText id="from" value="#{travelResvItem.travelFrom}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
-				<h:inputText id="to" value="#{travelResvItem.travelTo}">
+				<h:inputText id="to" value="#{travelResvItem.travelTo}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Mode" />
 				</f:facet>
-				<h:inputText id="mode" value="#{travelResvItem.modeType}">
+				<h:inputText id="mode" value="#{travelResvItem.modeType}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Class" />
 				</f:facet>
-				<h:inputText id="class" value="#{travelResvItem.classType}">
+				<h:inputText id="class" value="#{travelResvItem.classType}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Time" />
 				</f:facet>
-				<h:inputText id="depTime" value="#{travelResvItem.depTime}">
+				<h:inputText id="depTime" value="#{travelResvItem.depTime}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
-				<h:inputText id="arrTime" value="#{travelResvItem.arrTime}">
+				<h:inputText id="arrTime" value="#{travelResvItem.arrTime}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Amount" />
 				</f:facet>
-				<h:inputText id="tAmount" value="#{travelResvItem.amount}">
+				<h:inputText id="tAmount" value="#{travelResvItem.amount}" disabled="#{travelRequest.disable2}">
 					<f:convertNumber type="number" />
 				</h:inputText>
 			</h:column>
 			<f:facet name="footer">
 				<h:commandButton id="addRow1" value="add row"
-					action="#{travelProcessor.addTravelResvRow}" type="button" >
+					action="#{travelProcessor.addTravelResvRow}" type="button" disabled="#{travelRequest.disable2}">
 					<f:param name="bypassValidation" value="true" />
 				</h:commandButton>
 			</f:facet>
@@ -207,7 +240,7 @@
 			<tr>
 				<td>Hotel payment by *</td>
 				<td><h:selectOneRadio id="paidBy" 
-					value="#{travelRequest.payment}" >
+					value="#{travelRequest.payment}" disabled="#{travelRequest.disable2}">
 					<f:selectItem id="client" itemLabel="Client" itemValue="client" />
 					<f:selectItem id="company" itemLabel="Company" itemValue="company" />
 				</h:selectOneRadio></td>
@@ -217,7 +250,7 @@
 		<h:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
 			var="hotelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
 			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
-			rules="all" summary="This is a JSF code for hotel details.">
+			rules="all" summary="This is a JSF code for hotel details." >
 			<f:facet name="header">
 				<h:outputText value="Hotel reservation details *" />
 			</f:facet>
@@ -225,49 +258,49 @@
 				<f:facet name="header">
 					<h:outputText value="Place" />
 				</f:facet>
-				<h:inputText id="place" value="#{hotelResvItem.place}">
+				<h:inputText id="place" value="#{hotelResvItem.place}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="In" />
 				</f:facet>
-				<h:inputText id="in" value="#{hotelResvItem.checkIn}">
+				<h:inputText id="in" value="#{hotelResvItem.checkIn}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Out" />
 				</f:facet>
-				<h:inputText id="out" value="#{hotelResvItem.checkOut}">
+				<h:inputText id="out" value="#{hotelResvItem.checkOut}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Hotel name" />
 				</f:facet>
-				<h:inputText id="hName" value="#{hotelResvItem.name}">
+				<h:inputText id="hName" value="#{hotelResvItem.name}" disabled="#{travelRequest.disable2}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Amount" />
 				</f:facet>
-				<h:inputText id="hAmount" value="#{hotelResvItem.amount}">
+				<h:inputText id="hAmount" value="#{hotelResvItem.amount}" disabled="#{travelRequest.disable2}">
 					<f:convertNumber type="number" />
 				</h:inputText>
 			</h:column>
 			<f:facet name="footer">
 				<h:commandButton id="addRow2" value="add row"
-					action="#{travelProcessor.addHotelResvRow}" type="button" >
+					action="#{travelProcessor.addHotelResvRow}" type="button" disabled="#{travelRequest.disable2}">
 					<f:param name="bypassValidation" value="true" />
-				</h:commandButton>
+				</h:commandButton>				
 			</f:facet>
 		</h:dataTable>
 		<br>
 		<table>
 			<tr>
-				<td>Direct Payment (Advance Amt.) *</td>
+				<td>Airport Transport (Advance Amt.) *</td>
 				<td><h:inputText id="perDayAllowance" 
 					value="#{travelRequest.travelDetails.allowance.perDayAllowance}"
 					>
@@ -286,17 +319,23 @@
 				<td>Daily Allowance *</td>
 				<td><h:inputText id="dailyAllowance" 
 					value="#{travelRequest.travelDetails.allowance.dailyAllowance}"
-					>
+					disabled="true">
 					<f:convertNumber type="number" />
 				</h:inputText> </td>
 			</tr>
 			<tr>
-				<td>Misc. Expenses *</td>
+				<td>Conveyance*</td>
 				<td><h:inputText id="miscAllowance" 
 					value="#{travelRequest.travelDetails.allowance.miscAllowance}"
 					>
 					<f:convertNumber type="number" />
 				</h:inputText> </td>
+			</tr>
+			<tr>
+				<td>Amount</td>
+				<td><h:inputText id="totalAllowance" value="#{travelRequest.amount}" disabled="true">
+					<f:convertNumber type="number" />
+				</h:inputText></td>
 			</tr>
 			<tr>
 				<td>Recommended by </td>
@@ -315,7 +354,8 @@
 		</table>
 		<br>
 		<center><h:commandButton id="submit" value="submit"
-			action="#{travelProcessor.print}" /></center>
+			action="#{travelProcessor.print}" disabled="#{travelRequest.disable2}" />&nbsp;
+			</center>
 	</h:form> 
 	*&nbsp;&nbsp;=&nbsp;&nbsp;required
 	</div>

@@ -110,5 +110,5 @@
 			<to-view-id>/travelFormSum.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-
+	
 </faces-config>

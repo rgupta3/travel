@@ -16,11 +16,17 @@
 		<property name="type" type="java.lang.String">
 			<column name="TYPE" />
 		</property>
+		<property name="chargeableType" type="java.lang.String">
+			<column name="CHARGEABLETYPE" />
+		</property>
 		<property name="payment" type="java.lang.String">
 			<column name="PAYMENT" />
 		</property>
 		<property name="date" type="java.util.Date">
 			<column name="DATE" />
+		</property>
+		<property name="country" type="java.lang.String">
+			<column name="COUNTRY" />
 		</property>
 		<list name="hotelResv" inverse="false" table="HOTELRESV"
 			lazy="true">

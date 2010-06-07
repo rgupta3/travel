@@ -10,14 +10,23 @@
 		<property name="name" type="java.lang.String">
 			<column name="NAME" />
 		</property>
+		<property name="unit" type="java.lang.String">
+			<column name="UNIT" />
+		</property>
 		<property name="designation" type="java.lang.String">
 			<column name="DESIGNATION" />
 		</property>
 		<property name="department" type="java.lang.String">
 			<column name="DEPARTMENT" />
 		</property>
+		<property name="projectName" type="java.lang.String">
+			<column name="PROJECTNAME" />
+		</property>
 		<property name="telephoneExt" type="java.lang.String">
 			<column name="TELEPHONEEXT" />
+		</property>
+		<property name="mobileNumber" type="java.lang.String">
+			<column name="MOBILENUMBER" />
 		</property>
 		<property name="emailId" type="java.lang.String">
 			<column name="EMAILID" />

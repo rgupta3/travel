@@ -12,10 +12,12 @@ public class EmailValidator implements Validator {
 
 		String email = (String) value;
 		String cid = component.getClientId(context);
-		if(!email.contains("@") || !email.contains(".")) {
+
+	      if(!email.matches("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
+		//if(!email.contains("@") || !email.contains(".")) {
 			context.addMessage(cid, new FacesMessage(" invalid email "));
 			context.renderResponse();
 			return;
-		}
+		}    	  
 	}
 }

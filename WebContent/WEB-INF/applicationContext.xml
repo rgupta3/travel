@@ -17,7 +17,7 @@
 			<value>root</value>
 		</property>
 		<property name="password">
-			<value>admin</value>
+			<value></value>
 		</property>
 	</bean>
 
