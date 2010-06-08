@@ -13,6 +13,10 @@ public class Employee {
 	private String emailId;
 	private String grade;
 
+	public Employee() {
+		grade="Select";
+	}
+	
 	public int getId() {
 		return id;
 	}

@@ -7,7 +7,7 @@
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<link href=".../style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 	<body>
 	<div id="wrapper">
@@ -46,7 +46,7 @@
 	<h:form id="travelForm"> <h:messages />
 		<label>Initiator Name  <h:outputText id="initiator" value="xyz"/>
 		</label><br><br>Type of travel * <h:outputText id="type" value="#{travelRequest.type}"/>
-		<br><br>Grade *    <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>
+		<br><br>Country * <h:outputText id="country" value="#{travelRequest.country}"></h:outputText><br>Grade *    <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>
 		<table style="width: 883px; height: 122px">
 			<tr>
 				<td></td>
@@ -105,7 +105,7 @@
 				<td><h:outputText id="purpose" 
 					value="#{travelRequest.travelDetails.purpose}" >
 				</h:outputText> </td>
-				<td>Country *</td><td><h:outputText id="country" value="#{travelRequest.country}" ></h:outputText></td>
+				<td></td><td></td>
 			</tr>
 			<tr>
 				<td style="width: 140px">Duration: From </td>
@@ -276,9 +276,11 @@
 			<tr>
 				<td>Airport Transport (Advance Amt.)</td>
 				<td><h:outputText id="perDayAllowance"
-					value="#{travelRequest.travelDetails.allowance.perDayAllowance}">
+					value="#{travelRequest.travelDetails.allowance.airportTransport}">
 					<f:convertNumber type="number" />
-				</h:outputText></td>
+				</h:outputText>
+				<h:outputText id="currency1" value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText></td>
 			</tr>
 			<tr>
 				<td>Days</td>
@@ -292,20 +294,34 @@
 				<td><h:outputText id="dailyAllowance"
 					value="#{travelRequest.travelDetails.allowance.dailyAllowance}">
 					<f:convertNumber type="number" />
-				</h:outputText></td>
+				</h:outputText>
+				<h:outputText id="currency2" value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText></td>
 			</tr>
 			<tr>
 				<td>Conveyance*</td>
 				<td><h:outputText id="miscAllowance"
-					value="#{travelRequest.travelDetails.allowance.miscAllowance}">
+					value="#{travelRequest.travelDetails.allowance.conveyance}">
 					<f:convertNumber type="number" />
-				</h:outputText></td>
+				</h:outputText>
+				<h:outputText id="currency3" value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText></td>
 			</tr>
 			<tr>
 				<td>Amount</td>
 				<td><h:outputText id="totalAllowance" value="#{travelRequest.amount}">
 					<f:convertNumber type="number" />
-				</h:outputText></td>
+				</h:outputText>
+				<h:outputText id="currency4" value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText></td>
+			</tr>
+			<tr>
+				<td><h:outputText id="otherAllowanceDetail" value="#{travelRequest.travelDetails.allowance.otherAllowanceDetail}"/></td>
+				<td><h:outputText id="otherAllowance" value="#{travelRequest.travelDetails.allowance.otherAllowance}">
+					<f:convertNumber type="number" />
+				</h:outputText>
+				<h:outputText id="currency5" value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText></td>
 			</tr>
 			<tr>
 				<td>Recommended by</td>
@@ -324,7 +340,10 @@
 		</table>
 		<br/><br/>
 		<h:panelGroup id="travelApprovalId" rendered="#{travelRequest.showTravelApproval}">
-				<center><h:commandButton id="accept" value="Accept" 
+				Comments :
+				<h:inputTextarea id="comments"></h:inputTextarea>
+				<br></br><center>
+				<h:commandButton id="accept" value="Accept" 
 				action="#{travelProcessor.financeAccept}" />
 				<h:commandButton id="reject" value="Reject"
 				action="#{travelProcessor.financeReject}" /></center>				

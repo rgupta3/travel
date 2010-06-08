@@ -4,7 +4,6 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
-
 	<jsp:directive.page contentType="text/html;charset=ISO-8859-1"
 		pageEncoding="ISO-8859-1" session="false" />
 	<jsp:output doctype-public="-//W3C//DTD XHTML 1.1//EN"
@@ -14,6 +13,7 @@
 	<f:view>
 		<h:messages />
 		<h:form id="loginForm" prependId="false">
+		<center>
 			<c:if test="#{redirect == 'true'}">
 				<input type="hidden" name="redirect" value="true" />
 			</c:if>
@@ -39,7 +39,7 @@
 
 			<h:commandButton type="submit" id="login"
 				action="#{loginBean.doLogin}" value="Login" />
-
+</center>
 		</h:form>
 	</f:view>
 </jsp:root>

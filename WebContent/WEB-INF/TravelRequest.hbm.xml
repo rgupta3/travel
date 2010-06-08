@@ -130,17 +130,26 @@
 			</property>
 			<component name="allowance"
 				class="com.sony.travelRequest.model.Allowance" >
-				<property name="perDayAllowance" type="float">
-					<column name="PERDAYALLOWANCE" />
+				<property name="airportTransport" type="float">
+					<column name="AIRPORTTRANSPORT" />
 				</property>
 				<property name="dailyAllowance" type="float">
 					<column name="DAILYALLOWANCE" />
 				</property>
-				<property name="miscAllowance" type="float">
-					<column name="MISCALLOWANCE" />
+				<property name="conveyance" type="float">
+					<column name="CONVEYANCE" />
+				</property>
+				<property name="otherAllowance" type="float">
+					<column name="OTHERALLOWANCE" />
+				</property>
+				<property name="otherAllowanceDetail" type="java.lang.String">
+					<column name="OTHERALLOWANCEDETAIL" />
 				</property>
 				<property name="days" type="float">
 					<column name="DAYS" />
+				</property>
+				<property name="currency" type="java.lang.String">
+					<column name="CURRENCY" />
 				</property>
 			</component>
 		</component>

@@ -13,17 +13,46 @@ package com.sony.travelRequest.model;
 
 public class Allowance {
 	//private TravelRequest travelRequest;
-	private float perDayAllowance;
+	private float airportTransport;
 	private float dailyAllowance;
-	private float miscAllowance;
+	private float conveyance;
 	private float days;
+	private float otherAllowance;
+	private String otherAllowanceDetail;
+	private String currency;
 	
-	
-	public float getPerDayAllowance() {
-		return perDayAllowance;
+	public Allowance()
+	{
+		airportTransport=50;
+		conveyance=10;
+		days=20;
 	}
-	public void setPerDayAllowance(float perDayAllowance) {
-		this.perDayAllowance = perDayAllowance;
+	
+	public float getOtherAllowance() {
+		return otherAllowance;
+	}
+	public void setOtherAllowance(float otherAllowance) {
+		this.otherAllowance = otherAllowance;
+	}
+	
+	public String getOtherAllowanceDetail() {
+		return otherAllowanceDetail;
+	}
+	public void setOtherAllowanceDetail(String otherAllowanceDetail) {
+		this.otherAllowanceDetail=otherAllowanceDetail;
+	}
+	
+	public String getCurrency() {
+		return currency;
+	}
+	public void setCurrency(String currency) {
+		this.currency=currency;
+	}
+	public float getAirportTransport() {
+		return airportTransport;
+	}
+	public void setAirportTransport(float airportTransport) {
+		this.airportTransport = airportTransport;
 	}
 	public float getDailyAllowance() {
 		return dailyAllowance;
@@ -31,11 +60,11 @@ public class Allowance {
 	public void setDailyAllowance(float dailyAllowance) {
 		this.dailyAllowance = dailyAllowance;
 	}
-	public float getMiscAllowance() {
-		return miscAllowance;
+	public float getConveyance() {
+		return conveyance;
 	}
-	public void setMiscAllowance(float miscAllowance) {
-		this.miscAllowance = miscAllowance;
+	public void setConveyance(float conveyance) {
+		this.conveyance = conveyance;
 	}
 	public float getDays() {
 		return days;

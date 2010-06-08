@@ -3,16 +3,19 @@
 <%@ taglib uri="http://java.sun.com/jsf/core" prefix="f"%>
 <%@ taglib uri="http://java.sun.com/jsf/html" prefix="h"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="a4j" uri="https://ajax4jsf.dev.java.net/ajax" %>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 <html>
 <f:view>
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<script language="javaScript" 
     type="text/javascript" src="calendar.js"></script>
-	<link href="../style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="../../style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<!-- set focus to a field -->
 	<script type="text/javascript">
     function setfocus() {
@@ -28,8 +31,8 @@
 	<body onload="setfocus();">
 	<div id="wrapper">
 	<div id="logo">
-	<h1><a href="#"> Sony India Software Center </a></h1>
-	<p><a href="#"> (A division of Sony India Pvt. Ltd.) </a></p>
+	<h1> Sony India Software Center</h1>
+	<p>(A division of Sony India Pvt. Ltd.)</p>
 	</div>
 	<hr />
 	<!-- end #logo -->
@@ -59,17 +62,32 @@
 	<div id="content">
 	<div class="post">
 	<h:outputText value="#{msg.inputname_header}"/>
-	<h1>Travel Request Form</h1>
+	<h2>Travel Request Form</h2>
 	<h:form id="travelForm"> 
 	<h:message for="initiator" style="color:red"></h:message><br>
 		<label>Initiator Name <h:inputText id="initiator" value="xyz"
 			readonly="true" /></label>
-			<br><br>Type of travel * <h:selectOneRadio id="type" value="#{travelRequest.type}" onclick="this.form.submit();" valueChangeListener="#{travelProcessor.enableFields1}">
+			
+		<table style="width: 883px; height: 122px; margin-top: 40px;">
+			<tr>
+				<td style="width: 116px">Type of Travel*</td>
+				<td style="width: 346px"><h:selectOneRadio id="type" value="#{travelRequest.type}" onclick="this.form.submit();" valueChangeListener="#{travelProcessor.enableFields1}">
 					<f:selectItem id="domestic" itemLabel="Domestic" itemValue="domestic" />
 					<f:selectItem id="international" itemLabel="International" itemValue="international" />
-				</h:selectOneRadio>
-		<br><br>Grade *    <h:selectOneMenu id="grade" 
-					value="#{travelRequest.employee.grade}" disabled="#{travelRequest.disable1}" onchange="this.form.submit()" valueChangeListener="#{travelProcessor.enableFields2}">
+				</h:selectOneRadio></td>
+				<td style="width: 119px">Country *</td>
+				<td style="width: 252px"><h:selectOneMenu id="country" 
+					value="#{travelRequest.country}" disabled="#{travelRequest.disableCountry}" >
+					<f:selectItems value="#{travelProcessor.list1}"/>
+				</h:selectOneMenu></td>
+			</tr>
+			
+			<tr>
+				
+				<td style="width: 116px">Grade *</td>
+				<td style="width: 346px"><h:selectOneMenu id="grade" 
+					value="#{travelRequest.employee.grade}" disabled="#{travelRequest.disable1}" immediate="true" onchange="this.form.submit()" valueChangeListener="#{travelProcessor.enableFields2}">
+					<f:selectItem id="Select" itemLabel="Select" itemValue="Select" />
 					<f:selectItem id="M1" itemLabel="M1" itemValue="M1" />
 					<f:selectItem id="M2" itemLabel="M2" itemValue="M2" />
 					<f:selectItem id="M3" itemLabel="M3" itemValue="M3" />
@@ -77,13 +95,8 @@
 					<f:selectItem id="SM1" itemLabel="SM1" itemValue="SM1" />
 					<f:selectItem id="SM2" itemLabel="SM2" itemValue="SM2" />
 					<f:selectItem id="SM3" itemLabel="SM3" itemValue="SM3" />
-				</h:selectOneMenu><br>
-		<table style="width: 883px; height: 122px">
-			<tr>
-				
-				<td></td>
-				<td></td>
-				<td style="width: 121px">Date *</td>
+				</h:selectOneMenu></td>
+				<td style="width: 119px">Date *</td>
 				<td style="width: 252px"><h:inputText id="date1" 
 					value="#{travelRequest.date}" disabled="#{travelRequest.disable2}">
 					<f:convertDateTime type="date" dateStyle="short" />
@@ -139,21 +152,24 @@
 				<td><h:inputText id="purpose" 
 					value="#{travelRequest.travelDetails.purpose}" disabled="#{travelRequest.disable2}">
 				</h:inputText> </td>
-				<td>Country *</td>
-				<td><h:inputText id="country" value="#{travelRequest.country}" disabled="#{travelRequest.disable2}" ></h:inputText></td>
+				<td></td>
+				<td></td>
 			</tr>
 			<tr>
 				<td style="width: 140px">Duration: From *</td>
-				<td><h:inputText id="startDate" 
-					value="#{travelRequest.travelDetails.startDate}" disabled="#{travelRequest.disable2}"
-					>
-					<f:convertDateTime type="date" dateStyle="short" />
-				</h:inputText> </td>
+				<td><a4j:outputPanel ajaxRendered="true">
+<rich:calendar id="fromdate"
+value="#{travelRequest.travelDetails.startDate}"
+datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}"
+					immediate="true" onchanged="this.form.submit();" valueChangeListener="#{travelProcessor.changeStartDate}" ></rich:calendar>
+</a4j:outputPanel></td>
 				<td>To *</td>
-				<td><h:inputText id="endDate" 
-					value="#{travelRequest.travelDetails.endDate}" disabled="#{travelRequest.disable2}">
-					<f:convertDateTime type="date" dateStyle="short" />
-				</h:inputText> </td>
+				<td><a4j:outputPanel ajaxRendered="true">
+<rich:calendar id="todate"
+value="#{travelRequest.travelDetails.endDate}"
+datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}"
+					immediate="true" onchanged="this.form.submit();" valueChangeListener="#{travelProcessor.changeEndDate}" ></rich:calendar>
+</a4j:outputPanel> </td>
 			</tr>
 		</table>
 		<table>
@@ -175,8 +191,8 @@
 		<br>
 		<h:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
 			var="travelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
-			rules="all" summary="This is a JSF code for travel details." >
+			cellspacing="3" first="0" rows="0" dir="LTR" frame="box"
+			rules="all" summary="This is a JSF code for travel details." style="width:883px; margin-top: 20px;" >
 			<f:facet name="header">
 				<h:outputText value="Proposed travel details *" />
 			</f:facet>
@@ -184,9 +200,12 @@
 				<f:facet name="header">
 					<h:outputText value="Date" />
 				</f:facet>
-				<h:inputText id="date2" value="#{travelResvItem.travelDate}" disabled="#{travelRequest.disable2}">
-					<f:convertDateTime type="date" dateStyle="short" />
-				</h:inputText>				
+				<a4j:outputPanel ajaxRendered="true">
+<rich:calendar id="date2"
+value="#{travelResvItem.travelDate}"
+datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}"
+></rich:calendar>
+</a4j:outputPanel>			
 			</h:column>
 			<h:column>
 				<f:facet name="header">
@@ -201,14 +220,16 @@
 				<f:facet name="header">
 					<h:outputText value="Mode" />
 				</f:facet>
-				<h:inputText id="mode" value="#{travelResvItem.modeType}" disabled="#{travelRequest.disable2}">
-				</h:inputText>
+				<h:selectOneMenu id="mode" 
+					value="#{travelResvItem.modeType}" disabled="#{travelRequest.disable2}" >
+					<f:selectItems value="#{travelProcessor.list2}"/>
+				</h:selectOneMenu>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Class" />
 				</f:facet>
-				<h:inputText id="class" value="#{travelResvItem.classType}" disabled="#{travelRequest.disable2}">
+				<h:inputText id="class" value="#{travelResvItem.classType}" disabled="true">
 				</h:inputText>
 			</h:column>
 			<h:column>
@@ -222,7 +243,9 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Amount" />
+					<h:outputText value="Amount" /><h:outputText id="currencyAmount1" 
+					value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText>
 				</f:facet>
 				<h:inputText id="tAmount" value="#{travelResvItem.amount}" disabled="#{travelRequest.disable2}">
 					<f:convertNumber type="number" />
@@ -236,11 +259,11 @@
 			</f:facet>
 		</h:dataTable>
 		<br>
-		<table>
+		<table style="margin-top:20px;">
 			<tr>
 				<td>Hotel payment by *</td>
 				<td><h:selectOneRadio id="paidBy" 
-					value="#{travelRequest.payment}" disabled="#{travelRequest.disable2}">
+					value="#{travelRequest.payment}" disabled="#{travelRequest.disable2}" onchange="this.form.submit();" valueChangeListener="#{travelProcessor.enableFields3}">
 					<f:selectItem id="client" itemLabel="Client" itemValue="client" />
 					<f:selectItem id="company" itemLabel="Company" itemValue="company" />
 				</h:selectOneRadio></td>
@@ -249,71 +272,74 @@
 		</table>
 		<h:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
 			var="hotelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
-			rules="all" summary="This is a JSF code for hotel details." >
+			cellspacing="3" first="0" rows="0"  dir="LTR" frame="box"
+			rules="all" summary="This is a JSF code for hotel details." style="width:883px;" >
 			<f:facet name="header">
-				<h:outputText value="Hotel reservation details *" />
+				<h:outputText value="Hotel reservation details " />
 			</f:facet>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Place" />
 				</f:facet>
-				<h:inputText id="place" value="#{hotelResvItem.place}" disabled="#{travelRequest.disable2}">
+				<h:inputText id="place" value="#{hotelResvItem.place}" disabled="#{travelRequest.disable3}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="In" />
 				</f:facet>
-				<h:inputText id="in" value="#{hotelResvItem.checkIn}" disabled="#{travelRequest.disable2}">
+				<h:inputText id="in" value="#{hotelResvItem.checkIn}" disabled="#{travelRequest.disable3}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Out" />
 				</f:facet>
-				<h:inputText id="out" value="#{hotelResvItem.checkOut}" disabled="#{travelRequest.disable2}">
+				<h:inputText id="out" value="#{hotelResvItem.checkOut}" disabled="#{travelRequest.disable3}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Hotel name" />
 				</f:facet>
-				<h:inputText id="hName" value="#{hotelResvItem.name}" disabled="#{travelRequest.disable2}">
+				<h:inputText id="hName" value="#{hotelResvItem.name}" disabled="#{travelRequest.disable3}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Amount" />
+					<h:outputText value="Amount" /><h:outputText id="currencyAmount2" 
+					value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText>
 				</f:facet>
-				<h:inputText id="hAmount" value="#{hotelResvItem.amount}" disabled="#{travelRequest.disable2}">
+				<h:inputText id="hAmount" value="#{hotelResvItem.amount}" disabled="#{travelRequest.disable3}">
 					<f:convertNumber type="number" />
 				</h:inputText>
 			</h:column>
 			<f:facet name="footer">
 				<h:commandButton id="addRow2" value="add row"
-					action="#{travelProcessor.addHotelResvRow}" type="button" disabled="#{travelRequest.disable2}">
+					action="#{travelProcessor.addHotelResvRow}" type="button" disabled="#{travelRequest.disable3}">
 					<f:param name="bypassValidation" value="true" />
 				</h:commandButton>				
 			</f:facet>
 		</h:dataTable>
 		<br>
-		<table>
+		<table style="margin-top:20px;">
 			<tr>
 				<td>Airport Transport (Advance Amt.) *</td>
 				<td><h:inputText id="perDayAllowance" 
-					value="#{travelRequest.travelDetails.allowance.perDayAllowance}"
-					>
+					value="#{travelRequest.travelDetails.allowance.airportTransport}"
+					disabled="true">
 					<f:convertNumber type="number" />
-				</h:inputText> </td>
+				</h:inputText> <h:outputText id="currency1" 
+					value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText></td>
 			</tr>
 			<tr>
 				<td>Days *</td>
 				<td><h:inputText id="days" 
-					value="#{travelRequest.travelDetails.allowance.days}"
-					>
+					value="#{travelRequest.travelDetails.allowance.days}" disabled="true" >
 					<f:convertNumber type="number" />
-				</h:inputText> </td>
+				</h:inputText></td>
 			</tr>
 			<tr>
 				<td>Daily Allowance *</td>
@@ -321,21 +347,40 @@
 					value="#{travelRequest.travelDetails.allowance.dailyAllowance}"
 					disabled="true">
 					<f:convertNumber type="number" />
-				</h:inputText> </td>
+				</h:inputText> <h:outputText id="currency2" 
+					value="#{travelRequest.travelDetails.allowance.currency}">
+					</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Conveyance*</td>
-				<td><h:inputText id="miscAllowance" 
-					value="#{travelRequest.travelDetails.allowance.miscAllowance}"
-					>
+				<td>Conveyance *</td>
+				<td><h:inputText id="conveyance" 
+					value="#{travelRequest.travelDetails.allowance.conveyance}"
+					disabled="true">
 					<f:convertNumber type="number" />
-				</h:inputText> </td>
+				</h:inputText> <h:outputText id="currency3" 
+					value="#{travelRequest.travelDetails.allowance.currency}">
+					</h:outputText></td>
 			</tr>
 			<tr>
-				<td>Amount</td>
+				<td>Other</td>
+				<td><h:inputText id="otherAllowance" 
+					value="#{travelRequest.travelDetails.allowance.otherAllowance}"
+					disabled="#{travelRequest.disable2}">
+					<f:convertNumber type="number" />
+				</h:inputText> <h:outputText id="currency4" 
+					value="#{travelRequest.travelDetails.allowance.currency}">
+					</h:outputText> <h:inputText id="otherAllowanceDetail" 
+					value="#{travelRequest.travelDetails.allowance.otherAllowanceDetail}"
+					disabled="#{travelRequest.disable2}">(Specify)
+				</h:inputText></td>
+			</tr>
+			<tr>
+				<td>Amount </td>
 				<td><h:inputText id="totalAllowance" value="#{travelRequest.amount}" disabled="true">
 					<f:convertNumber type="number" />
-				</h:inputText></td>
+				</h:inputText><h:outputText id="currency5" 
+					value="#{travelRequest.travelDetails.allowance.currency}">
+					</h:outputText></td>
 			</tr>
 			<tr>
 				<td>Recommended by </td>
@@ -367,7 +412,7 @@
 	<!-- end #page -->
 	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright (c) 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

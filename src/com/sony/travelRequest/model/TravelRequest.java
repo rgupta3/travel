@@ -39,11 +39,21 @@ public class TravelRequest {
 	private String country;
 	private boolean disable1;
 	private boolean disable2;
+	private boolean disable3;
+	private boolean disableCountry;
 /*
 	public void setOptions(String[] options) {
 		this.options = options;
 	}
 	*/
+	
+	public boolean getDisableCountry() {
+		return disableCountry;
+	}
+
+	public void setDisableCountry(boolean disableCountry) {
+		this.disableCountry = disableCountry;
+	}
 	public boolean getDisable1() {
 		return disable1;
 	}
@@ -60,13 +70,24 @@ public class TravelRequest {
 		this.disable2 = disable2;
 	}
 	
+	public boolean getDisable3() {
+		return disable3;
+	}
+
+	public void setDisable3(boolean disable3) {
+		this.disable3 = disable3;
+	}
+	
 	public TravelRequest() {
 		this.date = Calendar.getInstance().getTime();
 		hotelResv.add(new HotelResv());
 		travelResv.add(new TravelResv());
 		chargeableType="chargeable";
+		payment="client";
 		disable1=true;
 		disable2=true;
+		disable3=true;
+		disableCountry=true;
 	}
 
 	public int getId() {
