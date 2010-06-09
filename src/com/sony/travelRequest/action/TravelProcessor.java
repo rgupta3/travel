@@ -67,6 +67,7 @@ public class TravelProcessor {
 		}
 		if(localType.equals("international"))
 		{
+				travelRequest.setCountry("Japan");
 				list1 = new ArrayList<SelectItem>();
 				for(int i=0;i<countryClassA.length;i++)
 					list1.add(new SelectItem(countryClassA[i], countryClassA[i]));
@@ -76,11 +77,14 @@ public class TravelProcessor {
 			
 				for(int i=0;i<countryClassC.length;i++)
 					list1.add(new SelectItem(countryClassC[i], countryClassC[i]));
+				
+				travelRequest.setCountry(countryClassA[0]);
 		}
 		else
 		{
 			list1 = new ArrayList<SelectItem>();
 			list1.add(new SelectItem("India","India"));
+			travelRequest.setCountry("India");
 		}
 		return list1;
 		}
@@ -246,7 +250,6 @@ public class TravelProcessor {
 		localType = (String) event.getNewValue();
 		if(localType.equals("domestic"))
 		{
-			//travelRequest.setCountry("Japan");
 			travelRequest.setDisableCountry(true);
 			travelRequest.getTravelDetails().getAllowance().setCurrency("INR");
 		}
@@ -361,17 +364,18 @@ public class TravelProcessor {
 		System.out.println("In waeqwe");
 		if (travelRequest.getDate() == null
 				|| travelRequest.getEmployee().getName().trim().equals("")
-				|| travelRequest.getEmployee().getUnit() == null
-				|| travelRequest.getEmployee().getDesignation() == null
-				|| travelRequest.getEmployee().getEmailId() == null
-				|| travelRequest.getEmployee().getDepartment() == null
-				|| travelRequest.getEmployee().getProjectName() == null
-				|| travelRequest.getEmployee().getMobileNumber() == null
-				|| travelRequest.getTravelDetails().getPurpose() == null
+				|| travelRequest.getEmployee().getUnit().trim().equals("")
+				|| travelRequest.getEmployee().getDesignation().trim().equals("")
+				|| travelRequest.getEmployee().getEmailId().trim().equals("")
+				|| travelRequest.getEmployee().getDepartment().trim().equals("")
+				|| travelRequest.getEmployee().getProjectName().trim().equals("")
+				|| travelRequest.getEmployee().getMobileNumber().trim().equals("")
+				|| travelRequest.getEmployee().getTelephoneExt().trim().equals("")
+				|| travelRequest.getTravelDetails().getPurpose().trim().equals("")
 				|| travelRequest.getTravelDetails().getStartDate() == null
 				|| travelRequest.getTravelDetails().getEndDate() == null
-				|| travelRequest.getType() == null
-				|| travelRequest.getEmployee().getGrade() == null
+				|| travelRequest.getType().trim().equals("")
+				|| travelRequest.getEmployee().getGrade().trim().equals("")
 				/*|| travelRequest.getTravelDetails().getAllowance().getDays() == 0
 				|| travelRequest.getTravelDetails().getAllowance()
 						.getPerDayAllowance() == 0
@@ -389,9 +393,9 @@ public class TravelProcessor {
 		while (itr.hasNext()) {
 			TravelResv resv1 = (TravelResv) itr.next();
 			if (resv1.getTravelDate() == null || resv1.getTravelFrom() == null
-					|| resv1.getTravelTo() == null
-					|| resv1.getModeType() == null
-					|| resv1.getClassType() == null
+					|| resv1.getTravelTo().trim().equals("")
+					|| resv1.getModeType().trim().equals("")
+					|| resv1.getClassType().trim().equals("")
 					|| resv1.getDepTime() == null || resv1.getArrTime() == null
 					|| resv1.getAmount() == 0) {
 				FacesContext.getCurrentInstance().addMessage(

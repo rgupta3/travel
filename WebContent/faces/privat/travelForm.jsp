@@ -104,9 +104,10 @@
 			</tr>
 			<tr>
 				<td style="width: 116px">Name *</td>
-				<td style="width: 346px"><h:inputText id="name" 
+				<td style="width: 346px">
+				<h:inputText id="name" 
 					value="#{travelRequest.employee.name}" disabled="#{travelRequest.disable2}">
-				</h:inputText>	
+				</h:inputText>
 				</td>
 				<td style="width: 122px">Designation *</td>
 				<td style="width: 170px"><h:inputText id="designation" 
@@ -133,8 +134,11 @@
 					<f:validator validatorId="emailValidator" />
 				</h:inputText> <h:message for="emailId" style="color:red"></h:message> </td>
 				<td style="width: 136px">Tel.Ext.No </td>
-				<td style="width: 161px"><h:inputText id="telExt"
-					value="#{travelRequest.employee.telephoneExt}" disabled="#{travelRequest.disable2}"/></td>
+				<td style="width: 161px">
+				<h:inputText id="telExt"
+					value="#{travelRequest.employee.telephoneExt}" disabled="#{travelRequest.disable2}">
+					<f:validator validatorId="numberValidator" />
+					</h:inputText><h:message for="telExt" style="color:red"/></td>
 			</tr>
 			<tr>
 				<td>Department *</td>
@@ -145,7 +149,9 @@
 				</h:selectOneMenu> </td>
 				<td style="width: 136px">Mobile Number *</td>
 				<td style="width: 161px"><h:inputText id="mobileNumber"
-					value="#{travelRequest.employee.mobileNumber}" disabled="#{travelRequest.disable2}"/></td>
+					value="#{travelRequest.employee.mobileNumber}" disabled="#{travelRequest.disable2}">
+					<f:validator validatorId="numberValidator" />
+					</h:inputText><h:message for="mobileNumber" style="color:red"/></td>
 			</tr>
 			<tr>				
 				<td style="width: 169px">Purpose of travel *</td>

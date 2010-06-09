@@ -24,14 +24,18 @@
 
 	<validator>
 		<validator-id>reqIdValidator</validator-id>
-		<validator-class>com.sony.travelRequest.validator.EmailValidator</validator-class>
+		<validator-class>com.sony.travelRequest.validator.ReqIdValidator</validator-class>
 	</validator>
 
 	<validator>
 		<validator-id>roleValidator</validator-id>
 		<validator-class>com.sony.travelRequest.validator.RoleValidator</validator-class>
 	</validator>
-
+	
+	<validator>
+		<validator-id>numberValidator</validator-id>
+		<validator-class>com.sony.travelRequest.validator.NumberValidator</validator-class>
+	</validator>
 
 
 <managed-bean>
