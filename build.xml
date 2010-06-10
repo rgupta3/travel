@@ -1,0 +1,96 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+	
+<project basedir="." default="build" name="travelRequest">
+	<property environment="env" />
+	<property name="ECLIPSE_HOME" value="../../eclipse galileo" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.5" />
+	<property name="source" value="1.5" />
+	<path id="toolslib">
+		<fileset dir="lib">
+		</fileset>
+	</path>
+	<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask"
+		classpathref="toolslib" />
+
+	<path id="Apache Tomcat v6.0 [Apache Tomcat v6.0].libraryclasspath">
+		<pathelement location="../apache-tomcat-6.0.20/lib/annotations-api.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/catalina-ant.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/catalina-ha.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/catalina-tribes.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/catalina.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/el-api.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/jasper-el.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/jasper-jdt.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/jasper.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/jsp-api.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/servlet-api.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/tomcat-coyote.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/tomcat-dbcp.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/tomcat-i18n-es.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/tomcat-i18n-fr.jar" />
+		<pathelement location="../apache-tomcat-6.0.20/lib/tomcat-i18n-ja.jar" />
+	</path>
+	<path id="Web App Libraries.libraryclasspath">
+		<pathelement location="WebContent/WEB-INF/lib/jsf-api.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/jsf-impl.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/jstl.jar" />
+	</path>
+	<path id="EAR Libraries.libraryclasspath" />
+	<path id="travelRequest.classpath">
+		<pathelement location="WebContent/WEB-INF/classes" />
+		<path refid="Apache Tomcat v6.0 [Apache Tomcat v6.0].libraryclasspath" />
+		<path refid="Web App Libraries.libraryclasspath" />
+		<path refid="EAR Libraries.libraryclasspath" />
+	</path>
+	<target name="init">
+		<mkdir dir="WebContent/WEB-INF/classes" />
+		<copy includeemptydirs="false" todir="WebContent/WEB-INF/classes">
+			<fileset dir="src">
+				<exclude name="*/.launch" />
+				<exclude name="*/.java" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="clean">
+		<delete dir="WebContent/WEB-INF/classes" />
+	</target>
+	<target depends="clean" name="cleanall" />
+	<target depends="build-subprojects,build-project" name="build" />
+	<target name="build-subprojects" />
+	<target depends="init" name="build-project">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="WebContent/WEB-INF/classes"
+			source="${source}" target="${target}">
+			<src path="src" />
+			<classpath refid="travelRequest.classpath" />
+		</javac>
+	</target>
+	<target
+		description="Build all projects which reference this project. Useful to propagate changes."
+		name="build-refprojects" />
+	<target description="copy Eclipse compiler jars to ant lib directory"
+		name="init-eclipse-compiler">
+		<copy todir="${ant.library.dir}">
+			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_.jar" />
+		</copy>
+		<unzip dest="${ant.library.dir}">
+			<patternset includes="jdtCompilerAdapter.jar" />
+			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_.jar" />
+		</unzip>
+	</target>
+	<target description="compile project with Eclipse compiler"
+		name="build-eclipse-compiler">
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+		<antcall target="build" />
+	</target>
+
+	<hibernatetool destdir="WebContent/WEB-INF">
+		<classpath>
+			<path location="WebContent/WEB-INF" />
+		</classpath>
+		<configuration configurationfile="WebContent/WEB-INF/hibernate.cfg.xml">
+		</configuration>
+		<hbm2ddl export="false" outputfilename="sql.ddl" />
+	</hibernatetool>
+</project>

@@ -7,6 +7,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-invalid
+<center>
+<% session.invalidate(); %>
+<h2>Logged out</h2>
+<br>
+Please <a href="./travelForm.jsf">click here</a> to Login
+</center>
+
 </body>
 </html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory name="java:comp/env/hibernate/SessionFactory">
+		
+		<property name="transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property> 
+
+		<property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+
+
+		
+		<property name="hibernate.current_session_context_class">org.hibernate.context.JTASessionContext</property>
+
+		<property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
+
+		<mapping resource="TravelRequest.hbm.xml" />
+		<mapping resource="Employee.hbm.xml" />
+	</session-factory>
+</hibernate-configuration>
