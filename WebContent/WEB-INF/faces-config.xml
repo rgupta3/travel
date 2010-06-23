@@ -31,30 +31,27 @@
 		<validator-id>roleValidator</validator-id>
 		<validator-class>com.sony.travelRequest.validator.RoleValidator</validator-class>
 	</validator>
-	
+
 	<validator>
 		<validator-id>numberValidator</validator-id>
 		<validator-class>com.sony.travelRequest.validator.NumberValidator</validator-class>
 	</validator>
 
 
-<managed-bean>
+	<managed-bean>
 		<description>
 			Current logged in user's authentication information
 		</description>
 		<managed-bean-name>loginBean</managed-bean-name>
-		<managed-bean-class>
-			com.ocpsoft.pages.login.LoginBean
-		</managed-bean-class>
-		<managed-bean-scope>
-		request</managed-bean-scope>
+		<managed-bean-class>com.ocpsoft.pages.login.LoginBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
-	
-	
+
+
 	<managed-bean>
 		<managed-bean-name>travelProcessor</managed-bean-name>
 		<managed-bean-class>com.sony.travelRequest.action.TravelProcessor</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
+		<managed-bean-scope>session</managed-bean-scope>
 		<managed-property>
 			<property-name>travelRequest</property-name>
 			<property-class>com.sony.travelRequest.model.TravelRequest</property-class>
@@ -92,27 +89,44 @@
 	<managed-bean>
 		<managed-bean-name>travelParamBean</managed-bean-name>
 		<managed-bean-class>com.sony.travelRequest.model.TravelParamBean</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
+		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
 	<navigation-rule>
-		<from-view-id>/travelForm.jsp</from-view-id>
+		<from-view-id>/faces/privat/travelForm.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>result</from-outcome>
-			<to-view-id>/travelFormSum.jsp</to-view-id>
+			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>invalid</from-outcome>
-			<to-view-id>/travelForm.jsp</to-view-id>
+			<to-view-id>/faces/privat/travelForm.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>/travelSummary</from-outcome>
+			<to-view-id>/faces/privat/travelForm.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/faces/privat/travelFormSum.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>/travelSummary</from-outcome>
+			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/faces/privat/financeDashboard.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>travelSummary</from-outcome>
+			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/faces/privat/search.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>travelSummary</from-outcome>
+			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
-	<navigation-rule>
-		<from-view-id>/travelFormSum.jsp</from-view-id>
-		<navigation-case>
-			<from-outcome>/travelSummary</from-outcome>
-			<to-view-id>/travelFormSum.jsp</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
 </faces-config>

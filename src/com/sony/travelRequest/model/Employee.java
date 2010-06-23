@@ -1,15 +1,41 @@
 package com.sony.travelRequest.model;
 
+import org.hibernate.validator.Email;
+
+import org.hibernate.validator.Length;
+
+import org.hibernate.validator.Max;
+
+import org.hibernate.validator.Min;
+
+import org.hibernate.validator.NotEmpty;
+
+import org.hibernate.validator.NotNull;
+
+import org.hibernate.validator.Pattern;
+
+
 public class Employee {
 
 	private int id;
+	@NotEmpty
+    @Pattern(regex=".*[^\\s].*", message="Invalid Name")
 	private String name;
 	private String unit;
-	private String designation;
+	@NotEmpty
+	private String designation;	
 	private String department;
+	@NotEmpty
 	private String projectName;
+	@NotEmpty
+	@Pattern(regex="^([0-9]+)*$", message="Invalid Number")
 	private String telephoneExt;
+	@NotEmpty
+	@Pattern(regex="^([0-9]+)*$", message="Invalid Number")
+	@Length(min=10,max=12)
 	private String mobileNumber;
+	@NotEmpty
+	@Pattern(regex="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Invalid Email")
 	private String emailId;
 	private String grade;
 

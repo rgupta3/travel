@@ -15,17 +15,19 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.model.SelectItem;
+import org.hibernate.validator.NotEmpty;
 
+import org.hibernate.validator.NotNull;
 
 public class TravelRequest {
 	
 	private int id;
 	private String status;
+	@NotNull
 	private float amount;
+	@NotEmpty
 	private String type;
+	@NotEmpty
 	private String chargeableType;
 	private String payment;
 	private Date date;
@@ -40,13 +42,23 @@ public class TravelRequest {
 	private boolean disable1;
 	private boolean disable2;
 	private boolean disable3;
+	private boolean disable4;
+	private boolean disable5;
 	private boolean disableCountry;
 /*
 	public void setOptions(String[] options) {
 		this.options = options;
 	}
 	*/
-	
+	public void enableAllFields()
+	{
+		disable1=false;
+		disable2=false;
+		//disable3=false;
+		disable4=false;
+		disable5=false;
+		disableCountry=false;
+	}
 	public boolean getDisableCountry() {
 		return disableCountry;
 	}
@@ -77,7 +89,21 @@ public class TravelRequest {
 	public void setDisable3(boolean disable3) {
 		this.disable3 = disable3;
 	}
+	public boolean getDisable4() {
+		return disable4;
+	}
+
+	public void setDisable4(boolean disable4) {
+		this.disable4 = disable4;
+	}
 	
+	public boolean getDisable5() {
+		return disable5;
+	}
+
+	public void setDisable5(boolean disable5) {
+		this.disable5 = disable5;
+	}
 	public TravelRequest() {
 		this.date = Calendar.getInstance().getTime();
 		hotelResv.add(new HotelResv());
@@ -87,7 +113,10 @@ public class TravelRequest {
 		disable1=true;
 		disable2=true;
 		disable3=true;
+		disable4=true;
+		disable5=true;
 		disableCountry=true;
+		System.out.println("\n\n\ntttttttttttttttttttttttttttt\n\n");
 	}
 
 	public int getId() {
@@ -211,7 +240,6 @@ public class TravelRequest {
 	}
 	
 	public void addTravelResvRow() {
-
 		travelResv.add(new TravelResv());
 	}
 	
@@ -220,6 +248,17 @@ public class TravelRequest {
 		hotelResv.add(new HotelResv());
 	}
 
+	public void removeHotelResvRow() {
+
+		hotelResv.removeAll(hotelResv);
+	}
+	
+	public void removeTravelResvRow() {
+
+		//int index=travelResv
+	//	travelResv.remove(index);
+	}
+	
 	public boolean isShowTravelApproval() {
 		return showTravelApproval;
 	}

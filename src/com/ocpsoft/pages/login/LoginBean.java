@@ -41,6 +41,7 @@ public class LoginBean {
 		}
 		facesUtils.getExternalContext().dispatch("/j_spring_security_check");
 		facesUtils.getFacesContext().responseComplete();
+		handleErrorMessage();
 		return null;
 
 		/*
@@ -63,7 +64,7 @@ public class LoginBean {
 	}
 
 	@PostConstruct
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	private void handleErrorMessage() {
 		Exception e = (Exception) FacesContext
 				.getCurrentInstance()
@@ -80,10 +81,15 @@ public class LoginBean {
 					.put(
 							AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY,
 							null);
+			/*FacesContext.getCurrentInstance().addMessage(
+					"loginForm:j_username",
+					new FacesMessage("Invalid inputs", "Invalid inputs"));*/
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Username or password not valid.", null));
+			/*System.out.println("Username or password not valid"+FacesMessage.SEVERITY_ERROR);
+			*/
 		}
 	}
 

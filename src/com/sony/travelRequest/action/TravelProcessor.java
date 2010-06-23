@@ -13,6 +13,7 @@ package com.sony.travelRequest.action;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +25,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.web.context.support.GenericWebApplicationContext;
 import org.springframework.web.jsf.FacesContextUtils;
@@ -55,19 +58,63 @@ public class TravelProcessor {
 	private static String localGrade;
 	private static List<SelectItem> list1;
 	private static List<SelectItem> list2;
+	private static List<SelectItem> searchList;
+	private List<TravelRequest> travelRequests;
+	private List<TravelRequest> searchResults;
 	private static long localStartDate;
 	private static long localEndDate;
+	private static float dailyAllowance;
+	private int rowIndex;
+	private static int startPage;
+	private String searchItem;
+	private String searchElement;
+	private static String x;
+	private static String currentSearchItem;
+	private static String currentSearchElement;
 	
+	public void setSearchItem(String searchItem)
+	{
+		this.searchItem = searchItem;
+	}
 	
+	public String getSearchItem()
+	{
+		return searchItem;
+	}
+	
+	public void setSearchElement(String searchElement)
+	{
+		this.searchElement = searchElement;
+	}
+	
+	public String getSearchElement()
+	{
+		return searchElement;
+	}
+	
+	public void setTravelRequests(List<TravelRequest> travelRequests)
+	{
+		this.travelRequests=travelRequests;
+	}
+	public int getRowIndex()
+	{
+		return rowIndex;
+	}
+	public void setRowIndex(int rowIndex)
+	{
+		this.rowIndex=rowIndex;
+	}
 	public List<SelectItem> getList1() 
 	{
+		if(travelRequest.getType()!=null)
+		localType=travelRequest.getType();
 		if(list1!=null) 
 		{
 			list1.clear();
 		}
 		if(localType.equals("international"))
 		{
-				travelRequest.setCountry("Japan");
+				
 				list1 = new ArrayList<SelectItem>();
 				for(int i=0;i<countryClassA.length;i++)
 					list1.add(new SelectItem(countryClassA[i], countryClassA[i]));
@@ -77,8 +124,8 @@ public class TravelProcessor {
 			
 				for(int i=0;i<countryClassC.length;i++)
 					list1.add(new SelectItem(countryClassC[i], countryClassC[i]));
-				
-				travelRequest.setCountry(countryClassA[0]);
+				if(travelRequest.getCountry()==null)
+				travelRequest.setCountry("Japan");
 		}
 		else
 		{
@@ -110,15 +157,21 @@ public class TravelProcessor {
 		return list2;
 		}
 	
+	public List<SelectItem> getSearchList() 
+	{
+		
+			searchList = new ArrayList<SelectItem>();
+			searchList.add(new SelectItem("type","Type"));
+			searchList.add(new SelectItem("country","Country"));
+			//searchList.add(new SelectItem("Road","Road"));
+		
+		return searchList;
+	}
 
 	public TravelProcessor() {
 		focusField = "travel";
 		focusFieldSize = "0";
-		Calendar cal = Calendar.getInstance();
-		cal.add(Calendar.DATE, 2);
-		localStartDate = cal.getTime().getTime()/(1000*24*60*60);
-		cal.add(Calendar.DATE, 20);
-		localEndDate = cal.getTime().getTime()/(1000*24*60*60);
+		System.out.println("\n\nYo\n\n\n");
 	}
 
 	public TravelRequestDao getTravelRequestDao() {
@@ -191,8 +244,8 @@ public class TravelProcessor {
 	
 	public void processAllowance() {
 		String grade=travelRequest.getEmployee().getGrade().trim();
-		float dailyAllowance=0;
-		if(travelRequest.getType().trim().equals("international"))
+		System.out.println(grade+" "+localType+" "+travelRequest.getCountry());
+		if(localType.equals("international"))
 		{
 			switch(findClass(travelRequest.getCountry().trim()))
 			{
@@ -242,43 +295,85 @@ public class TravelProcessor {
 				dailyAllowance=600;	
 		}
 		travelRequest.getTravelDetails().getAllowance().setDailyAllowance(dailyAllowance);
-		//total allowances
+		this.calculateAmount();
 		
 	}
 
-	public void enableFields1(ValueChangeEvent event)throws AbortProcessingException {
-		localType = (String) event.getNewValue();
+	public void enableFields1() {
+		localType = travelRequest.getType();
 		if(localType.equals("domestic"))
 		{
 			travelRequest.setDisableCountry(true);
 			travelRequest.getTravelDetails().getAllowance().setCurrency("INR");
+			if(travelRequest.getCountry()==null)
+			travelRequest.setCountry("India");
 		}
 		else
 		{
 			travelRequest.setDisableCountry(false);
 			travelRequest.getTravelDetails().getAllowance().setCurrency("$");
+			if(travelRequest.getCountry()==null)
+			travelRequest.setCountry("Japan");
 		}
 		travelRequest.setDisable1(false);
 		if(localGrade!=null)
-		determineClass();
+			determineClass();
+		processAllowance();
 	}
 	
-	public void enableFields2(ValueChangeEvent event)throws AbortProcessingException {
-		
-		String value = (String) event.getNewValue();
-		localGrade = value;
+	public void enableFields2(){
+		localType = travelRequest.getType();
+		localGrade = travelRequest.getEmployee().getGrade();
 		determineClass();
-		if(value.equals("Select"))
+		processAllowance();
+		if(localGrade.equals("Select"))
+		{
 			travelRequest.setDisable2(true);
-		else
+			travelRequest.setDisable4(true);
+			travelRequest.setDisable5(true);
+			
+		}
+			else
 		{
 			travelRequest.setDisable2(false);
+			int size = travelRequest.getTravelResv().size();
+			this.enableFields4(size);
+			size = travelRequest.getHotelResv().size();
+			this.enableFields5(size);
 		}
+	}
+	
+
+	public void enableFields3() {
+		if(travelRequest.getPayment().equals("client"))
+		{
+			travelRequest.removeHotelResvRow();
+			this.addHotelResvRow();
+			travelRequest.setDisable3(true);
+		}
+		else
+			travelRequest.setDisable3(false);
+		this.calculateAmount();
+	}
+	
+	public void enableFields4(int size) {
+		if(size!=1)
+		travelRequest.setDisable4(false);
+		else
+			travelRequest.setDisable4(true);
+	}
+	
+	public void enableFields5(int size) {
+		if(size!=1)
+		travelRequest.setDisable5(false);
+		else
+			travelRequest.setDisable5(true);
 	}
 	
 	//business or economy
 	public void determineClass()
-	{
+	{	localType=travelRequest.getType();
+		localGrade=travelRequest.getEmployee().getGrade();
 		if(localType.equals("domestic"))
 		{
 				Iterator itr = travelRequest.getTravelResv().iterator();
@@ -323,42 +418,45 @@ public class TravelProcessor {
 			}
 		}
 	
-	public void changeStartDate(ValueChangeEvent event)throws AbortProcessingException {
-		Date value = (Date) event.getNewValue();
-		localStartDate=value.getTime()/(1000*24*60*60);
-		computeDays();
-	}
-	
-	public void changeEndDate(ValueChangeEvent event)throws AbortProcessingException {
-		Date value = (Date) event.getNewValue();
-		localEndDate=value.getTime()/(1000*24*60*60);
-		computeDays();
-	}
 	
 	public void computeDays()
 	{
-		//System.out.println(localEndDate.getTime()/(1000*24*3600)+" "+localStartDate.getTime()/(1000*24*3600));
-		float diff = (localEndDate-localStartDate);
+		localStartDate=travelRequest.getTravelDetails().getStartDate().getTime();
+		localEndDate=travelRequest.getTravelDetails().getEndDate().getTime();
+		float diff = (localEndDate-localStartDate)/(1000*24*3600);
 		travelRequest.getTravelDetails().getAllowance().setDays(diff);
-		System.out.println(travelRequest.getTravelDetails().getAllowance().getDays());
+		this.calculateAmount();
+		//System.out.println(travelRequest.getTravelDetails().getAllowance().getDays());
 	}
-	/*public void computeDays(Calendar startDate, Calendar endDate) {
-		  Calendar date = (Calendar) startDate.clone();
-		  float daysBetween = 0;
-		  while (date.before(endDate)) {
-		    date.add(Calendar.DAY_OF_MONTH, 1);
-		    daysBetween++;
-		  }
-		  travelRequest.getTravelDetails().getAllowance().setDays(daysBetween);
-		//  return daysBetween;
-		}
-*/
-
 	
-	public void enableFields3(ValueChangeEvent event)throws AbortProcessingException {
+	public void calculateAmount()
+	{
+		float amount = (float) (
+				travelRequest.getTravelDetails().getAllowance()
+						.getDailyAllowance() )
+				* travelRequest.getTravelDetails().getAllowance().getDays()+travelRequest.getTravelDetails().getAllowance()
+				.getAirportTransport()+ travelRequest.getTravelDetails()
+				.getAllowance().getConveyance()+travelRequest.getTravelDetails()
+				.getAllowance().getOtherAllowance();
+		Iterator itr = travelRequest.getTravelResv().iterator();
+		itr = travelRequest.getTravelResv().iterator();
+		while (itr.hasNext()) {
+			TravelResv resv1 = (TravelResv) itr.next();
+			amount += resv1.getAmount();
+		}
 
-		travelRequest.setDisable3(!travelRequest.getDisable3());
+		if (travelRequest.getPayment().equals("company")) {
+			itr = travelRequest.getHotelResv().iterator();
+			while (itr.hasNext()) {
+				HotelResv resv2 = (HotelResv) itr.next();
+				amount += resv2.getAmount();
+			}
+		}
+		travelRequest.setAmount(amount);
 	}
+	
+	
+	
 	
 	public String print() {
 		System.out.println("In waeqwe");
@@ -478,30 +576,9 @@ public class TravelProcessor {
 		RequestApproval approval = new RequestApproval();
 		approval.setApprovorType("finance");
 		travelRequest.getRequestApprovals().add(approval);
-		processAllowance();
-		float amount = (float) (
-				travelRequest.getTravelDetails().getAllowance()
-						.getDailyAllowance() )
-				* travelRequest.getTravelDetails().getAllowance().getDays()+travelRequest.getTravelDetails().getAllowance()
-				.getAirportTransport()+ travelRequest.getTravelDetails()
-				.getAllowance().getConveyance()+travelRequest.getTravelDetails()
-				.getAllowance().getOtherAllowance();
-
-		itr = travelRequest.getTravelResv().iterator();
-		while (itr.hasNext()) {
-			TravelResv resv1 = (TravelResv) itr.next();
-			amount += resv1.getAmount();
-		}
-
-		if (travelRequest.getPayment().equals("company")) {
-			itr = travelRequest.getHotelResv().iterator();
-			while (itr.hasNext()) {
-				HotelResv resv2 = (HotelResv) itr.next();
-				amount += resv2.getAmount();
-			}
-		}
-		travelRequest.setAmount(amount);
-
+		this.processAllowance();
+		this.calculateAmount();
+		travelRequest=travelRequestDao.merge(travelRequest);
 		travelRequestDao.persist(travelRequest);
 		travelRequest.setControl(true);
 
@@ -582,25 +659,74 @@ public class TravelProcessor {
 	}
 
 	public String sendReqId() {
-		System.out.println(" Inside TravelProcessor");
-		System.out.println("TravelParamBean is null:"+travelParamBean);
-
-		// travelRequestDao.findById(reqId);
-		System.out.println("TravelParamBean: role"+travelParamBean.getRole());
-		System.out.println("TravelParamBean: reqId"+travelParamBean.getReqId());
+			System.out.println(" Inside TravelProcessor");
+			System.out.println("TravelParamBean is null:"+travelParamBean);
+			// travelRequestDao.findById(reqId);
+			System.out.println("TravelParamBean: role"+travelParamBean.getRole());
+			System.out.println("TravelParamBean: reqId"+travelParamBean.getReqId());
+			travelRequest = travelRequestDao.findById(travelParamBean.getReqId());
+			new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
+			travelRequest.enableAllFields();
+			this.enableFields3();
+			return "travelSummary";
+	}
+	
+	
+	
+	public List<TravelRequest> getTravelRequests() {
+		if(travelRequests==null)
+		{
+			travelRequests= travelRequestDao.findIt();
+			System.out.println("travelRrquests is null");
+		}
+		return travelRequests;
+}
+	
+	public List<TravelRequest> getSearchResults() {
+		if(this.getSearchItem()!=null)
+			x=this.getSearchItem();
+		else if(x==null)
+			x="type";
+		System.out.println(x+" "+searchElement);
+		if(currentSearchItem!=x || currentSearchElement!=searchElement)
+			searchResults= travelRequestDao.findElement(x,searchElement);
+		currentSearchItem=x;
+		currentSearchElement=searchElement;
+		return searchResults;
+}
+	public String displaySummary() {
+		System.out.println("Printing.............");
 		travelRequest = travelRequestDao.findById(travelParamBean.getReqId());
 		new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
 		return "travelSummary";
-
+}
+	public String showTravelSummary() {
+		System.out.println("show travel.............");
+		if(travelRequests==null) travelRequests=searchResults;
+		travelParamBean.setReqId(travelRequests.get(rowIndex).getId());
+		travelParamBean.setRole("finance");
+		return this.displaySummary();
 	}
-
+	
 	public void addTravelResvRow() {
 		travelRequest.addTravelResvRow();
 		focusField = "travel";
 		int size = travelRequest.getTravelResv().size() - 1;
 		focusFieldSize = "" + size;
 		determineClass();
+		this.enableFields4(size+1);
 	}
+	
+	public void removeTravelResvRow() {
+		int size = travelRequest.getTravelResv().size();
+		System.out.println(size);
+		if(size>1)
+			travelRequest.getTravelResv().remove(rowIndex);
+		size = travelRequest.getTravelResv().size();
+		this.enableFields4(size);
+		this.calculateAmount();
+	}
+	
 
 	public void addHotelResvRow() {
 
@@ -608,8 +734,19 @@ public class TravelProcessor {
 		focusField = "hotel";
 		int size = travelRequest.getHotelResv().size() - 1;
 		focusFieldSize = "" + size;
+		this.enableFields5(size+1);
 	}
-
+	
+	public void removeHotelResvRow() {
+		int size = travelRequest.getHotelResv().size();
+		System.out.println(size);
+		if(size>1)
+			travelRequest.getHotelResv().remove(rowIndex);
+		size = travelRequest.getHotelResv().size();
+		this.enableFields5(size);
+		this.calculateAmount();
+	}
+	
 	public EmailComponent getEmailComponent() {
 		return emailComponent;
 	}

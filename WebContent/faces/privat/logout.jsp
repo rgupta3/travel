@@ -28,9 +28,9 @@
 	<div id="menu">
 	<ul>
 		<li><a href="#">Home</a></li>
-		<li><a href="#">About</a></li>
-		<li><a href="#">Links</a></li>
-		<li><a href="#">Contact</a></li>		
+		<li><a href="/travel/faces/privat/search.jsf">Search</a></li>
+		<li><a href="/travel/faces/privat/travelForm.jsf">Create</a></li>
+		<li><a href="#">Help</a></li>
 	</ul>
 	</div>
 	<!-- end #menu -->

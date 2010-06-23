@@ -1,13 +1,14 @@
 package com.sony.travelRequest.dao;
 
 // Generated Apr 14, 2010 7:38:10 PM by Hibernate Tools 3.3.0.GA
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-
+import org.hibernate.criterion.Order;
 import com.sony.travelRequest.model.TravelRequest;
 
 /**
@@ -102,13 +103,44 @@ public class TravelRequestDao extends HibernateDaoSupport {
 			} else {
 				log.debug("get successful, instance found");
 			}
-			getHibernateTemplate().getSessionFactory().close();
+			getHibernateTemplate().getSessionFactory().close();			
 			return instance;
 		} catch (RuntimeException re) {
 			log.error("get failed", re);
 			throw re;
 		}
 	}
+
+	
+	
+public List<TravelRequest> findIt() {
+		
+		try {
+			List<TravelRequest> result;
+			result =(List<TravelRequest>) getHibernateTemplate().getSessionFactory().openSession().createCriteria(TravelRequest.class).addOrder( Order.desc("date")).list();
+			getHibernateTemplate().getSessionFactory().close();
+			return result;
+			//return instance;
+		} catch (RuntimeException re) {
+			log.error("get failed", re);
+			throw re;
+		}
+		
+	}
+public List<TravelRequest> findElement(String searchItem, String searchElement) {
+	
+	try {
+		List<TravelRequest> result;
+		result =(List<TravelRequest>) getHibernateTemplate().getSessionFactory().openSession().createCriteria(TravelRequest.class).add( Restrictions.like(searchItem, searchElement) ).list();
+		getHibernateTemplate().getSessionFactory().close();
+		return result;
+		//return instance;
+	} catch (RuntimeException re) {
+		log.error("get failed", re);
+		throw re;
+	}
+	
+}
 
 //	public List<TravelRequest> findByExample(TravelRequest instance) {
 //		log.debug("finding TravelRequest instance by example");

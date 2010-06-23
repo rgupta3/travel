@@ -13,8 +13,6 @@
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<script language="javaScript" 
-    type="text/javascript" src="calendar.js"></script>
 	<link href="../style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	
 	</head>
@@ -30,19 +28,14 @@
 	<div id="menu">
 	<ul>
 		<li><a href="#">Home</a></li>
-		<li><a href="#">About</a></li>
-		<li><a href="#">Links</a></li>
-		<li><a href="#">Contact</a></li>
+		<li><a href="/travel/faces/privat/search.jsf">Search</a></li>
+		<li><a href="/travel/faces/privat/travelForm.jsf">Create</a></li>
+		<li><a href="#">Help</a></li>
 	</ul>
 	</div>
 	<!-- end #menu -->
-	<div id="search">
-	<form method="get" action="">
-	<fieldset><input type="text" name="s" id="search-text"
-		size="15" /> <input type="submit" id="search-submit" value="GO" /></fieldset>
-	</form>
-	</div>
-	<!-- end #search -->
+
+
 	</div>
 	<!-- end #header --> 
 	<!-- end #header-wrapper -->

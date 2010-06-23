@@ -14,11 +14,29 @@ package com.sony.travelRequest.model;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+import org.hibernate.validator.Email;
+
+import org.hibernate.validator.Length;
+
+import org.hibernate.validator.Max;
+
+import org.hibernate.validator.Min;
+
+import org.hibernate.validator.NotEmpty;
+
+import org.hibernate.validator.NotNull;
+
+import org.hibernate.validator.Pattern;
 
 public class TravelDetails {
-	
+	@NotEmpty
 	private String purpose;
+	@NotEmpty
 	private Date startDate;
+	@NotEmpty
 	private Date endDate;
 	private String recommndedEmpMailId;
 	private String authorisedEmpMailId;
