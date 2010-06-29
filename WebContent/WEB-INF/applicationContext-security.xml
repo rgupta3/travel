@@ -12,19 +12,22 @@
 
 	<http auto-config="true" access-denied-page="/accessDenied.jsp">
 
-		<intercept-url pattern="/faces/protected**"
+		<intercept-url pattern="/employee/**"
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
-		<intercept-url pattern="/summary/**"
+		<intercept-url pattern="/dashboard"
+			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />	
+		<intercept-url pattern="/search"
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
-		<intercept-url pattern="/editForm/**"
+			<intercept-url pattern="/logout"
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
-		<intercept-url pattern="/faces/privat/financeDashboard.jsp"
+		<intercept-url pattern="/finance/**"
 			access="ROLE_SUPERVISOR" />
-		<intercept-url pattern="/faces/privat/search.jsp"
-			access="ROLE_SUPERVISOR" />
-		<intercept-url pattern="/faces/privat/**"
+		<intercept-url pattern="/summary/employee/**"
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
-			<intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/summary/finance/**"
+			access="ROLE_SUPERVISOR" />
+		<intercept-url pattern="/**"
+			 access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		
 		<!--<intercept-url pattern="/**" access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
 			
@@ -33,9 +36,9 @@
 
 		--><form-login login-page="/faces/login.jsf" />
 		<form-login login-processing-url="/j_spring_security_check"
-			login-page="/faces/login.jsf" default-target-url="/faces/new1.jsf"
+			login-page="/faces/login.jsf" default-target-url="/employee/dashboard"
 			authentication-failure-url="/faces/login.jsf" />
-		<logout logout-url="/logout*" logout-success-url="/" />
+		<logout logout-url="/faces/privat/logout.jsp" logout-success-url="/faces/login.jsf" />
 
 	</http>
 

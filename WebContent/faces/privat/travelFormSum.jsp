@@ -8,41 +8,15 @@
 <f:view>
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/travel/WebContent/images/favicon.ico" type="image/x-icon" />
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<link href="../../style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/travel/style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	</head>
 	<body>
 	<div id="wrapper">
-	<div id="logo">
-	<h1> Sony India Software Center</h1>
-	<p>(A division of Sony India Pvt. Ltd.)</p>
-	</div>
-	<hr />
-	<!-- end #logo -->
-	<div id="header">
-	<div id="menu">
-	<ul>
-		<li><a href="#">Home</a></li>
-		<li><a href="/travel/faces/privat/search.jsf">Search</a></li>
-		<li><a href="/travel/faces/privat/travelForm.jsf">Create</a></li>
-		<li><a href="#">Help</a></li>
-		<li><a href="/travel/faces/privat/logout.jsf">Logout</a></li>
-	</ul>
-	</div>
-	<!-- end #menu -->
-	<div id="search">
-	<form method="get" action="">
-	<fieldset><input type="text" name="s" id="search-text"
-		size="15" /> <input type="submit" id="search-submit" value="GO" /></fieldset>
-	</form>
-	</div>
-	<!-- end #search -->
-	</div>
-	<!-- end #header --> 
-	<!-- end #header-wrapper -->
+	<jsp:include page="/faces/privat/header.html" />
 	<div id="page">
 	<div id="page-bgtop">
 	<div id="content">
@@ -50,6 +24,15 @@
 	<h2>Travel Summary</h2>
 	
 	<h:form id="travelForm"> <h:messages />
+	<label>Status :<b>
+	<h:outputText id="status" 
+					value="#{travelRequest.status}" >
+					
+				</h:outputText></b><br></br></label>
+		     <h:panelGroup id="EditLink" rendered="#{travelRequest.status == 'rejected' && loginBean.role!='finance'}">
+				<h:commandButton id="submit" value="Edit"
+			action="#{travelProcessor.sendReqId}" />
+			</h:panelGroup>
 		<label>Initiator Name  <h:outputText id="initiator" value="xyz"/>
 		</label><br><br>Type of travel * <h:outputText id="type" value="#{travelRequest.type}"/>
 		<br><br>Country * <h:outputText id="country" value="#{travelRequest.country}"></h:outputText><br>Grade *    <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>
@@ -142,10 +125,10 @@
 
 		</table>
 		<br>
-		<h:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
+		<rich:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
 			var="travelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
 			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
-			rules="all" summary="This is a JSF code for travel details." >
+			rules="all"  >
 			<f:facet name="header">
 				<h:outputText value="Proposed travel details " />
 			</f:facet>
@@ -160,9 +143,9 @@
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Sector" />
-				</f:facet>
+				</f:facet><h:outputText value="From:" />
 				<h:outputText id="from" value="#{travelResvItem.travelFrom}">
-				</h:outputText>
+				</h:outputText><h:outputText value=" To:" />
 				<h:outputText id="to" value="#{travelResvItem.travelTo}">
 				</h:outputText>
 			</h:column>
@@ -183,9 +166,9 @@
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Time" />
-				</f:facet>
+				</f:facet><h:outputText value="From:" />
 				<h:outputText id="depTime" value="#{travelResvItem.depTime}">
-				</h:outputText>
+				</h:outputText><h:outputText value=" To:" />
 				<h:outputText id="arrTime" value="#{travelResvItem.arrTime}">
 				</h:outputText>
 			</h:column>
@@ -198,7 +181,7 @@
 				</h:outputText>
 			</h:column>
 			
-		</h:dataTable>
+		</rich:dataTable>
 		<br>
 		<table>
 			<tr>
@@ -210,10 +193,10 @@
 				<td></td>
 			</tr>
 		</table>
-		<h:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
+		<rich:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
 			var="hotelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
 			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
-			rules="all" summary="This is a JSF code for hotel details.">
+			rules="all" >
 			<f:facet name="header">
 				<h:outputText value="Hotel reservation details " />
 			</f:facet>
@@ -254,12 +237,12 @@
 				</h:outputText>
 			</h:column>
 			
-		</h:dataTable>
+		</rich:dataTable>
 		<br>
-		<h:dataTable id="approvalDataTable" value="#{travelRequest.requestApprovals}"
+		<rich:dataTable id="approvalDataTable" value="#{travelRequest.requestApprovals}"
 			var="requestApprovalItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
 			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
-			rules="all" summary="This is a JSF code for approval details." rendered="#{not empty travelRequest.requestApprovals}">
+			rules="all"  rendered="#{not empty travelRequest.requestApprovals}">
 			<f:facet name="header">
 				<h:outputText value="Travel Approval details" />
 			</f:facet>
@@ -277,7 +260,14 @@
 				<h:outputText id="travelapproved" value="#{requestApprovalItem.approved}">
 				</h:outputText>
 			</h:column>
-		</h:dataTable>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText id="comments" value="#{requestApprovalItem.comments}">
+				</h:outputText>
+			</h:column>
+		</rich:dataTable>
 		<table>
 			<tr>
 				<td>Airport Transport (Advance Amt.)</td>
@@ -345,9 +335,9 @@
 			</tr>
 		</table>
 		<br/><br/>
-		<h:panelGroup id="travelApprovalId" rendered="#{travelRequest.showTravelApproval}">
+		<h:panelGroup id="travelApprovalId" rendered="#{travelRequest.status=='pending' && loginBean.role=='finance'}">
 				Comments :
-				<h:inputTextarea id="comments"></h:inputTextarea>
+				<h:inputTextarea id="comments" value="#{travelProcessor.approvalComment}"></h:inputTextarea>
 				<br></br><center>
 				<h:commandButton id="accept" value="Accept" 
 				action="#{travelProcessor.financeAccept}" />

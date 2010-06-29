@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 14, 2010 7:36:48 PM by Hibernate Tools 3.3.0.GA -->
 <hibernate-mapping>
-	<class name="com.sony.travelRequest.model.Employee" table="EMPLOYEE">
+	<class name="com.sony.travelRequest.model.Employee" table="EMPLOYEE" lazy="false">
 		<id name="id" type="int" column="ID">
 			<generator class="increment" />
 		</id>

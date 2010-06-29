@@ -9,11 +9,11 @@
 <f:view>
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="../images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/travel/style/style.css" type="image/x-icon" />
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<link href="../style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/travel/style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	
 	</head>
 	<body >
@@ -27,9 +27,9 @@
 	<div id="header">
 	<div id="menu">
 	<ul>
-		<li><a href="#">Home</a></li>
-		<li><a href="/travel/faces/privat/search.jsf">Search</a></li>
-		<li><a href="/travel/faces/privat/travelForm.jsf">Create</a></li>
+		<li><a href="/travel/dashboard">Home</a></li>
+		<li><a href="/travel/travelRequest">Create</a></li>
+		<li><a href="/travel/search">Search</a></li>
 		<li><a href="#">Help</a></li>
 	</ul>
 	</div>
@@ -53,7 +53,8 @@
 				<input type="hidden" name="redirect" value="true" />
 			</c:if>
 		</script>
-			
+			<h:outputText value="#{loginBean.errorMessage}" style="color:red" />
+			<br></br>
 			<label for="j_username"><h:outputText value="Username:" /><br />
 			</label>
 			<h:inputText id="j_username" required="true">
@@ -75,6 +76,9 @@
 
 			<h:commandButton type="submit" id="login"
 				action="#{loginBean.doLogin}" value="Login" />
+
+  			
+  			
 
 		</h:form>
 	</div>

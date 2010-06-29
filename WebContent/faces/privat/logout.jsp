@@ -5,13 +5,11 @@
 <html>
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/travel/WebContent/images/favicon.ico" type="image/x-icon" />
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<script language="javaScript" 
-    type="text/javascript" src="calendar.js"></script>
-	<link href="../../style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/travel/style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<!-- set focus to a field -->
 	
 	</head>
@@ -27,18 +25,15 @@
 	<div id="header">
 	<div id="menu">
 	<ul>
-		<li><a href="#">Home</a></li>
-		<li><a href="/travel/faces/privat/search.jsf">Search</a></li>
-		<li><a href="/travel/faces/privat/travelForm.jsf">Create</a></li>
+		<li><a href="/travel/employee/dashboard">Home</a></li>
+		<li><a href="/travel/employee/travelRequest">Create</a></li>
+		<li><a href="/travel/employee/search">Search</a></li>
 		<li><a href="#">Help</a></li>
 	</ul>
 	</div>
 	<!-- end #menu -->
 	<div id="search">
-	<form method="get" action="">
-	<fieldset><input type="text" name="s" id="search-text"
-		size="15" /> <input type="submit" id="search-submit" value="GO" /></fieldset>
-	</form>
+	
 	</div>
 	<!-- end #search -->
 	</div>
@@ -51,7 +46,7 @@
 
 	<h2>Logged out</h2>
 	<br>
-	Please <a href="./travelForm.jsf">click here</a> to Login
+	Please <a href="/travel/dashboard">Click Here</a> to Login
 	</div>
 	
 	

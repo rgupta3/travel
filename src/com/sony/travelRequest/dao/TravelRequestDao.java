@@ -1,41 +1,45 @@
 package com.sony.travelRequest.dao;
 
 // Generated Apr 14, 2010 7:38:10 PM by Hibernate Tools 3.3.0.GA
-import java.util.*;
+import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.LockMode;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.hibernate.Session;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 import com.sony.travelRequest.model.TravelRequest;
 
 /**
  * Home object for domain model class TravelRequest.
+ * 
  * @see com.sony.travelRequest.model.TravelRequest
  * @author Hibernate Tools
  */
 public class TravelRequestDao extends HibernateDaoSupport {
-	
+
 	public TravelRequestDao() {
 		super();
 	}
 
-	private static final Log log = LogFactory.getLog(TravelRequestDao.class);
+	private static Logger log = Logger.getLogger(TravelRequestDao.class);
 
-//	private final SessionFactory sessionFactory = getSessionFactory();
-//
-//	protected SessionFactory getSessionFactory() {
-//		try {
-//			return (SessionFactory) new InitialContext()
-//					.lookup("SessionFactory");
-//		} catch (Exception e) {
-//			log.error("Could not locate SessionFactory in JNDI", e);
-//			throw new IllegalStateException(
-//					"Could not locate SessionFactory in JNDI");
-//		}
-//	}
+	// private final SessionFactory sessionFactory = getSessionFactory();
+	//
+	// protected SessionFactory getSessionFactory() {
+	// try {
+	// return (SessionFactory) new InitialContext()
+	// .lookup("SessionFactory");
+	// } catch (Exception e) {
+	// log.error("Could not locate SessionFactory in JNDI", e);
+	// throw new IllegalStateException(
+	// "Could not locate SessionFactory in JNDI");
+	// }
+	// }
 
 	public void persist(TravelRequest transientInstance) {
 		log.debug("persisting TravelRequest instance");
@@ -84,7 +88,8 @@ public class TravelRequestDao extends HibernateDaoSupport {
 	public TravelRequest merge(TravelRequest detachedInstance) {
 		log.debug("merging TravelRequest instance");
 		try {
-			TravelRequest result = (TravelRequest) getHibernateTemplate().merge(detachedInstance);
+			TravelRequest result = (TravelRequest) getHibernateTemplate()
+					.merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -93,68 +98,111 @@ public class TravelRequestDao extends HibernateDaoSupport {
 		}
 	}
 
+	/*
+	 * public TravelRequest findById(int id) {
+	 * log.debug("getting TravelRequest instance with id: " + id); try {
+	 * //TravelRequest instance = (TravelRequest)
+	 * getHibernateTemplate().get("com.sony.travelRequest.model.TravelRequest",
+	 * id); TravelRequest instance =
+	 * (TravelRequest)getHibernateTemplate().getSessionFactory
+	 * ().openSession().createCriteria(TravelRequest.class).add(
+	 * Restrictions.like("id", id) ).uniqueResult(); if (instance == null) {
+	 * log.debug("get successful, no instance found"); } else {
+	 * log.debug("get successful, instance found"); }
+	 * getHibernateTemplate().getSessionFactory().close(); return instance; }
+	 * catch (RuntimeException re) { log.error("get failed", re); throw re; } }
+	 */
+
 	public TravelRequest findById(int id) {
 		log.debug("getting TravelRequest instance with id: " + id);
+		TravelRequest instance = null;
 		try {
-			//TravelRequest instance = (TravelRequest) getHibernateTemplate().get("com.sony.travelRequest.model.TravelRequest", id);
-			TravelRequest instance = (TravelRequest)getHibernateTemplate().getSessionFactory().openSession().createCriteria(TravelRequest.class).add( Restrictions.like("id", id) ).uniqueResult();
+			instance = (TravelRequest) getHibernateTemplate().load(
+					TravelRequest.class, id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
 				log.debug("get successful, instance found");
 			}
-			getHibernateTemplate().getSessionFactory().close();			
 			return instance;
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			log.error("get failed", re);
-			throw re;
 		}
+		return instance;
 	}
 
-	
-	
-public List<TravelRequest> findIt() {
-		
-		try {
-			List<TravelRequest> result;
-			result =(List<TravelRequest>) getHibernateTemplate().getSessionFactory().openSession().createCriteria(TravelRequest.class).addOrder( Order.desc("date")).list();
-			getHibernateTemplate().getSessionFactory().close();
-			return result;
-			//return instance;
-		} catch (RuntimeException re) {
-			log.error("get failed", re);
-			throw re;
-		}
-		
-	}
-public List<TravelRequest> findElement(String searchItem, String searchElement) {
-	
-	try {
-		List<TravelRequest> result;
-		result =(List<TravelRequest>) getHibernateTemplate().getSessionFactory().openSession().createCriteria(TravelRequest.class).add( Restrictions.like(searchItem, searchElement) ).list();
-		getHibernateTemplate().getSessionFactory().close();
+	public List<TravelRequest> findIt() {
+
+		List<TravelRequest> result = (List<TravelRequest>) getHibernateTemplate().execute(
+					new HibernateCallback() {
+						public Object doInHibernate(Session session) {
+							Criteria criteria = session.createCriteria(
+									TravelRequest.class).add( Restrictions.like("status", "pending") ).addOrder(
+									Order.asc("date"));
+							return criteria.list();
+						}
+					});
 		return result;
-		//return instance;
-	} catch (RuntimeException re) {
-		log.error("get failed", re);
-		throw re;
+	}
+
+	public List<TravelRequest> findElement(final String searchItem,
+			final String searchElement) {
+
+		List<TravelRequest> result = (List<TravelRequest>) getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
+						Criteria criteria = session.createCriteria(
+								TravelRequest.class).add(
+										Restrictions.like(searchItem, searchElement));
+						return criteria.list();
+					}
+				});
+	return result;
+
 	}
 	
-}
+	public List<TravelRequest> findElementforEmp(final String searchItem, final String searchElement,final int id) {
+		
+		List<TravelRequest> result = (List<TravelRequest>) getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
+						Criteria criteria = session.createCriteria(TravelRequest.class).add( Restrictions.like(searchItem, searchElement) ).
+						add( Restrictions.like("employee.id", id) );
+						return criteria.list();
+					}
+					});
+		return result;	
+		
+	}
 
-//	public List<TravelRequest> findByExample(TravelRequest instance) {
-//		log.debug("finding TravelRequest instance by example");
-//		try {
-//			List<TravelRequest> results = (List<TravelRequest>) sessionFactory
-//					.getCurrentSession()createCriteria(
-//							"com.sony.travelRequest.model.TravelRequest").add(
-//							create(instance)).list();
-//			log.debug("find by example successful, result size: "
-//					+ results.size());
-//			return results;
-//		} catch (RuntimeException re) {
-//			log.error("find by example failed", re);
-//			throw re;
-//		}
-//	}
+	public List<TravelRequest> findbyEmployeeId(final int id) {
+		
+		List<TravelRequest> result = (List<TravelRequest>) getHibernateTemplate().execute(
+				new HibernateCallback() {
+					public Object doInHibernate(Session session) {
+						Criteria criteria = session.createCriteria(TravelRequest.class).add( Restrictions.like("employee.id", id) );
+						return criteria.list();
+					}
+					});
+		return result;	
+		
+		
+		
+	}
+
+	// public List<TravelRequest> findByExample(TravelRequest instance) {
+	// log.debug("finding TravelRequest instance by example");
+	// try {
+	// List<TravelRequest> results = (List<TravelRequest>) sessionFactory
+	// .getCurrentSession()createCriteria(
+	// "com.sony.travelRequest.model.TravelRequest").add(
+	// create(instance)).list();
+	// log.debug("find by example successful, result size: "
+	// + results.size());
+	// return results;
+	// } catch (RuntimeException re) {
+	// log.error("find by example failed", re);
+	// throw re;
+	// }
+	// }
 }

@@ -45,6 +45,8 @@ public class TravelRequest {
 	private boolean disable4;
 	private boolean disable5;
 	private boolean disableCountry;
+	private boolean renderForm;
+
 /*
 	public void setOptions(String[] options) {
 		this.options = options;
@@ -58,6 +60,7 @@ public class TravelRequest {
 		disable4=false;
 		disable5=false;
 		disableCountry=false;
+		renderForm=false;
 	}
 	public boolean getDisableCountry() {
 		return disableCountry;
@@ -65,6 +68,13 @@ public class TravelRequest {
 
 	public void setDisableCountry(boolean disableCountry) {
 		this.disableCountry = disableCountry;
+	}
+	public boolean getRenderForm() {
+		return renderForm;
+	}
+
+	public void setRenderForm(boolean renderForm) {
+		this.renderForm = renderForm;
 	}
 	public boolean getDisable1() {
 		return disable1;
@@ -116,6 +126,7 @@ public class TravelRequest {
 		disable4=true;
 		disable5=true;
 		disableCountry=true;
+		renderForm=false;
 		System.out.println("\n\n\ntttttttttttttttttttttttttttt\n\n");
 	}
 
@@ -269,7 +280,7 @@ public class TravelRequest {
 
 	public String getEmailBodyForEmployeeInitiation() {
 		StringBuilder emailBody = new StringBuilder("You initiated a new travel request. Please click this url to see the summary and status of your request:");
-		emailBody.append(" http://localhost:8080/travel/travelFormSum.faces?reqId=").append(getId());
+		emailBody.append("http://localhost:8080/travel/summary/employee/").append(getId());
 		return emailBody.toString();
 	}
 	
@@ -289,7 +300,7 @@ public class TravelRequest {
 		StringBuilder emailBody = new StringBuilder("Your travel request with id:").append(getId()).append(" has been ");
 		emailBody.append(approvedStr)/*.append( with the following comments:")*/;
 		emailBody.append(". Please click this url to see the details of your request:");
-		emailBody.append(" http://localhost:8080/travel/travelFormSum.faces?reqId=").append(getId());
+		emailBody.append(" http://localhost:8080/travel/summary/employee/").append(getId());
 		return emailBody.toString();
 	}
 	
@@ -307,7 +318,7 @@ public class TravelRequest {
 
 	public String getEmailBodyForTravelDesk() {
 		StringBuilder emailBody = new StringBuilder("A new Travel request is awaiting for your approval. Please click this url to work on this request:");
-		emailBody.append(" http://localhost:8080/travel/travelFormSum.faces?reqId=").append(getId()).append("&role=travel");
+		emailBody.append("http://localhost:8080/travel/summary/finance/").append(getId());
 		return emailBody.toString();
 	}
 	

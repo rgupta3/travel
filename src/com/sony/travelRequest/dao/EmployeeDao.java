@@ -1,10 +1,12 @@
 package com.sony.travelRequest.dao;
 
-// Generated Apr 14, 2010 7:38:10 PM by Hibernate Tools 3.3.0.GA
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.sony.travelRequest.model.Employee;
@@ -12,7 +14,7 @@ import com.sony.travelRequest.model.Employee;
 /**
  * Home object for domain model class Employee.
  * 
- * @see com.sony.travelRequest.model.Employee
+ * @see com.sony.Employee.model.Employee
  * @author Hibernate Tools
  */
 public class EmployeeDao extends HibernateDaoSupport {
@@ -21,25 +23,20 @@ public class EmployeeDao extends HibernateDaoSupport {
 		super();
 	}
 
-	private static final Log log = LogFactory.getLog(EmployeeDao.class);
+	private static Logger log = Logger.getLogger(TravelRequestDao.class);
 
-
-//	protected SessionFactory getSessionFactory() {
-//		try {
-////			return new Configuration().configure().buildSessionFactory();
-//			return (SessionFactory) new InitialContext().lookup("java:comp/env/hibernate/SessionFactory");
-//			// (SessionFactory) new InitialContext()
-//			// .lookup("java:comp/env/hibernate/SessionFactory");
-//			// (SessionFactory) new InitialContext()
-//			// .lookup("SessionFactory");
-//			// new Configuration().configure().buildSessionFactory();
-//		} catch (Exception e) {
-//			log.error("blah Could not locate SessionFactory in JNDI", e);
-//			throw new IllegalStateException(
-//					"blah Could not locate SessionFactory in JNDI");
-//		}
-//	}
-
+	// private final SessionFactory sessionFactory = getSessionFactory();
+	//
+	// protected SessionFactory getSessionFactory() {
+	// try {
+	// return (SessionFactory) new InitialContext()
+	// .lookup("SessionFactory");
+	// } catch (Exception e) {
+	// log.error("Could not locate SessionFactory in JNDI", e);
+	// throw new IllegalStateException(
+	// "Could not locate SessionFactory in JNDI");
+	// }
+	// }
 
 	public void persist(Employee transientInstance) {
 		log.debug("persisting Employee instance");
@@ -88,7 +85,8 @@ public class EmployeeDao extends HibernateDaoSupport {
 	public Employee merge(Employee detachedInstance) {
 		log.debug("merging Employee instance");
 		try {
-			Employee result = (Employee) getHibernateTemplate().merge(detachedInstance);
+			Employee result = (Employee) getHibernateTemplate()
+					.merge(detachedInstance);
 			log.debug("merge successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -97,35 +95,53 @@ public class EmployeeDao extends HibernateDaoSupport {
 		}
 	}
 
+	/*
+	 * public Employee findById(int id) {
+	 * log.debug("getting Employee instance with id: " + id); try {
+	 * //Employee instance = (Employee)
+	 * getHibernateTemplate().get("com.sony.Employee.model.Employee",
+	 * id); Employee instance =
+	 * (Employee)getHibernateTemplate().getSessionFactory
+	 * ().openSession().createCriteria(Employee.class).add(
+	 * Restrictions.like("id", id) ).uniqueResult(); if (instance == null) {
+	 * log.debug("get successful, no instance found"); } else {
+	 * log.debug("get successful, instance found"); }
+	 * getHibernateTemplate().getSessionFactory().close(); return instance; }
+	 * catch (RuntimeException re) { log.error("get failed", re); throw re; } }
+	 */
+
 	public Employee findById(int id) {
 		log.debug("getting Employee instance with id: " + id);
+		Employee instance = null;
 		try {
-			Employee instance = (Employee) getHibernateTemplate().get("com.sony.travelRequest.model.Employee", id);
+			instance = (Employee) getHibernateTemplate().load(
+					Employee.class, id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {
 				log.debug("get successful, instance found");
+				
 			}
 			return instance;
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			log.error("get failed", re);
-			throw re;
 		}
+		return instance;
 	}
 
-//	public List<Employee> findByExample(Employee instance) {
-//		log.debug("finding Employee instance by example");
-//		try {
-//			List<Employee> results = (List<Employee>) getHibernateTemplate().createCriteria(
-//							"com.sony.travelRequest.model.Employee").add(
-//							create(instance)).list();
-//			log.debug("find by example successful, result size: "
-//					+ results.size());
-//			return results;
-//		} catch (RuntimeException re) {
-//			log.error("find by example failed", re);
-//			throw re;
-//		}
-//	}
-
+	// public List<Employee> findByExample(Employee instance) {
+	// log.debug("finding Employee instance by example");
+	// try {
+	// List<Employee> results = (List<Employee>) sessionFactory
+	// .getCurrentSession()createCriteria(
+	// "com.sony.Employee.model.Employee").add(
+	// create(instance)).list();
+	// log.debug("find by example successful, result size: "
+	// + results.size());
+	// return results;
+	// } catch (RuntimeException re) {
+	// log.error("find by example failed", re);
+	// throw re;
+	// }
+	// }
 }

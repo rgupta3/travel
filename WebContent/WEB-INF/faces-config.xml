@@ -3,7 +3,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
 	version="1.2">
-
 	<application>
 		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 		<variable-resolver>
@@ -44,7 +43,7 @@
 		</description>
 		<managed-bean-name>loginBean</managed-bean-name>
 		<managed-bean-class>com.ocpsoft.pages.login.LoginBean</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
+		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
 
@@ -69,11 +68,23 @@
 			<value>#{travelRequestDao}</value>
 		</managed-property>
 		<managed-property>
+			<property-name>employeeDao</property-name>
+			<value>#{employeeDao}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>employee</property-name>
+			<property-class>com.sony.travelRequest.model.Employee</property-class>
+			<value>#{employee}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>employeeDao</property-name>
+			<value>#{employeeDao}</value>
+		</managed-property>
+		<managed-property>
 			<property-name>emailComponent</property-name>
 			<value>#{emailComponent}</value>
 		</managed-property>
 	</managed-bean>
-
 	<managed-bean>
 		<managed-bean-name>TableBean</managed-bean-name>
 		<managed-bean-class>com.sony.travelRequest.test.TableBean</managed-bean-class>
@@ -110,12 +121,26 @@
 	<navigation-rule>
 		<from-view-id>/faces/privat/travelFormSum.jsp</from-view-id>
 		<navigation-case>
-			<from-outcome>/travelSummary</from-outcome>
-			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
+			<from-outcome>editForm</from-outcome>
+			<to-view-id>/faces/privat/travelForm.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/faces/privat/financeDashboard.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>travelSummary</from-outcome>
+			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/faces/privat/employeeDashboard.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>travelSummary</from-outcome>
+			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/faces/privat/employeeSearch.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>travelSummary</from-outcome>
 			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>

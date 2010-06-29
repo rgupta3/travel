@@ -6,7 +6,7 @@
 		class="org.springframework.security.event.authentication.LoggerListener" />
 
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+<!--  	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName">
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
@@ -20,6 +20,13 @@
 			<value></value>
 		</property>
 	</bean>
+-->
+
+<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiName">
+        <value>java:comp/env/jdbc/TravelDS</value>
+    </property>
+</bean>
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -68,6 +75,10 @@
 			<ref bean="hibernateTemplate" />
 		</property>
 	</bean>
-
+	<bean id="employeeDao" class="com.sony.travelRequest.dao.EmployeeDao">
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate" />
+		</property>
+	</bean>
 	<import resource="mailContext.xml" />
 </beans>

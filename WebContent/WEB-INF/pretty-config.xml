@@ -11,19 +11,38 @@
 		<view-id>/faces/privat/travelFormSum.jsf</view-id>
 		<action phaseId="RENDER_RESPONSE"> #{travelProcessor.displaySummary} </action>
 	</url-mapping>
-	<url-mapping id="viewItem1">
+	<url-mapping id="empEditForm">
 		<pattern>
-			/editForm/#{travelParamBean.role}/#{travelParamBean.reqId}
+			/employee/editForm/#{travelParamBean.reqId}
 			</pattern>
-		<view-id>/faces/privat/editForm.jsf</view-id>
+		<view-id>/faces/privat/travelForm.jsf</view-id>
 		<action phaseId="RESTORE_VIEW"> #{travelProcessor.sendReqId} </action>
 	</url-mapping>
-	<url-mapping id="blah">
-		<pattern> /blah/shoo</pattern>
-		<view-id>/travelForm.jsf</view-id>
+	<url-mapping id="empTravelReq">
+		<pattern>
+			/travelRequest
+			</pattern>
+		<view-id>/faces/privat/travelForm.jsf</view-id>
+		<action> #{travelProcessor.createTravelRequest} </action>
 	</url-mapping>
-	<url-mapping id="demo">
-		<pattern> /demo</pattern>
-		<view-id> /travelForm.jsf </view-id>
+	<url-mapping id="empDashboard">
+		<pattern>
+			/dashboard
+			</pattern>
+		<view-id>/faces/privat/employeeDashboard.jsf</view-id>
+		<action> #{travelProcessor.findEmployeeId} </action>
+	</url-mapping>
+	<url-mapping id="empSearch">
+		<pattern>
+			/search
+			</pattern>
+		<view-id>/faces/privat/employeeSearch.jsf</view-id>
+		<action> #{travelProcessor.findEmployeeId} </action>
+	</url-mapping>
+	<url-mapping id="empLogout">
+		<pattern>
+			/logout
+			</pattern>
+		<view-id>/faces/privat/logout.jsf</view-id>
 	</url-mapping>
 </pretty-config>

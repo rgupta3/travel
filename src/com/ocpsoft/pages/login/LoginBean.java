@@ -4,16 +4,15 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.security.BadCredentialsException;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.context.SecurityContextHolder;
+import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.ui.AbstractProcessingFilter;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +26,18 @@ public class LoginBean {
 	private String password = "";
 	private boolean rememberMe = false;
 	private boolean loggedIn = false;
-
+	private String errorMessage="";
+	private String role="";
+	public void setErrorMessage(String errorMessage)
+	{
+		this.errorMessage = errorMessage;
+	}
+	public String getErrorMessage()
+	{
+		return this.errorMessage;
+	}
 	public String doLogin() throws IOException, ServletException {
-
+		System.out.println(errorMessage);
 		FacesUtils facesUtils = new FacesUtils();
 		String redirect = facesUtils.getRequestParameter("redirect");
 		if ((redirect != null) && !redirect.isEmpty()) {
@@ -42,6 +50,30 @@ public class LoginBean {
 		facesUtils.getExternalContext().dispatch("/j_spring_security_check");
 		facesUtils.getFacesContext().responseComplete();
 		handleErrorMessage();
+		if(SecurityContextHolder.getContext().getAuthentication() != null)
+		{
+		Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username;
+		GrantedAuthority authorities[];
+		if ( obj instanceof UserDetails ) 
+		{
+			username= ( (UserDetails)obj ).getUsername();
+			authorities = ( (UserDetails)obj ).getAuthorities();
+			for(GrantedAuthority role:authorities)
+			{
+				System.out.println(role.getAuthority());
+				if(role.getAuthority().equals("ROLE_SUPERVISOR"))
+				{
+					this.role="finance";
+				}
+			}
+		} else {
+
+		    username = obj.toString();
+		}
+		int id= Integer.valueOf(username);
+		System.out.println("ID "+id+this.role);
+		}
 		return null;
 
 		/*
@@ -83,13 +115,15 @@ public class LoginBean {
 							null);
 			/*FacesContext.getCurrentInstance().addMessage(
 					"loginForm:j_username",
-					new FacesMessage("Invalid inputs", "Invalid inputs"));*/
+					new FacesMessage("Invalid inputs", "Invalid inputs"));
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Username or password not valid.", null));
-			/*System.out.println("Username or password not valid"+FacesMessage.SEVERITY_ERROR);
-			*/
+			System.out.println("Username or password not valid");*/
+			
+			this.errorMessage="Invalid Credentials!!";
+
 		}
 	}
 
@@ -103,6 +137,10 @@ public class LoginBean {
 
 	public String getPassword() {
 		return this.password;
+	}
+	
+	public String getRole() {
+		return this.role;
 	}
 
 	public void setPassword(final String password) {

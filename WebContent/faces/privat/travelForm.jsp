@@ -8,42 +8,16 @@
 <f:view>
 	<head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="/travel/images/favicon.ico" type="image/x-icon" />
 	<title>Travel Request Form</title>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
-	<link href="../../style/style.css" rel="stylesheet" type="text/css" media="screen" />
+	<link href="/travel/style/style.css" rel="stylesheet" type="text/css" media="screen" />
 	<!-- set focus to a field -->
 	</head>
 	<body>
 	<div id="wrapper">
-	<div id="logo">
-	<h1> Sony India Software Center</h1>
-	<p>(A division of Sony India Pvt. Ltd.)</p>
-	</div>
-	<hr />
-	<!-- end #logo -->
-	<div id="header">
-	<div id="menu">
-	<ul>
-		<li><a href="#">Home</a></li>
-		<li><a href="/travel/faces/privat/search.jsf">Search</a></li>
-		<li><a href="/travel/faces/privat/travelForm.jsf">Create</a></li>
-		<li><a href="#">Help</a></li>
-		<li><a href="/travel/faces/privat/logout.jsf">Logout</a></li>
-	</ul>
-	</div>
-	<!-- end #menu -->
-	<div id="search">
-	<form method="get" action="">
-	<fieldset><input type="text" name="s" id="search-text"
-		size="15" /> <input type="submit" id="search-submit" value="GO" /></fieldset>
-	</form>
-	</div>
-	<!-- end #search -->
-	</div>
-	<!-- end #header --> 
-	<!-- end #header-wrapper -->
+	<jsp:include page="/faces/privat/header.html" />
 	<div id="page">
 	<div id="page-bgtop">
 	<div id="content">
@@ -57,13 +31,13 @@
 		<table style="width: 883px; height: 122px; margin-top: 40px;">
 			<tr>
 				<td style="width: 120px">Type of Travel*</td>
-				<td style="width: 320px"><h:selectOneRadio id="type" value="#{travelRequest.type}" >
+				<td style="width: 320px"><h:selectOneRadio id="type" value="#{travelRequest.type}"  disabled="#{travelRequest.renderForm}">
 					<f:selectItem id="domestic" itemLabel="Domestic" itemValue="domestic" />
 					<f:selectItem id="international" itemLabel="International" itemValue="international" />
 				<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields1}" event="onclick"
 						reRender=
-						"country,grade,travelDataTable,currency1,currency2,currency3,currency4,currency5,dailyAllowance,totalAllowance" status="waitStatus"></a4j:support>
+						"travelForm,country,grade,travelDataTable,currency1,currency2,currency3,currency4,currency5,dailyAllowance,totalAllowance" status="waitStatus"></a4j:support>
 				</h:selectOneRadio>
 				</td>
 				<td style="width: 123px">Country *</td>
@@ -171,7 +145,8 @@
 				<td><a4j:outputPanel ajaxRendered="true">
 <rich:calendar id="fromdate"
 value="#{travelRequest.travelDetails.startDate}"
-datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}">
+datePattern="MM/dd/yy HH:mm" 
+disabled="#{travelRequest.disable2}">
 <a4j:support ajaxSingle="true"
 						action="#{travelProcessor.computeDays}" event="onchanged"
 						reRender=
@@ -183,7 +158,7 @@ datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}">
 				<td><a4j:outputPanel ajaxRendered="true">
 <rich:calendar id="todate"
 value="#{travelRequest.travelDetails.endDate}"
-datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}">
+datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}">
 <a4j:support ajaxSingle="true"
 						action="#{travelProcessor.computeDays}" event="onchanged"
 						reRender=
@@ -209,12 +184,7 @@ datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}">
 				
 			</tr>
 		</table>
-		<br>
-		<rich:message for="from" style="color:red; font-size:10px;" />
-		<rich:message for="to" style="color:red; font-size:10px;" />
-		<rich:message for="depTime" style="color:red; font-size:10px;" />
-		<rich:message for="arrTime" style="color:red; font-size:10px;" />
-		<rich:message for="tAmount" style="color:red; font-size:10px;" />		
+		<br>		
 		<rich:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
 			var="travelResvItem" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5"
 			cellspacing="3" first="0" rows="0" dir="LTR" frame="box"
@@ -229,7 +199,7 @@ datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}">
 				<a4j:outputPanel ajaxRendered="true">
 <rich:calendar id="date2"
 value="#{travelResvItem.travelDate}"
-datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}"
+datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 ></rich:calendar>
 </a4j:outputPanel>			
 			</h:column>
@@ -316,7 +286,7 @@ datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}"
 			</tr>
 		</table>
 		<rich:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
-			var="hotelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
+			var="hotelResvItem" rowKeyVar="row2" bgcolor="#F1F1F1" border="10" cellpadding="5"
 			cellspacing="3" first="0" rows="0"  dir="LTR" frame="box"
 			rules="all"  style="width:883px;" >
 			<f:facet name="header">
@@ -369,7 +339,7 @@ datePattern="MM/dd/yy" disabled="#{travelRequest.disable2}"
 					<h:outputText value="Action" />
 				</f:facet>
 				<a4j:commandButton value="Delete" action="#{travelProcessor.removeHotelResvRow}" reRender="hotelDataTable,totalAllowance" disabled="#{travelRequest.disable5}">
-  	<f:setPropertyActionListener value="#{row}" 
+  	<f:setPropertyActionListener value="#{row2}" 
   	    target="#{travelProcessor.rowIndex}" />
       </a4j:commandButton>
 

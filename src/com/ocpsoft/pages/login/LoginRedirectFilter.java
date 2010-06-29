@@ -16,6 +16,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -44,6 +45,7 @@ public class LoginRedirectFilter implements Filter {
 	}
 
 	private boolean isAuthenticated() {
+
 		boolean result = false;
 		SecurityContext context = SecurityContextHolder.getContext();
 		if (context instanceof SecurityContext) {
@@ -51,6 +53,7 @@ public class LoginRedirectFilter implements Filter {
 			if (authentication instanceof AnonymousAuthenticationToken) {
 				// not authenticated
 			} else if (authentication instanceof Authentication) {
+
 				result = true;
 			}
 		}

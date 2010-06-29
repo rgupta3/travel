@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Apr 14, 2010 7:36:48 PM by Hibernate Tools 3.3.0.GA -->
 <hibernate-mapping>
-	<class name="com.sony.travelRequest.model.TravelRequest" table="TRAVELREQUEST">
+	<class name="com.sony.travelRequest.model.TravelRequest" table="TRAVELREQUEST" lazy="false">
 		<id name="id" type="int" column="ID">
 			<generator class="increment" />
 		</id>
@@ -29,7 +29,7 @@
 			<column name="COUNTRY" />
 		</property>
 		<list name="hotelResv" inverse="false" table="HOTELRESV"
-			lazy="true">
+			lazy="false">
 			<key>
 				<column name="ID" />
 			</key>
@@ -54,7 +54,7 @@
 			</composite-element>
 		</list>
 		<list name="travelResv" inverse="false" table="TRAVELRESV"
-			lazy="true">
+			lazy="false">
 			<key>
 				<column name="ID" />
 			</key>
@@ -88,7 +88,7 @@
 			</composite-element>
 		</list>
 		<list name="requestApprovals" inverse="false"
-			table="REQUESTAPPROVALS" lazy="true">
+			table="REQUESTAPPROVALS" lazy="false">
 			<key>
 				<column name="ID" />
 			</key>
@@ -110,7 +110,7 @@
 			</composite-element>
 		</list>
 		<component name="travelDetails"
-			class="com.sony.travelRequest.model.TravelDetails" >
+			class="com.sony.travelRequest.model.TravelDetails" lazy="false" >
 			<property name="authorisedEmpMailId"
 				type="java.lang.String">
 				<column name="AUTHORISEDEMPMAILID" />
@@ -129,7 +129,7 @@
 				<column name="RECOMMNDEDEMPMAILID" />
 			</property>
 			<component name="allowance"
-				class="com.sony.travelRequest.model.Allowance" >
+				class="com.sony.travelRequest.model.Allowance" lazy="false" >
 				<property name="airportTransport" type="float">
 					<column name="AIRPORTTRANSPORT" />
 				</property>
@@ -155,6 +155,6 @@
 		</component>
 		<many-to-one name="employee"
 			class="com.sony.travelRequest.model.Employee" column="EMPLOYEE_ID"
-			not-null="true" cascade="all" unique="true" />
+			not-null="true" cascade="all" unique="true" lazy="false"/>
 	</class>
 </hibernate-mapping>
