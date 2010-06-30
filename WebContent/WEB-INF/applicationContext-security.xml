@@ -36,7 +36,7 @@
 
 		--><form-login login-page="/faces/login.jsf" />
 		<form-login login-processing-url="/j_spring_security_check"
-			login-page="/faces/login.jsf" default-target-url="/employee/dashboard"
+			login-page="/faces/login.jsf" default-target-url="/dashboard"
 			authentication-failure-url="/faces/login.jsf" />
 		<logout logout-url="/faces/privat/logout.jsp" logout-success-url="/faces/login.jsf" />
 

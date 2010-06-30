@@ -208,10 +208,10 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					<h:outputText value="Sector" />
 				</f:facet>
 				<h:inputText id="from" value="#{travelResvItem.travelFrom}" disabled="#{travelRequest.disable2}">
-				<rich:ajaxValidator event="onblur" />
+				
 				</h:inputText>	
 				<h:inputText id="to" value="#{travelResvItem.travelTo}" disabled="#{travelRequest.disable2}">
-				<rich:ajaxValidator event="onblur" />
+				
 				</h:inputText>
 			</h:column>
 			<h:column>
@@ -235,9 +235,9 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					<h:outputText value="Time" />
 				</f:facet>
 				<h:inputText id="depTime" value="#{travelResvItem.depTime}" disabled="#{travelRequest.disable2}">				
-				<rich:ajaxValidator event="onblur" />	</h:inputText>
+					</h:inputText>
 				<h:inputText id="arrTime" value="#{travelResvItem.arrTime}" disabled="#{travelRequest.disable2}">				
-				<rich:ajaxValidator event="onblur" />	</h:inputText>
+					</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
@@ -251,7 +251,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 						action="#{travelProcessor.calculateAmount}" event="onchange"
 						reRender=
 						"totalAllowance" status="waitStatus"></a4j:support>
-				<rich:ajaxValidator event="onblur" /></h:inputText>
+				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">

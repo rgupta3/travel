@@ -46,7 +46,15 @@ public class TravelRequest {
 	private boolean disable5;
 	private boolean disableCountry;
 	private boolean renderForm;
-
+	private TravelSettlement travelSettlement = new TravelSettlement();
+	
+	
+	public TravelSettlement getTravelSettlement() {
+		return travelSettlement;
+	}
+	public void setTravelSettlement(TravelSettlement travelSettlement) {
+		this.travelSettlement = travelSettlement;
+	}
 /*
 	public void setOptions(String[] options) {
 		this.options = options;
@@ -57,7 +65,7 @@ public class TravelRequest {
 		disable1=false;
 		disable2=false;
 		//disable3=false;
-		disable4=false;
+		//disable4=false;
 		disable5=false;
 		disableCountry=false;
 		renderForm=false;

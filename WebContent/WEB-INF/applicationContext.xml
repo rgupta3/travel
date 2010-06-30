@@ -34,6 +34,7 @@
 			<list>
 				<value>WEB-INF/TravelRequest.hbm.xml</value>
 				<value>WEB-INF/Employee.hbm.xml</value>
+				<value>WEB-INF/TravelSettlement.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -76,6 +77,11 @@
 		</property>
 	</bean>
 	<bean id="employeeDao" class="com.sony.travelRequest.dao.EmployeeDao">
+		<property name="hibernateTemplate">
+			<ref bean="hibernateTemplate" />
+		</property>
+	</bean>
+	<bean id="travelSettlementDao" class="com.sony.travelRequest.dao.TravelSettlementDao">
 		<property name="hibernateTemplate">
 			<ref bean="hibernateTemplate" />
 		</property>

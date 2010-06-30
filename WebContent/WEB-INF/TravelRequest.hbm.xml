@@ -156,5 +156,8 @@
 		<many-to-one name="employee"
 			class="com.sony.travelRequest.model.Employee" column="EMPLOYEE_ID"
 			not-null="true" cascade="all" unique="true" lazy="false"/>
+		<one-to-one name="travelSettlement"
+			class="com.sony.travelRequest.model.TravelSettlement" 
+			 cascade="all"  lazy="false"/>
 	</class>
 </hibernate-mapping>

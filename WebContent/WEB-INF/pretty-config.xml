@@ -15,7 +15,7 @@
 		<pattern>
 			/employee/editForm/#{travelParamBean.reqId}
 			</pattern>
-		<view-id>/faces/privat/travelForm.jsf</view-id>
+		<view-id>/faces/privat/travelFormSum.jsf</view-id>
 		<action phaseId="RESTORE_VIEW"> #{travelProcessor.sendReqId} </action>
 	</url-mapping>
 	<url-mapping id="empTravelReq">
@@ -44,5 +44,12 @@
 			/logout
 			</pattern>
 		<view-id>/faces/privat/logout.jsf</view-id>
+	</url-mapping>
+	<url-mapping id="finTravelSettlement">
+		<pattern>
+			/finance/settlement/#{travelParamBean.reqId}
+			</pattern>
+		<view-id>/faces/privat/travelSettlement.jsf</view-id>
+		<action phaseId="RESTORE_VIEW"> #{travelProcessor.sendReqIdForSettlement} </action>
 	</url-mapping>
 </pretty-config>

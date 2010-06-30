@@ -36,6 +36,16 @@ import com.sony.travelRequest.model.TravelRequest;
 import com.sony.travelRequest.model.TravelResv;
 import com.sony.travelRequest.util.EmailComponent;
 
+import com.sony.travelRequest.model.AdvanceAmount;
+//import com.sony.travelRequest.model.ConveyanceExpense;
+//import com.sony.travelRequest.model.EntertainmentExpense;
+import com.sony.travelRequest.model.Expense;
+//import com.sony.travelRequest.model.LodgingExpense;
+//import com.sony.travelRequest.model.MiscellaneousExpense;
+//import com.sony.travelRequest.model.OthersExpense;
+
+
+
 public class TravelProcessor {
 
 	private int employeeId;
@@ -744,13 +754,14 @@ public class TravelProcessor {
 				{
 					travelRequest.setRenderForm(true);
 				}
+				return "editForm";
 			}
 			else
 			{
 				//we should have redirected to an Access Denied
-				travelRequest.setRenderForm(true);
+				//travelRequest.setRenderForm(true);
+				return null;
 			}
-			return "editForm";
 	}
 	public List<TravelRequest> getEmployeeTravelRequests() {
 		if(employeeTravelRequests==null)
@@ -883,4 +894,436 @@ public class TravelProcessor {
 		this.travelParamBean = travelParamBean;
 	}
 
+	
+	
+	/***********************************************************/
+	
+/********************---travel settlement starts from here---********************/
+	
+	//adding rows
+	public void addAdvanceTableRow() {
+		travelRequest.getTravelSettlement().addAdvanceTableRow();
+		int size = travelRequest.getTravelSettlement().getAdvanceAmounts().size();
+		disableAdvanceTableRowDelete(size);
+	}
+	
+	public void addLodgingTableRow() {
+		travelRequest.getTravelSettlement().addLodgingTableRow();
+		int size = travelRequest.getTravelSettlement().getLodgingExpenses().size();
+		disableLodgingTableRowDelete(size);
+	}
+	
+	public void addConveyanceTableRow() {
+		travelRequest.getTravelSettlement().addConveyanceTableRow();
+		int size = travelRequest.getTravelSettlement().getConveyanceExpenses().size();
+		disableConveyanceTableRowDelete(size);
+	}
+	
+	public void addOthersTableRow() {
+		travelRequest.getTravelSettlement().addOthersTableRow();
+		int size = travelRequest.getTravelSettlement().getOthersExpenses().size();
+		disableOthersTableRowDelete(size);
+	}
+	
+	public void addEntertainmentTableRow() {
+		travelRequest.getTravelSettlement().addEntertainmentTableRow();	
+		int size = travelRequest.getTravelSettlement().getEntertainmentExpenses().size();
+		disableEntertainmentTableRowDelete(size);
+	}
+	
+	public void addMiscellaneousTableRow() {
+		travelRequest.getTravelSettlement().addMiscellaneousTableRow();
+		int size = travelRequest.getTravelSettlement().getMiscellaneousExpenses().size();
+		disableMiscellaneousTableRowDelete(size);
+	}
+	
+	
+	//deleting rows
+	
+	public void removeAdvanceTableRow() {
+		int size = travelRequest.getTravelSettlement().getAdvanceAmounts().size();	
+		if(size>1){
+			travelRequest.getTravelSettlement().getAdvanceAmounts().remove(rowIndex);
+			disableAdvanceTableRowDelete(size-1);
+			this.calculateTotalAdvance();
+			//this.calculateTotalAdvanceINR();
+		}
+	}
+	
+	public void removeLodgingTableRow() {
+		int size = travelRequest.getTravelSettlement().getLodgingExpenses().size();
+		if(size>1){
+			travelRequest.getTravelSettlement().getLodgingExpenses().remove(rowIndex);
+			disableLodgingTableRowDelete(size-1);
+			this.calculateTotalLodging();
+		//	this.calculateTotalLodgingINR();
+		}
+	}
+	
+	public void removeConveyanceTableRow() {
+		int size = travelRequest.getTravelSettlement().getConveyanceExpenses().size();
+		if(size>1){
+			travelRequest.getTravelSettlement().getConveyanceExpenses().remove(rowIndex);
+			disableConveyanceTableRowDelete(size-1);
+			this.calculateTotalConveyance();
+		//	this.calculateTotalConveyanceINR();
+		}
+	}
+	
+	public void removeOthersTableRow() {
+		int size = travelRequest.getTravelSettlement().getOthersExpenses().size();
+		if(size>1){
+			travelRequest.getTravelSettlement().getOthersExpenses().remove(rowIndex);
+			disableOthersTableRowDelete(size-1);
+			this.calculateTotalOthers();
+		//	this.calculateTotalOthersINR();
+		}
+	}
+	
+	public void removeEntertainmentTableRow() {
+		int size = travelRequest.getTravelSettlement().getEntertainmentExpenses().size();
+		if(size>1){
+			travelRequest.getTravelSettlement().getEntertainmentExpenses().remove(rowIndex);
+			disableEntertainmentTableRowDelete(size-1);
+			this.calculateTotalEntertainment();
+			//this.calculateTotalEntertainmentINR();
+		}
+	}
+	
+	public void removeMiscellaneousTableRow() {
+		int size = travelRequest.getTravelSettlement().getMiscellaneousExpenses().size();
+		if(size>1){
+			travelRequest.getTravelSettlement().getMiscellaneousExpenses().remove(rowIndex);
+			disableMiscellaneousTableRowDelete(size-1);
+			this.calculateTotalMiscellaneous();
+		//	this.calculateTotalMiscellaneousINR();
+		}
+	}
+	
+	
+	//disabling delete row option
+	
+	
+	public void disableAdvanceTableRowDelete(int size) {
+		if(size!=1)
+		travelRequest.getTravelSettlement().setDisableAdvanceTableRowDelete(false);
+		else
+			travelRequest.getTravelSettlement().setDisableAdvanceTableRowDelete(true);
+	}
+	
+	public void disableLodgingTableRowDelete(int size) {
+		if(size!=1)
+		travelRequest.getTravelSettlement().setDisableLodgingTableRowDelete(false);
+		else
+			travelRequest.getTravelSettlement().setDisableLodgingTableRowDelete(true);
+	}
+	
+	public void disableConveyanceTableRowDelete(int size) {
+		if(size!=1)
+		travelRequest.getTravelSettlement().setDisableConveyanceTableRowDelete(false);
+		else
+			travelRequest.getTravelSettlement().setDisableConveyanceTableRowDelete(true);
+	}
+	
+	public void disableOthersTableRowDelete(int size) {
+		if(size!=1)
+		travelRequest.getTravelSettlement().setDisableOthersTableRowDelete(false);
+		else
+			travelRequest.getTravelSettlement().setDisableOthersTableRowDelete(true);
+	}
+	
+	public void disableEntertainmentTableRowDelete(int size) {
+		if(size!=1)
+		travelRequest.getTravelSettlement().setDisableEntertainmentTableRowDelete(false);
+		else
+			travelRequest.getTravelSettlement().setDisableEntertainmentTableRowDelete(true);
+	}
+	
+	public void disableMiscellaneousTableRowDelete(int size) {
+		if(size!=1)
+		travelRequest.getTravelSettlement().setDisableMiscellaneousTableRowDelete(false);
+		else
+			travelRequest.getTravelSettlement().setDisableMiscellaneousTableRowDelete(true);
+	}
+	
+	//calculating sum
+	
+	
+	public void calculateTotalAdvance()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getAdvanceAmounts().iterator();
+		while (itr.hasNext()) {
+			AdvanceAmount advance = (AdvanceAmount) itr.next();
+			advance.setINRAmount(advance.getForexAmount()*advance.getConversionRate());
+			System.out.println("INR amount "+advance.getINRAmount());
+			amount += advance.getForexAmount();
+			amountINR +=advance.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalAdvanceAmount(amount);
+		travelRequest.getTravelSettlement().setAdvanceTaken(amountINR);
+		System.out.println("advance taken"+travelRequest.getTravelSettlement().getAdvanceTaken());
+		calculateTotalFinalDifferenceINR();
+	}
+	
+/*	public void calculateTotalAdvanceINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getAdvanceAmounts().iterator();
+		while (itr.hasNext()) {
+			AdvanceAmount advance = (AdvanceAmount) itr.next();
+			amount += advance.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalAdvanceAmountINR(amount);
+		calculateTotalFinalDifferenceINR();
+	}*/
+	
+	public void calculateTotalLodging()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getLodgingExpenses().iterator();
+		while (itr.hasNext()) {
+			Expense lodging = (Expense) itr.next();
+			lodging.setINRAmount(lodging.getForexAmount()*lodging.getConversionRate());
+			amount += lodging.getForexAmount();
+			amountINR += lodging.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalLodgingExpenses(amount);
+		travelRequest.getTravelSettlement().setTotalLodgingExpensesINR(amountINR);
+		calculateTotalOfAllExpenses();
+		calculateTotalOfAllExpensesINR();
+	}
+	
+	/*public void calculateTotalLodgingINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getLodgingExpenses().iterator();
+		while (itr.hasNext()) {
+			LodgingExpense lodging = (LodgingExpense) itr.next();
+			amount += lodging.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalLodgingExpensesINR(amount);
+		calculateTotalOfAllExpensesINR();
+	}*/
+	
+	public void calculateTotalTravelling()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getTravelingDailyAllowanceExpenses().iterator();
+		while (itr.hasNext()) {
+			Expense travelling = (Expense) itr.next();
+			travelling.setINRAmount(travelling.getForexAmount()*travelling.getConversionRate());
+			amount += travelling.getForexAmount();
+			amountINR += travelling.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalTravellingExpenses(amount);
+		travelRequest.getTravelSettlement().setTotalTravellingExpensesINR(amountINR);
+		calculateTotalOfAllExpenses();
+		calculateTotalOfAllExpensesINR();
+	}
+	
+	/*public void calculateTotalTravellingINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getTravelingDailyAllowanceExpenses().iterator();
+		while (itr.hasNext()) {
+			TravelingDailyAllowanceExpense travelling = (TravelingDailyAllowanceExpense) itr.next();
+			amount += travelling.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalTravellingExpensesINR(amount);
+		calculateTotalOfAllExpensesINR();
+	}*/
+	
+	public void calculateTotalConveyance()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getConveyanceExpenses().iterator();
+		while (itr.hasNext()) {
+			Expense conveyance = (Expense) itr.next();
+			conveyance.setINRAmount(conveyance.getForexAmount()*conveyance.getConversionRate());
+			amount += conveyance.getForexAmount();
+			amountINR += conveyance.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalConveyanceExpenses(amount);
+		travelRequest.getTravelSettlement().setTotalConveyanceExpensesINR(amountINR);
+		calculateTotalOfAllExpenses();
+		calculateTotalOfAllExpensesINR();
+	}
+	
+	/*public void calculateTotalConveyanceINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getConveyanceExpenses().iterator();
+		while (itr.hasNext()) {
+			ConveyanceExpense conveyance = (ConveyanceExpense) itr.next();
+			amount += conveyance.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalConveyanceExpensesINR(amount);
+		calculateTotalOfAllExpensesINR();
+	}*/
+	
+	public void calculateTotalOthers()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getOthersExpenses().iterator();
+		while (itr.hasNext()) {
+			Expense others = (Expense) itr.next();
+			others.setINRAmount(others.getForexAmount()*others.getConversionRate());
+			amount += others.getForexAmount();
+			amountINR += others.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalOtherExpenses(amount);
+		travelRequest.getTravelSettlement().setTotalOtherExpensesINR(amountINR);
+		calculateTotalOfAllExpenses();
+		calculateTotalOfAllExpensesINR();
+	}
+	
+	/*public void calculateTotalOthersINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getOthersExpenses().iterator();
+		while (itr.hasNext()) {
+			OthersExpense others = (OthersExpense) itr.next();
+			amount += others.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalOtherExpensesINR(amount);
+		calculateTotalOfAllExpensesINR();
+	}*/
+	
+	public void calculateTotalEntertainment()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getEntertainmentExpenses().iterator();
+		while (itr.hasNext()) {
+			Expense entertainment = (Expense) itr.next();
+			entertainment.setINRAmount(entertainment.getForexAmount()*entertainment.getConversionRate());
+			amount += entertainment.getForexAmount();
+			amountINR += entertainment.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalEntertainmentExpenses(amount);
+		travelRequest.getTravelSettlement().setTotalEntertainmentExpensesINR(amountINR);
+		calculateTotalOfAllExpenses();
+		calculateTotalOfAllExpensesINR();
+	}
+	
+	/*public void calculateTotalEntertainmentINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getEntertainmentExpenses().iterator();
+		while (itr.hasNext()) {
+			EntertainmentExpense entertainment = (EntertainmentExpense) itr.next();
+			amount += entertainment.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalEntertainmentExpensesINR(amount);
+		calculateTotalOfAllExpensesINR();
+	}*/
+	
+	public void calculateTotalMiscellaneous()
+	{
+		float amount=0;
+		float amountINR=0;
+		Iterator itr = travelRequest.getTravelSettlement().getMiscellaneousExpenses().iterator();
+		while (itr.hasNext()) {
+			Expense miscellaneous = (Expense) itr.next();
+			miscellaneous.setINRAmount(miscellaneous.getForexAmount()*miscellaneous.getConversionRate());
+			amount += miscellaneous.getForexAmount();
+			amountINR += miscellaneous.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalMiscellaneousExpenses(amount);
+		travelRequest.getTravelSettlement().setTotalMiscellaneousExpensesINR(amountINR);
+		calculateTotalOfAllExpenses();
+		calculateTotalOfAllExpensesINR();
+	}
+	
+	/*public void calculateTotalMiscellaneousINR()
+	{
+		float amount=0;
+		Iterator itr = travelRequest.getTravelSettlement().getMiscellaneousExpenses().iterator();
+		while (itr.hasNext()) {
+			MiscellaneousExpense miscellaneous = (MiscellaneousExpense) itr.next();
+			amount += miscellaneous.getINRAmount();
+		}
+		travelRequest.getTravelSettlement().setTotalMiscellaneousExpensesINR(amount);
+		calculateTotalOfAllExpensesINR();
+	}*/
+	
+	private void calculateTotalOfAllExpenses()
+	{
+		float totalAmount=travelRequest.getTravelSettlement().getTotalLodgingExpenses()+travelRequest.getTravelSettlement().getTotalTravellingExpenses()+travelRequest.getTravelSettlement().getTotalConveyanceExpenses()+travelRequest.getTravelSettlement().getTotalOtherExpenses()+travelRequest.getTravelSettlement().getTotalEntertainmentExpenses()+travelRequest.getTravelSettlement().getTotalMiscellaneousExpenses();
+		travelRequest.getTravelSettlement().setTotalOfAllExpenses(totalAmount);
+		calculateTotalFinalDifferenceINR();
+	}
+	
+	private void calculateTotalOfAllExpensesINR()
+	{
+		float totalAmount=travelRequest.getTravelSettlement().getTotalLodgingExpensesINR()+travelRequest.getTravelSettlement().getTotalTravellingExpensesINR()+travelRequest.getTravelSettlement().getTotalConveyanceExpensesINR()+travelRequest.getTravelSettlement().getTotalOtherExpensesINR()+travelRequest.getTravelSettlement().getTotalEntertainmentExpensesINR()+travelRequest.getTravelSettlement().getTotalMiscellaneousExpensesINR();
+		travelRequest.getTravelSettlement().setTotlaExpenses(totalAmount);
+		calculateTotalFinalDifferenceINR();
+	}
+	
+	private void calculateTotalFinalDifferenceINR()
+	{
+		float difference = travelRequest.getTravelSettlement().getAdvanceTaken()-travelRequest.getTravelSettlement().getTotlaExpenses();
+		travelRequest.getTravelSettlement().setDifference(difference);
+	}
+	
+	public void printForTravelSettlement()
+	{
+		
+		System.out.println("inside travel settlement print "
+				+ travelRequest.getTravelSettlement().getAdvanceTaken()
+				+ " "
+				+ travelRequest.getTravelSettlement().getDifference()
+				+ " "
+				+ travelRequest.getTravelSettlement().getNoOfDays()
+				+ " "
+				+ travelRequest.getTravelSettlement().getTotlaExpenses()
+				+ " "
+				+ travelRequest.getTravelSettlement().getId()
+				+ " "
+				+ travelRequest.getTravelSettlement().getArrivalDate());
+		
+	}
+	
+	public void computeDaysForSettlement()
+	{
+		//long localStartDate=travelRequest.getTravelDetails().getStartDate().getTime();
+		//long localEndDate=travelRequest.getTravelDetails().getEndDate().getTime();
+		//float diff=(localEndDate-localStartDate)/(1000*24*60*60);
+		Calendar cal1=Calendar.getInstance();
+	    cal1.setTime(travelRequest.getTravelSettlement().getDepartureDate());
+	    Calendar cal2=Calendar.getInstance();
+	    cal2.setTime(travelRequest.getTravelSettlement().getArrivalDate());
+	    int diff = (int)getDaysBetween (cal1,cal2);	    
+		travelRequest.getTravelSettlement().setNoOfDays(diff);		
+	}
+	
+	public String sendReqIdForSettlement() {
+		this.findEmployeeId();
+		travelRequest = travelRequestDao.findById(travelParamBean.getReqId());
+		if(travelRequest!=null)
+		{
+			new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
+			travelRequest.getTravelSettlement().setArrivalDate(travelRequest.getTravelDetails().getEndDate());
+			travelRequest.getTravelSettlement().setDepartureDate(travelRequest.getTravelDetails().getStartDate());
+			this.computeDaysForSettlement();
+			return "travelSettlement";
+		}
+		else
+		{
+			//we should have redirected to an Access Denied
+			return "invalid";
+		}
+		
+	}
+	
 }
+
+	
+
