@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import com.sony.travelRequest.model.TravelRequest;
+//import com.sony.travelRequest.model.TravelRequest;
 import com.sony.travelRequest.model.TravelSettlement;
 
 /**
@@ -105,7 +105,7 @@ public class TravelSettlementDao extends HibernateDaoSupport {
 					.getCurrentSession().get("TravelSettlement", id);*/
 			
 			TravelSettlement instance = (TravelSettlement) getHibernateTemplate().load(
-					TravelRequest.class, id);
+					TravelSettlement.class, id);
 			if (instance == null) {
 				log.debug("get successful, no instance found");
 			} else {

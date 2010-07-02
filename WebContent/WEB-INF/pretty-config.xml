@@ -2,18 +2,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
 	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
-
-
-	<url-mapping id="viewItem">
-		<pattern>
-			/summary/#{travelParamBean.role}/#{travelParamBean.reqId}
-			</pattern>
-		<view-id>/faces/privat/travelFormSum.jsf</view-id>
-		<action phaseId="RENDER_RESPONSE"> #{travelProcessor.displaySummary} </action>
-	</url-mapping>
 	<url-mapping id="empEditForm">
 		<pattern>
-			/employee/editForm/#{travelParamBean.reqId}
+			/summary/#{travelParamBean.role}/#{travelParamBean.reqId}
 			</pattern>
 		<view-id>/faces/privat/travelFormSum.jsf</view-id>
 		<action phaseId="RESTORE_VIEW"> #{travelProcessor.sendReqId} </action>
@@ -47,7 +38,7 @@
 	</url-mapping>
 	<url-mapping id="finTravelSettlement">
 		<pattern>
-			/finance/settlement/#{travelParamBean.reqId}
+			/employee/settlement/#{travelParamBean.reqId}
 			</pattern>
 		<view-id>/faces/privat/travelSettlement.jsf</view-id>
 		<action phaseId="RESTORE_VIEW"> #{travelProcessor.sendReqIdForSettlement} </action>

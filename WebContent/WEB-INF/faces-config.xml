@@ -124,16 +124,25 @@
 			<from-outcome>editForm</from-outcome>
 			<to-view-id>/faces/privat/travelForm.jsp</to-view-id>
 		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<from-view-id>/faces/privat/financeDashboard.jsp</from-view-id>
 		<navigation-case>
-			<from-outcome>travelSummary</from-outcome>
-			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
+			<from-outcome>accessDenied</from-outcome>
+			<to-view-id>/accessDenied.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>notExist</from-outcome>
+			<to-view-id>/faces/privat/notExist.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/faces/privat/employeeDashboard.jsp</from-view-id>
+		<navigation-case>
+			<from-outcome>editForm</from-outcome>
+			<to-view-id>/faces/privat/travelForm.jsp</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>accessDenied</from-outcome>
+			<to-view-id>/accessDenied.jsp</to-view-id>
+		</navigation-case>
 		<navigation-case>
 			<from-outcome>travelSummary</from-outcome>
 			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
@@ -141,13 +150,6 @@
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/faces/privat/employeeSearch.jsp</from-view-id>
-		<navigation-case>
-			<from-outcome>travelSummary</from-outcome>
-			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<from-view-id>/faces/privat/search.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>travelSummary</from-outcome>
 			<to-view-id>/faces/privat/travelFormSum.jsp</to-view-id>

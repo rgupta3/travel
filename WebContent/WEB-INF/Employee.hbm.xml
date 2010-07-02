@@ -5,7 +5,7 @@
 <hibernate-mapping>
 	<class name="com.sony.travelRequest.model.Employee" table="EMPLOYEE" lazy="false">
 		<id name="id" type="int" column="ID">
-			<generator class="increment" />
+			<generator class="assigned" />
 		</id>
 		<property name="name" type="java.lang.String">
 			<column name="NAME" />

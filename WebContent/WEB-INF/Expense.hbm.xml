@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 29, 2010 7:46:15 PM by Hibernate Tools 3.2.5.Beta -->
+<hibernate-mapping>
+    <class name="com.sony.travelRequest.model.Expense" table="EXPENSE" abstract="true">
+    <id name="id" type="int" column="EXPENSE_ID">
+            <generator class="native"/>
+        </id>
+    <discriminator column="EXPENSE_TYPE" type="java.lang.String" force="true"/>
+    
+        <property name="date" type="java.util.Date">
+            <column name="DATE" />
+        </property>
+        <property name="details" type="java.lang.String">
+            <column name="DETAILS" />
+        </property>
+        <property name="currency" type="java.lang.String">
+            <column name="CURRENCY" />
+        </property>
+        <property name="billNo" type="java.lang.String">
+            <column name="BILLNO" />
+        </property>
+        <property name="forexAmount" type="float">
+            <column name="FOREXAMOUNT" />
+        </property>
+        <property name="conversionRate" type="float">
+            <column name="CONVERSIONRATE" />
+        </property>
+        <property name="INRAmount" type="float">
+            <column name="INRAMOUNT" />
+        </property>
+        <property name="remarks" type="java.lang.String">
+            <column name="REMARKS" />
+        </property>
+        
+        <subclass name="com.sony.travelRequest.model.LodgingExpense" discriminator-value="LODGING">
+        </subclass>
+        
+        <subclass name="com.sony.travelRequest.model.ConveyanceExpense" discriminator-value="CONVEYANCE">
+        </subclass>
+        
+        <subclass name="com.sony.travelRequest.model.OthersExpense" discriminator-value="OTHERS">
+        </subclass>
+        
+        <subclass name="com.sony.travelRequest.model.EntertainmentExpense" discriminator-value="ENTERTAINMENT">
+        </subclass>
+        
+        <subclass name="com.sony.travelRequest.model.MiscellaneousExpense" discriminator-value="MISCELLANEOUS">
+        </subclass>
+        
+        <subclass name="com.sony.travelRequest.model.TravelingDailyAllowanceExpense" discriminator-value="TRAVELINGDAILYALLOWANCE">
+        </subclass>        
+         
+    </class>
+</hibernate-mapping>

@@ -9,18 +9,20 @@ public class TravelSettlement {
 	private int id;
 	private Date departureDate;
 	private Date arrivalDate;
-	private int noOfDays;
+	private float noOfDays;
 	private Date submissionDate;
 	private float advanceTaken;
 	private float totlaExpenses;
 	private float difference;
+	private String reportingManager;
+	private String projectCode;
 	private List<AdvanceAmount> advanceAmounts = new ArrayList<AdvanceAmount>();
-	private List<Expense> lodgingExpenses = new ArrayList<Expense>();
-	private List<Expense> travelingDailyAllowanceExpenses = new ArrayList<Expense>();
-	private List<Expense> conveyanceExpenses = new ArrayList<Expense>();
-	private List<Expense> othersExpenses = new ArrayList<Expense>();
-	private List<Expense> entertainmentExpenses = new ArrayList<Expense>();
-	private List<Expense> miscellaneousExpenses = new ArrayList<Expense>();
+	private List<LodgingExpense> lodgingExpenses = new ArrayList<LodgingExpense>();
+	private List<TravelingDailyAllowanceExpense> travelingDailyAllowanceExpense = new ArrayList<TravelingDailyAllowanceExpense>();
+	private List<ConveyanceExpense> conveyanceExpenses = new ArrayList<ConveyanceExpense>();
+	private List<OthersExpense> othersExpenses = new ArrayList<OthersExpense>();
+	private List<EntertainmentExpense> entertainmentExpenses = new ArrayList<EntertainmentExpense>();
+	private List<MiscellaneousExpense> miscellaneousExpenses = new ArrayList<MiscellaneousExpense>();
 	private float totalAdvanceAmount;
 //	private float totalAdvanceAmountINR;
 	private float totalLodgingExpenses;
@@ -46,16 +48,16 @@ public class TravelSettlement {
 	private boolean disableMiscellaneousTableRowDelete;
 	
 	
-	TravelSettlement(){
+	/*TravelSettlement(){
 		
 		
 		advanceAmounts.add(new AdvanceAmount());
-		lodgingExpenses.add(new Expense());
-		travelingDailyAllowanceExpenses.add(new Expense());
-		conveyanceExpenses.add(new Expense());
-		othersExpenses.add(new Expense());
-		entertainmentExpenses.add(new Expense());
-		miscellaneousExpenses.add(new Expense());
+		lodgingExpenses.add(new LodgingExpense());
+		travelingDailyAllowanceExpenses.add(new TravelingDailyAllowanceExpense());
+		conveyanceExpenses.add(new ConveyanceExpense());
+		othersExpenses.add(new OthersExpense());
+		entertainmentExpenses.add(new EntertainmentExpense());
+		miscellaneousExpenses.add(new MiscellaneousExpense());
 		
 		disableAdvanceTableRowDelete=true;
 		disableLodgingTableRowDelete=true;
@@ -63,7 +65,7 @@ public class TravelSettlement {
 		disableOthersTableRowDelete=true;
 		disableEntertainmentTableRowDelete=true;
 		disableMiscellaneousTableRowDelete=true;
-	}
+	}*/
 	
 	
 	public int getId() {
@@ -84,10 +86,10 @@ public class TravelSettlement {
 	public void setArrivalDate(Date arrivalDate) {
 		this.arrivalDate = arrivalDate;
 	}
-	public int getNoOfDays() {
+	public float getNoOfDays() {
 		return noOfDays;
 	}
-	public void setNoOfDays(int noOfDays) {
+	public void setNoOfDays(float noOfDays) {
 		this.noOfDays = noOfDays;
 	}
 	public Date getSubmissionDate() {
@@ -114,49 +116,62 @@ public class TravelSettlement {
 	public void setDifference(float difference) {
 		this.difference = difference;
 	}
+	public String getReportingManager() {
+		return reportingManager;
+	}
+	public void setReportingManager(String reportingManager) {
+		this.reportingManager = reportingManager;
+	}
+	public String getProjectCode() {
+		return projectCode;
+	}
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
+	
 	public List<AdvanceAmount> getAdvanceAmounts() {
 		return advanceAmounts;
 	}
 	public void setAdvanceAmounts(List<AdvanceAmount> advanceAmounts) {
 		this.advanceAmounts = advanceAmounts;
 	}
-	public List<Expense> getLodgingExpenses() {
+	public List<LodgingExpense> getLodgingExpenses() {
 		return lodgingExpenses;
 	}
-	public void setLodgingExpenses(List<Expense> lodgingExpenses) {
+	public void setLodgingExpenses(List<LodgingExpense> lodgingExpenses) {
 		this.lodgingExpenses = lodgingExpenses;
 	}
-	public List<Expense> getTravelingDailyAllowanceExpenses() {
-		return travelingDailyAllowanceExpenses;
+	public List<TravelingDailyAllowanceExpense> getTravelingDailyAllowanceExpense() {
+		return travelingDailyAllowanceExpense;
 	}
-	public void setTravelingDailyAllowanceExpenses(
-			List<Expense> travelingDailyAllowanceExpenses) {
-		this.travelingDailyAllowanceExpenses = travelingDailyAllowanceExpenses;
+	public void setTravelingDailyAllowanceExpense(
+			List<TravelingDailyAllowanceExpense> travelingDailyAllowanceExpense) {
+		this.travelingDailyAllowanceExpense = travelingDailyAllowanceExpense;
 	}
-	public List<Expense> getConveyanceExpenses() {
+	public List<ConveyanceExpense> getConveyanceExpenses() {
 		return conveyanceExpenses;
 	}
-	public void setConveyanceExpenses(List<Expense> conveyanceExpenses) {
+	public void setConveyanceExpenses(List<ConveyanceExpense> conveyanceExpenses) {
 		this.conveyanceExpenses = conveyanceExpenses;
 	}
-	public List<Expense> getOthersExpenses() {
+	public List<OthersExpense> getOthersExpenses() {
 		return othersExpenses;
 	}
-	public void setOthersExpenses(List<Expense> othersExpenses) {
+	public void setOthersExpenses(List<OthersExpense> othersExpenses) {
 		this.othersExpenses = othersExpenses;
 	}
-	public List<Expense> getEntertainmentExpenses() {
+	public List<EntertainmentExpense> getEntertainmentExpenses() {
 		return entertainmentExpenses;
 	}
 	public void setEntertainmentExpenses(
-			List<Expense> entertainmentExpenses) {
+			List<EntertainmentExpense> entertainmentExpenses) {
 		this.entertainmentExpenses = entertainmentExpenses;
 	}
-	public List<Expense> getMiscellaneousExpenses() {
+	public List<MiscellaneousExpense> getMiscellaneousExpenses() {
 		return miscellaneousExpenses;
 	}
 	public void setMiscellaneousExpenses(
-			List<Expense> miscellaneousExpenses) {
+			List<MiscellaneousExpense> miscellaneousExpenses) {
 		this.miscellaneousExpenses = miscellaneousExpenses;
 	}
 	
@@ -280,23 +295,23 @@ public class TravelSettlement {
 	}
 	
 	public void addLodgingTableRow() {
-		lodgingExpenses.add(new Expense());
+		lodgingExpenses.add(new LodgingExpense());
 	}
 	
 	public void addConveyanceTableRow() {
-		conveyanceExpenses.add(new Expense());
+		conveyanceExpenses.add(new ConveyanceExpense());
 	}
 	
 	public void addOthersTableRow() {
-		othersExpenses.add(new Expense());
+		othersExpenses.add(new OthersExpense());
 	}
 	
 	public void addEntertainmentTableRow() {
-		entertainmentExpenses.add(new Expense());
+		entertainmentExpenses.add(new EntertainmentExpense());
 	}
 	
 	public void addMiscellaneousTableRow() {
-		miscellaneousExpenses.add(new Expense());
+		miscellaneousExpenses.add(new MiscellaneousExpense());
 	}
 	
 	

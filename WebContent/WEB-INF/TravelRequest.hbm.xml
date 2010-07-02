@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Apr 14, 2010 7:36:48 PM by Hibernate Tools 3.3.0.GA -->
+	<!-- Generated Apr 14, 2010 7:36:48 PM by Hibernate Tools 3.3.0.GA -->
 <hibernate-mapping>
-	<class name="com.sony.travelRequest.model.TravelRequest" table="TRAVELREQUEST" lazy="false">
+	<class name="com.sony.travelRequest.model.TravelRequest" table="TRAVELREQUEST"
+		lazy="false">
 		<id name="id" type="int" column="ID">
 			<generator class="increment" />
 		</id>
@@ -28,14 +29,15 @@
 		<property name="country" type="java.lang.String">
 			<column name="COUNTRY" />
 		</property>
-		<list name="hotelResv" inverse="false" table="HOTELRESV"
-			lazy="false">
+		<property name="conversionRate" type="float">
+			<column name="CONVERSIONRATE" />
+		</property>
+		<list name="hotelResv" inverse="false" table="HOTELRESV" lazy="false">
 			<key>
 				<column name="ID" />
 			</key>
 			<list-index column="idx"></list-index>
-			<composite-element
-				class="com.sony.travelRequest.model.HotelResv">
+			<composite-element class="com.sony.travelRequest.model.HotelResv">
 				<property name="place" type="java.lang.String">
 					<column name="PLACE" />
 				</property>
@@ -53,14 +55,12 @@
 				</property>
 			</composite-element>
 		</list>
-		<list name="travelResv" inverse="false" table="TRAVELRESV"
-			lazy="false">
+		<list name="travelResv" inverse="false" table="TRAVELRESV" lazy="false">
 			<key>
 				<column name="ID" />
 			</key>
 			<list-index column="idx"></list-index>
-			<composite-element
-				class="com.sony.travelRequest.model.TravelResv">
+			<composite-element class="com.sony.travelRequest.model.TravelResv">
 				<property name="travelDate" type="java.util.Date">
 					<column name="TRAVELDATE" />
 				</property>
@@ -87,14 +87,13 @@
 				</property>
 			</composite-element>
 		</list>
-		<list name="requestApprovals" inverse="false"
-			table="REQUESTAPPROVALS" lazy="false">
+		<list name="requestApprovals" inverse="false" table="REQUESTAPPROVALS"
+			lazy="false">
 			<key>
 				<column name="ID" />
 			</key>
 			<list-index column="idx"></list-index>
-			<composite-element
-				class="com.sony.travelRequest.model.RequestApproval">
+			<composite-element class="com.sony.travelRequest.model.RequestApproval">
 				<property name="approvorType" type="java.lang.String">
 					<column name="APPROVORTYPE" />
 				</property>
@@ -109,10 +108,9 @@
 				</property>
 			</composite-element>
 		</list>
-		<component name="travelDetails"
-			class="com.sony.travelRequest.model.TravelDetails" lazy="false" >
-			<property name="authorisedEmpMailId"
-				type="java.lang.String">
+		<component name="travelDetails" class="com.sony.travelRequest.model.TravelDetails"
+			lazy="false">
+			<property name="authorisedEmpMailId" type="java.lang.String">
 				<column name="AUTHORISEDEMPMAILID" />
 			</property>
 			<property name="purpose" type="java.lang.String">
@@ -124,12 +122,11 @@
 			<property name="endDate" type="java.util.Date">
 				<column name="ENDDATE" />
 			</property>
-			<property name="recommndedEmpMailId"
-				type="java.lang.String">
+			<property name="recommndedEmpMailId" type="java.lang.String">
 				<column name="RECOMMNDEDEMPMAILID" />
 			</property>
-			<component name="allowance"
-				class="com.sony.travelRequest.model.Allowance" lazy="false" >
+			<component name="allowance" class="com.sony.travelRequest.model.Allowance"
+				lazy="false">
 				<property name="airportTransport" type="float">
 					<column name="AIRPORTTRANSPORT" />
 				</property>
@@ -153,11 +150,11 @@
 				</property>
 			</component>
 		</component>
-		<many-to-one name="employee"
-			class="com.sony.travelRequest.model.Employee" column="EMPLOYEE_ID"
-			not-null="true" cascade="all" unique="true" lazy="false"/>
-		<one-to-one name="travelSettlement"
-			class="com.sony.travelRequest.model.TravelSettlement" 
-			 cascade="all"  lazy="false"/>
-	</class>
+		<many-to-one name="employee" class="com.sony.travelRequest.model.Employee"
+			column="EMPLOYEE_ID" not-null="true" cascade="all" unique="true"
+			lazy="false" />
+		<!--<many-to-one name="TravelSettlement" class="com.sony.travelRequest.model.TravelSettlement"
+			column="SETTLEMENT_ID" not-null="true" cascade="all" unique="true"
+			lazy="false" />
+	--></class>
 </hibernate-mapping>

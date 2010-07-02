@@ -32,6 +32,7 @@ public class TravelRequest {
 	private String payment;
 	private Date date;
 	private boolean control;
+	private float conversionRate;
 	private List<HotelResv> hotelResv = new ArrayList<HotelResv>();
 	private List<TravelResv> travelResv = new ArrayList<TravelResv>();
 	private List<RequestApproval> requestApprovals = new ArrayList<RequestApproval>();
@@ -46,7 +47,7 @@ public class TravelRequest {
 	private boolean disable5;
 	private boolean disableCountry;
 	private boolean renderForm;
-	private TravelSettlement travelSettlement = new TravelSettlement();
+	/*private TravelSettlement travelSettlement = new TravelSettlement();
 	
 	
 	public TravelSettlement getTravelSettlement() {
@@ -54,12 +55,20 @@ public class TravelRequest {
 	}
 	public void setTravelSettlement(TravelSettlement travelSettlement) {
 		this.travelSettlement = travelSettlement;
-	}
+	}*/
 /*
 	public void setOptions(String[] options) {
 		this.options = options;
 	}
 	*/
+	public float getConversionRate()
+	{
+		return this.conversionRate;
+	}
+	public void setConversionRate(float conversionRate)
+	{
+		this.conversionRate = conversionRate;
+	}
 	public void enableAllFields()
 	{
 		disable1=false;
@@ -288,7 +297,8 @@ public class TravelRequest {
 
 	public String getEmailBodyForEmployeeInitiation() {
 		StringBuilder emailBody = new StringBuilder("You initiated a new travel request. Please click this url to see the summary and status of your request:");
-		emailBody.append("http://localhost:8080/travel/summary/employee/").append(getId());
+		emailBody.append(" http://localhost:8080/travel/summary/employee/").append(getId());
+		System.out.println("\nMessage\n\n"+emailBody.toString());
 		return emailBody.toString();
 	}
 	
@@ -309,6 +319,7 @@ public class TravelRequest {
 		emailBody.append(approvedStr)/*.append( with the following comments:")*/;
 		emailBody.append(". Please click this url to see the details of your request:");
 		emailBody.append(" http://localhost:8080/travel/summary/employee/").append(getId());
+		System.out.println("\nMessage\n\n"+emailBody.toString());
 		return emailBody.toString();
 	}
 	
@@ -326,7 +337,8 @@ public class TravelRequest {
 
 	public String getEmailBodyForTravelDesk() {
 		StringBuilder emailBody = new StringBuilder("A new Travel request is awaiting for your approval. Please click this url to work on this request:");
-		emailBody.append("http://localhost:8080/travel/summary/finance/").append(getId());
+		emailBody.append(" http://localhost:8080/travel/summary/finance/").append(getId());
+		System.out.println("\nMessage\n\n"+emailBody.toString());
 		return emailBody.toString();
 	}
 	

@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Expense {
 
+	private int id;
 	private Date date;
 	private String details;
 	private String currency;
@@ -13,6 +14,12 @@ public class Expense {
 	private float INRAmount;
 	private String remarks;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public Date getDate() {
 		return date;
 	}

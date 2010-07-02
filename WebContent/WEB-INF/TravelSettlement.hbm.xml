@@ -1,37 +1,40 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-	<!-- Generated Jun 28, 2010 3:11:37 PM by Hibernate Tools 3.2.5.Beta -->
+<!-- Generated Jun 29, 2010 7:46:15 PM by Hibernate Tools 3.2.5.Beta -->
 <hibernate-mapping>
-	<class name="com.sony.travelRequest.model.TravelSettlement"
-		 table="TRAVELSETTLEMENT">
-		<id name="id" type="int">
-			<column name="ID" />
-			<generator class="assigned" />
-		</id>
-		<property name="departureDate" type="java.util.Date">
-			<column name="DEPARTUREDATE" />
-		</property>
-		<property name="arrivalDate" type="java.util.Date">
-			<column name="ARRIVALDATE" />
-		</property>
-		<property name="noOfDays" type="int">
-			<column name="NOOFDAYS" />
-		</property>
-		<property name="submissionDate" type="java.util.Date">
-			<column name="SUBMISSIONDATE" />
-		</property>
-		<property name="advanceTaken" type="float">
-			<column name="ADVANCETAKEN" />
-		</property>
-		<property name="totlaExpenses" type="float">
-			<column name="TOTLAEXPENSES" />
-		</property>
-		<property name="difference" type="float">
-			<column name="DIFFERENCE" />
-		</property>
-		
-		<list name="advanceAmounts" inverse="false" table="ADVANCEAMOUNT"
+    <class name="com.sony.travelRequest.model.TravelSettlement" table="TRAVELSETTLEMENT">
+        <id name="id" type="int" column="ID">
+            <generator class="native"/>
+        </id>
+        <property name="departureDate" type="java.util.Date">
+            <column name="DEPARTUREDATE" />
+        </property>
+        <property name="arrivalDate" type="java.util.Date">
+            <column name="ARRIVALDATE" />
+        </property>
+        <property name="noOfDays" type="int">
+            <column name="NOOFDAYS" />
+        </property>
+        <property name="submissionDate" type="java.util.Date">
+            <column name="SUBMISSIONDATE" />
+        </property>
+        <property name="advanceTaken" type="float">
+            <column name="ADVANCETAKEN" />
+        </property>
+        <property name="totlaExpenses" type="float">
+            <column name="TOTLAEXPENSES" />
+        </property>
+        <property name="difference" type="float">
+            <column name="DIFFERENCE" />
+        </property>
+         <property name="reportingManager" type="java.lang.String">
+            <column name="REPORTINGMANAGER" />
+        </property>
+        <property name="projectCode" type="java.lang.String">
+            <column name="PROJECTCODE" />
+        </property>
+        <list name="advanceAmounts" inverse="false" table="ADVANCEAMOUNT" cascade="all"
 			lazy="false">
 			<key>
 				<column name="ID" />
@@ -64,208 +67,35 @@
 				</property>
 			</composite-element>
 		</list>
-		<list name="lodgingExpenses" inverse="false" table="EXPENSE"
-			lazy="false">
-			<key>
-				<column name="ID" />
-			</key>
-			<list-index column="idx"></list-index>
-			<composite-element class="com.sony.travelRequest.model.Expense">
-				<property name="date" type="java.util.Date">
-            <column name="DATE" />
-        </property>
-        <property name="details" type="java.lang.String">
-            <column name="DETAILS" />
-        </property>
-        <property name="currency" type="java.lang.String">
-            <column name="CURRENCY" />
-        </property>
-        <property name="billNo" type="java.lang.String">
-            <column name="BILLNO" />
-        </property>
-        <property name="forexAmount" type="float">
-            <column name="FOREXAMOUNT" />
-        </property>
-        <property name="conversionRate" type="float">
-            <column name="CONVERSIONRATE" />
-        </property>
-        <property name="INRAmount" type="float">
-            <column name="INRAMOUNT" />
-        </property>
-        <property name="remarks" type="java.lang.String">
-            <column name="REMARKS" />
-        </property>
-			</composite-element>
-		</list>
-		<list name="travelingDailyAllowanceExpenses" inverse="false"
-			table="EXPENSE" lazy="false">
-			<key>
-				<column name="ID" />
-			</key>
-			<list-index column="idx"></list-index>
-			<composite-element class="com.sony.travelRequest.model.Expense">
-				<property name="date" type="java.util.Date">
-					<column name="DATE" />
-				</property>
-				<property name="details" type="java.lang.String">
-					<column name="DETAILS" />
-				</property>
-				<property name="currency" type="java.lang.String">
-					<column name="CURRENCY" />
-				</property>
-				<property name="billNo" type="java.lang.String">
-					<column name="BILLNO" />
-				</property>
-				<property name="forexAmount" type="float">
-					<column name="FOREXAMOUNT" />
-				</property>
-				<property name="conversionRate" type="float">
-					<column name="CONVERSIONRATE" />
-				</property>
-				<property name="INRAmount" type="float">
-					<column name="INRAMOUNT" />
-				</property>
-				<property name="remarks" type="java.lang.String">
-					<column name="REMARKS" />
-				</property>
-			</composite-element>
-		</list>
-
-
-		<list name="conveyanceExpenses" inverse="false" table="EXPENSE"
-			lazy="false">
-			<key>
-				<column name="ID" />
-			</key>
-			<list-index column="idx"></list-index>
-			<composite-element class="com.sony.travelRequest.model.Expense">
-				<property name="date" type="java.util.Date">
-					<column name="DATE" />
-				</property>
-				<property name="details" type="java.lang.String">
-					<column name="DETAILS" />
-				</property>
-				<property name="currency" type="java.lang.String">
-					<column name="CURRENCY" />
-				</property>
-				<property name="billNo" type="java.lang.String">
-					<column name="BILLNO" />
-				</property>
-				<property name="forexAmount" type="float">
-					<column name="FOREXAMOUNT" />
-				</property>
-				<property name="conversionRate" type="float">
-					<column name="CONVERSIONRATE" />
-				</property>
-				<property name="INRAmount" type="float">
-					<column name="INRAMOUNT" />
-				</property>
-				<property name="remarks" type="java.lang.String">
-					<column name="REMARKS" />
-				</property>
-			</composite-element>
-		</list>
-
-		
-		<list name="othersExpenses" inverse="false" table="EXPENSE" lazy="false">
-			<key>
-				<column name="ID" />
-			</key>
-			<list-index column="idx"></list-index>
-			<composite-element class="com.sony.travelRequest.model.Expense">
-				<property name="date" type="java.util.Date">
-					<column name="DATE" />
-				</property>
-				<property name="details" type="java.lang.String">
-					<column name="DETAILS" />
-				</property>
-				<property name="currency" type="java.lang.String">
-					<column name="CURRENCY" />
-				</property>
-				<property name="billNo" type="java.lang.String">
-					<column name="BILLNO" />
-				</property>
-				<property name="forexAmount" type="float">
-					<column name="FOREXAMOUNT" />
-				</property>
-				<property name="conversionRate" type="float">
-					<column name="CONVERSIONRATE" />
-				</property>
-				<property name="INRAmount" type="float">
-					<column name="INRAMOUNT" />
-				</property>
-				<property name="remarks" type="java.lang.String">
-					<column name="REMARKS" />
-				</property>
-			</composite-element>
-		</list>
-
-		<list name="entertainmentExpenses" inverse="false" table="EXPENSE"
-			lazy="false">
-			<key>
-				<column name="ID" />
-			</key>
-			<list-index column="idx"></list-index>
-			<composite-element class="com.sony.travelRequest.model.Expense">
-				<property name="date" type="java.util.Date">
-					<column name="DATE" />
-				</property>
-				<property name="details" type="java.lang.String">
-					<column name="DETAILS" />
-				</property>
-				<property name="currency" type="java.lang.String">
-					<column name="CURRENCY" />
-				</property>
-				<property name="billNo" type="java.lang.String">
-					<column name="BILLNO" />
-				</property>
-				<property name="forexAmount" type="float">
-					<column name="FOREXAMOUNT" />
-				</property>
-				<property name="conversionRate" type="float">
-					<column name="CONVERSIONRATE" />
-				</property>
-				<property name="INRAmount" type="float">
-					<column name="INRAMOUNT" />
-				</property>
-				<property name="remarks" type="java.lang.String">
-					<column name="REMARKS" />
-				</property>
-			</composite-element>
-		</list>
-
-		<list name="miscellaneousExpenses" inverse="false" table="EXPENSE"
-			lazy="false">
-			<key>
-				<column name="ID" />
-			</key>
-			<list-index column="idx"></list-index>
-			<composite-element class="com.sony.travelRequest.model.Expense">
-				<property name="date" type="java.util.Date">
-					<column name="DATE" />
-				</property>
-				<property name="details" type="java.lang.String">
-					<column name="DETAILS" />
-				</property>
-				<property name="currency" type="java.lang.String">
-					<column name="CURRENCY" />
-				</property>
-				<property name="billNo" type="java.lang.String">
-					<column name="BILLNO" />
-				</property>
-				<property name="forexAmount" type="float">
-					<column name="FOREXAMOUNT" />
-				</property>
-				<property name="conversionRate" type="float">
-					<column name="CONVERSIONRATE" />
-				</property>
-				<property name="INRAmount" type="float">
-					<column name="INRAMOUNT" />
-				</property>
-				<property name="remarks" type="java.lang.String">
-					<column name="REMARKS" />
-				</property>
-			</composite-element>
-		</list>
-	</class>
+        <list name="lodgingExpenses" lazy="false" cascade="all" table="expense_settlement">
+            <key column="SETTLEMENT_ID"/>
+            <list-index column="expenseIdx"/>
+            <many-to-many class="com.sony.travelRequest.model.LodgingExpense" where="EXPENSE_TYPE='LODGING'" column="EXPENSE_ID" />
+        </list>
+        <list name="conveyanceExpenses" lazy="false" cascade="all" table="expense_settlement">
+            <key column="SETTLEMENT_ID"/>
+            <list-index column="expenseIdx"/>
+            <many-to-many class="com.sony.travelRequest.model.ConveyanceExpense" where="EXPENSE_TYPE='CONVEYANCE'" column="EXPENSE_ID" />
+        </list>
+        <list name="othersExpenses" lazy="false" cascade="all" table="expense_settlement">
+            <key column="SETTLEMENT_ID"/>
+            <list-index column="expenseIdx"/>
+            <many-to-many class="com.sony.travelRequest.model.OthersExpense" where="EXPENSE_TYPE='OTHERS'" column="EXPENSE_ID" />
+        </list>
+        <list name="entertainmentExpenses" lazy="false" cascade="all" table="expense_settlement">
+            <key column="SETTLEMENT_ID"/>
+            <list-index column="expenseIdx"/>
+            <many-to-many class="com.sony.travelRequest.model.EntertainmentExpense" where="EXPENSE_TYPE='ENTERTAINMENT'" column="EXPENSE_ID" />
+        </list>
+        <list name="miscellaneousExpenses" lazy="false" cascade="all" table="expense_settlement">
+            <key column="SETTLEMENT_ID"/>
+            <list-index column="expenseIdx"/>
+            <many-to-many class="com.sony.travelRequest.model.MiscellaneousExpense" where="EXPENSE_TYPE='MISCELLANEOUS'" column="EXPENSE_ID" />
+        </list>
+        <list name="travelingDailyAllowanceExpense" lazy="false" cascade="all" table="expense_settlement">
+            <key column="SETTLEMENT_ID"/>
+            <list-index column="expenseIdx"/>
+            <many-to-many class="com.sony.travelRequest.model.TravelingDailyAllowanceExpense" where="EXPENSE_TYPE='TRAVELINGDAILYALLOWANCE'" column="EXPENSE_ID" />
+        </list>
+    </class>
 </hibernate-mapping>

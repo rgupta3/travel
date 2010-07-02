@@ -36,7 +36,7 @@ public class EmailComponent {
 					.setSubject("Travel Request: "
 							+ subject);
 			StringBuilder buf = new StringBuilder(256);
-			buf.append(body);
+			buf.append("\n"+body);
 			simpleMailMessage.setText(buf.toString());
 			try {
 				this.mailSender.send(simpleMailMessage);

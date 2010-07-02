@@ -47,7 +47,7 @@
 					<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.processAllowance}" event="onchange"
 						reRender=
-						"dailyAllowance,totalAllowance" status="waitStatus"></a4j:support>
+						"dailyAllowance,totalAllowance,totalDailyAllowance" status="waitStatus"></a4j:support>
 				</h:selectOneMenu></td>
 			</tr>
 			
@@ -67,7 +67,7 @@
 					<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields2}" event="onchange"
 						reRender=
-						"totalAllowance,dailyAllowance,date1,name,designation,unit,projectName,emailId,
+						"totalAllowance,dailyAllowance,totalDailyAllowance,date1,name,designation,unit,projectName,emailId,
 						telExt,department,mobileNumber,purpose,fromDate,toDate,chargeableType,
 						travelDataTable,paidBy,hotelDataTable,otherAllowance,otherAllowanceDetail,submit" status="waitStatus"></a4j:support>
 				</h:selectOneMenu></td>
@@ -139,6 +139,7 @@
 				</h:inputText>	<rich:message for="purpose" style="color:red; font-size:10px;" /> </td>
 				<td></td>
 				<td></td>
+			
 			</tr>
 			<tr>
 				<td style="width: 140px">Duration: From *</td>
@@ -150,7 +151,7 @@ disabled="#{travelRequest.disable2}">
 <a4j:support ajaxSingle="true"
 						action="#{travelProcessor.computeDays}" event="onchanged"
 						reRender=
-						"days,totalAllowance" status="waitStatus"></a4j:support>				
+						"days,daysOutput,totalDailyAllowance,totalAllowance" status="waitStatus"></a4j:support>				
 					</rich:calendar>
 
 </a4j:outputPanel></td>
@@ -162,7 +163,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}">
 <a4j:support ajaxSingle="true"
 						action="#{travelProcessor.computeDays}" event="onchanged"
 						reRender=
-						"days,totalAllowance" status="waitStatus"></a4j:support>						
+						"days,daysOutput,totalDailyAllowance,totalAllowance" status="waitStatus"></a4j:support>						
 					</rich:calendar>
 </a4j:outputPanel> </td>
 			</tr>
@@ -363,7 +364,12 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					<f:convertNumber type="number" />
 				</h:inputText> <h:outputText id="currency1" 
 					value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText> x 2<h:outputText value="= "/><h:outputText id="totalAirportTransport" 
+					value="#{travelRequest.travelDetails.allowance.airportTransport * 2}"> 
 					</h:outputText></td>
+					
+					
+					
 			</tr>
 			<tr>
 				<td>Days *</td>
@@ -380,8 +386,13 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					<f:convertNumber type="number" />
 				</h:inputText> <h:outputText id="currency2" 
 					value="#{travelRequest.travelDetails.allowance.currency}">
-					</h:outputText></td>
-			</tr>
+					</h:outputText> x 
+					<h:outputText id="daysOutput" value="#{travelRequest.travelDetails.allowance.days}" />
+					= <h:outputText id="totalDailyAllowance" 
+					value="#{travelRequest.travelDetails.allowance.dailyAllowance *travelRequest.travelDetails.allowance.days}"> 
+					</h:outputText>
+					</td>
+					</tr>
 			<tr>
 				<td>Conveyance *</td>
 				<td><h:inputText id="conveyance" 
@@ -391,6 +402,8 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 				</h:inputText> <h:outputText id="currency3" 
 					value="#{travelRequest.travelDetails.allowance.currency}">
 					</h:outputText></td>
+					
+					
 			</tr>
 			<tr>
 				<td>Other</td>
@@ -411,6 +424,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					value="#{travelRequest.travelDetails.allowance.otherAllowanceDetail}"
 					disabled="#{travelRequest.disable2}">(Specify)
 				</h:inputText></td>
+							
 			</tr>
 			<tr>
 				<td>Amount </td>
@@ -419,6 +433,8 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 				</h:inputText><h:outputText id="currency5" 
 					value="#{travelRequest.travelDetails.allowance.currency}">
 					</h:outputText></td>
+				
+					
 			</tr>
 			<tr>
 				<td>Recommended by </td>

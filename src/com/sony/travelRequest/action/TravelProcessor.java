@@ -27,19 +27,17 @@ import org.springframework.security.userdetails.UserDetails;
 import com.ocpsoft.pretty.util.FacesElUtils;
 import com.sony.travelRequest.dao.EmployeeDao;
 import com.sony.travelRequest.dao.TravelRequestDao;
+import com.sony.travelRequest.model.AdvanceAmount;
 import com.sony.travelRequest.model.EmailConstants;
 import com.sony.travelRequest.model.Employee;
 import com.sony.travelRequest.model.HotelResv;
+import com.sony.travelRequest.model.LodgingExpense;
 import com.sony.travelRequest.model.RequestApproval;
 import com.sony.travelRequest.model.TravelParamBean;
 import com.sony.travelRequest.model.TravelRequest;
 import com.sony.travelRequest.model.TravelResv;
+import com.sony.travelRequest.model.TravelSettlement;
 import com.sony.travelRequest.util.EmailComponent;
-
-import com.sony.travelRequest.model.AdvanceAmount;
-//import com.sony.travelRequest.model.ConveyanceExpense;
-//import com.sony.travelRequest.model.EntertainmentExpense;
-import com.sony.travelRequest.model.Expense;
 //import com.sony.travelRequest.model.LodgingExpense;
 //import com.sony.travelRequest.model.MiscellaneousExpense;
 //import com.sony.travelRequest.model.OthersExpense;
@@ -79,6 +77,7 @@ public class TravelProcessor {
 	private String currentSearchElement;
 	private String approvalComment;
 	private boolean receivedEmpDetails=false;
+	private boolean receivedReqDetailsForSett=false;
 	public boolean isFinanceDesk()
 	{
 		return this.financeDesk;
@@ -345,7 +344,7 @@ public class TravelProcessor {
 
 	public void enableFields1() {
 		localType = travelRequest.getType();
-		if(localType.equals("domestic"))
+		if(localType!=null && localType.equals("domestic"))
 		{
 			travelRequest.setDisableCountry(true);
 			travelRequest.getTravelDetails().getAllowance().setCurrency("INR");
@@ -422,7 +421,7 @@ public class TravelProcessor {
 	public void determineClass()
 	{	localType=travelRequest.getType();
 		localGrade=travelRequest.getEmployee().getGrade();
-		if(localType.equals("domestic"))
+		if(localType!=null && localType.equals("domestic"))
 		{
 				Iterator itr = travelRequest.getTravelResv().iterator();
 				while (itr.hasNext()) {
@@ -443,7 +442,7 @@ public class TravelProcessor {
 					}
 				}
 			}
-		if(localType.equals("international"))
+		if(localType!=null && localType.equals("international"))
 		{
 				Iterator itr = travelRequest.getTravelResv().iterator();
 				while (itr.hasNext()) {
@@ -542,11 +541,9 @@ public class TravelProcessor {
 			authorities = ( (UserDetails)obj ).getAuthorities();
 			for(GrantedAuthority role:authorities)
 			{
-	
 				if(role.getAuthority().equals("ROLE_SUPERVISOR"))
 				{
 					financeDesk = true;
-
 				}
 			}
 		} else {
@@ -575,8 +572,9 @@ public class TravelProcessor {
 			
 				travelRequest.setDisable1(false);
 				
-			}	
+			}
 		new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
+			travelRequest.getEmployee().setId(employeeId);
 		}
 		return "";
 	}
@@ -650,13 +648,58 @@ public class TravelProcessor {
 		travelRequest.getRequestApprovals().add(approval);
 		this.processAllowance();
 		this.calculateAmount();
-		travelRequest=travelRequestDao.merge(travelRequest);
+		
+		
+		TravelSettlement travelSettlement = new TravelSettlement();
+		travelSettlement.setAdvanceTaken(5000);
+		travelSettlement.setDifference(2000);
+		travelSettlement.setTotlaExpenses(3000);
+		travelSettlement.setNoOfDays(8);
+		
+		List<AdvanceAmount> advanceAmounts = new ArrayList<AdvanceAmount>();
+		
+		AdvanceAmount advanceAmount = new AdvanceAmount();
+		advanceAmount.setBillNo("bill");
+		advanceAmount.setConversionRate(45);
+		advanceAmount.setCurrency("curr");
+		advanceAmount.setForexAmount(55);
+		advanceAmount.setINRAmount(12);
+		advanceAmount.setRemarks("rem");
+		advanceAmount.setType("cash");
+		
+		advanceAmounts.add(advanceAmount);
+		
+		List<LodgingExpense> lodgingExpenses = new ArrayList<LodgingExpense>();
+		
+		LodgingExpense lodgingExpense = new LodgingExpense();
+		lodgingExpense.setBillNo("bill");
+		lodgingExpense.setConversionRate(45);
+		lodgingExpense.setCurrency("curr");
+		lodgingExpense.setForexAmount(55);
+		lodgingExpense.setINRAmount(12);
+		lodgingExpense.setRemarks("rem");
+		lodgingExpense.setDetails("lodge");
+		
+		lodgingExpenses.add(lodgingExpense);
+		
+		travelSettlement.setAdvanceAmounts(advanceAmounts);
+		travelSettlement.setLodgingExpenses(lodgingExpenses);
+		
+		//travelRequest.setTravelSettlement(travelSettlement);
+		
+		//travelRequest=travelRequestDao.merge(travelRequest);
+		//travelRequestDao.persist(travelRequest);
+		
+		
+		//travelRequest=travelRequestDao.merge(travelRequest);
+		
+		receivedEmpDetails=false;
 		travelRequestDao.persist(travelRequest);
 		travelRequest.setControl(true);
-		receivedEmpDetails=false;
 		
-		// set to null so that a new hibernate query is fired for the employee dashboard
-		employeeTravelRequests=null; 
+		// set to null so that a new hibernate query is fired for the employee/finance dashboard
+		employeeTravelRequests=null;
+		travelRequests=null;
 		boolean processSuccess = true;
 	
 		if (processSuccess) {
@@ -728,7 +771,7 @@ public class TravelProcessor {
 				.getEmailSubjectForEmployeeTravelDeskApproved(financeApproval
 						.getApproved()), travelRequest
 				.getEmailBodyForEmployeeTravelDeskApproved(financeApproval
-						.getApproved(), financeApproval.getComments())+this.getApprovalComment());
+						.getApproved(), financeApproval.getComments())+"\n"+this.getApprovalComment());
 	}
 
 	public void submit() {
@@ -742,41 +785,60 @@ public class TravelProcessor {
 	public String sendReqId() {
 			this.findEmployeeId();
 			travelRequest = travelRequestDao.findById(travelParamBean.getReqId());
-			if(travelRequest!=null && travelRequest.getEmployee().getId()==employeeId)
+			if(!financeDesk)
 			{
-				new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
-				if(travelRequest.getStatus().equals("rejected"))
+				System.out.println(travelRequest.getEmployee().getId()+ "\n\n\nequals\n\n"+employeeId);
+				
+				if(travelRequest!=null && travelRequest.getEmployee().getId()==employeeId)
 				{
-					travelRequest.enableAllFields();
-					this.enableFields3();
+					new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
+					if(travelRequest.getStatus().equals("rejected"))
+					{
+						travelRequest.enableAllFields();
+						this.enableFields3();
+						return "editForm";
+					}
+					else
+					{
+						travelRequest.setRenderForm(true);
+						return "travelSummary";
+					}
 				}
 				else
 				{
-					travelRequest.setRenderForm(true);
+					//we should have redirected to an Access Denied because the summary does not belong to the employee request
+					//travelRequest.setRenderForm(true);
+					return "accessDenied";
 				}
-				return "editForm";
 			}
 			else
 			{
-				//we should have redirected to an Access Denied
-				//travelRequest.setRenderForm(true);
-				return null;
+				if(travelRequest!=null)
+				{
+					new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
+					return "travelSummary";
+				}
+				else
+					return "notExist";
 			}
+		
 	}
 	public List<TravelRequest> getEmployeeTravelRequests() {
 		if(employeeTravelRequests==null)
 		{
 			employeeTravelRequests= new ArrayList<TravelRequest>();
 			employeeTravelRequests= travelRequestDao.findbyEmployeeId(employeeId);
-			System.out.println("travelRrquests is null");
 		}
+			System.out.println("travelRrquests is null");
 		return employeeTravelRequests;
 	}
 	
 	public List<TravelRequest> getTravelRequests() {
-		//the following line has to be removed once the Hibernate problem is solved
-		//if(travelRequests==null)
+		if(travelRequests==null)
+		{
+			travelRequests= new ArrayList<TravelRequest>();
 			travelRequests= travelRequestDao.findIt();
+		}
 			System.out.println("travelRrquests is null");
 		return travelRequests;
 }
@@ -816,27 +878,27 @@ public class TravelProcessor {
 		
 		travelParamBean.setReqId(travelRequests.get(rowIndex).getId());
 		travelParamBean.setRole("finance");
-		return this.displaySummary();
+		return this.sendReqId();
 	}
 	public String showTravelSummary2() {
 
 		travelParamBean.setReqId(searchResults.get(rowIndex).getId());
 		travelParamBean.setRole("finance");
-		return this.displaySummary();
+		return this.sendReqId();
 	}
 	public String showEmployeeTravelSummary() {
 		
 		travelParamBean.setReqId(employeeTravelRequests.get(rowIndex).getId());
 		travelParamBean.setRole("employee");
 		;
-		return this.displaySummary();
+		return this.sendReqId();
 	}
 	public String showEmployeeTravelSummary2() {
 		
 		travelParamBean.setReqId(employeeSearchResults.get(rowIndex).getId());
 		travelParamBean.setRole("employee");
 	
-		return this.displaySummary();
+		return this.sendReqId();
 	}
 	
 	public void addTravelResvRow() {
@@ -899,7 +961,7 @@ public class TravelProcessor {
 	/***********************************************************/
 	
 /********************---travel settlement starts from here---********************/
-	
+/*	
 	//adding rows
 	public void addAdvanceTableRow() {
 		travelRequest.getTravelSettlement().addAdvanceTableRow();
@@ -1077,7 +1139,7 @@ public class TravelProcessor {
 		}
 		travelRequest.getTravelSettlement().setTotalAdvanceAmountINR(amount);
 		calculateTotalFinalDifferenceINR();
-	}*/
+	}
 	
 	public void calculateTotalLodging()
 	{
@@ -1106,7 +1168,7 @@ public class TravelProcessor {
 		}
 		travelRequest.getTravelSettlement().setTotalLodgingExpensesINR(amount);
 		calculateTotalOfAllExpensesINR();
-	}*/
+	}
 	
 	public void calculateTotalTravelling()
 	{
@@ -1135,7 +1197,7 @@ public class TravelProcessor {
 		}
 		travelRequest.getTravelSettlement().setTotalTravellingExpensesINR(amount);
 		calculateTotalOfAllExpensesINR();
-	}*/
+	}
 	
 	public void calculateTotalConveyance()
 	{
@@ -1164,7 +1226,7 @@ public class TravelProcessor {
 		}
 		travelRequest.getTravelSettlement().setTotalConveyanceExpensesINR(amount);
 		calculateTotalOfAllExpensesINR();
-	}*/
+	}
 	
 	public void calculateTotalOthers()
 	{
@@ -1193,7 +1255,7 @@ public class TravelProcessor {
 		}
 		travelRequest.getTravelSettlement().setTotalOtherExpensesINR(amount);
 		calculateTotalOfAllExpensesINR();
-	}*/
+	}
 	
 	public void calculateTotalEntertainment()
 	{
@@ -1222,7 +1284,7 @@ public class TravelProcessor {
 		}
 		travelRequest.getTravelSettlement().setTotalEntertainmentExpensesINR(amount);
 		calculateTotalOfAllExpensesINR();
-	}*/
+	}
 	
 	public void calculateTotalMiscellaneous()
 	{
@@ -1253,7 +1315,7 @@ public class TravelProcessor {
 		calculateTotalOfAllExpensesINR();
 	}*/
 	
-	private void calculateTotalOfAllExpenses()
+	/*private void calculateTotalOfAllExpenses()
 	{
 		float totalAmount=travelRequest.getTravelSettlement().getTotalLodgingExpenses()+travelRequest.getTravelSettlement().getTotalTravellingExpenses()+travelRequest.getTravelSettlement().getTotalConveyanceExpenses()+travelRequest.getTravelSettlement().getTotalOtherExpenses()+travelRequest.getTravelSettlement().getTotalEntertainmentExpenses()+travelRequest.getTravelSettlement().getTotalMiscellaneousExpenses();
 		travelRequest.getTravelSettlement().setTotalOfAllExpenses(totalAmount);
@@ -1298,32 +1360,39 @@ public class TravelProcessor {
 		//float diff=(localEndDate-localStartDate)/(1000*24*60*60);
 		Calendar cal1=Calendar.getInstance();
 	    cal1.setTime(travelRequest.getTravelSettlement().getDepartureDate());
+	    cal1.add(Calendar.HOUR, -1);
 	    Calendar cal2=Calendar.getInstance();
 	    cal2.setTime(travelRequest.getTravelSettlement().getArrivalDate());
-	    int diff = (int)getDaysBetween (cal1,cal2);	    
+	    int diff = (int)getDaysBetween (cal1,cal2);	
+	    if(cal1.get(Calendar.HOUR_OF_DAY)>=12)
+	    	diff-=0.5;
+	    if(cal2.get(Calendar.HOUR_OF_DAY)<12)
+	    	diff-=0.5;
 		travelRequest.getTravelSettlement().setNoOfDays(diff);		
 	}
 	
 	public String sendReqIdForSettlement() {
-		this.findEmployeeId();
-		travelRequest = travelRequestDao.findById(travelParamBean.getReqId());
-		if(travelRequest!=null)
+		if(!receivedReqDetailsForSett)
 		{
-			new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
-			travelRequest.getTravelSettlement().setArrivalDate(travelRequest.getTravelDetails().getEndDate());
-			travelRequest.getTravelSettlement().setDepartureDate(travelRequest.getTravelDetails().getStartDate());
-			this.computeDaysForSettlement();
-			return "travelSettlement";
+			receivedReqDetailsForSett=true;
+			this.findEmployeeId();
+			travelRequest = travelRequestDao.findById(travelParamBean.getReqId());
+			if(travelRequest!=null)
+			{
+				new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
+				travelRequest.getTravelSettlement().setArrivalDate(travelRequest.getTravelDetails().getEndDate());
+				travelRequest.getTravelSettlement().setDepartureDate(travelRequest.getTravelDetails().getStartDate());
+				this.computeDaysForSettlement();
+				return "travelSettlement";
+			}
+			else
+			{
+				//we should have redirected to an Access Denied
+				return "invalid";
+			}		
 		}
-		else
-		{
-			//we should have redirected to an Access Denied
-			return "invalid";
-		}
-		
-	}
-	
+		return null;
+	}*/
 }
-
 	
 

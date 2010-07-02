@@ -15,7 +15,9 @@
 		<intercept-url pattern="/employee/**"
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
 		<intercept-url pattern="/dashboard"
-			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />	
+			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
+		<intercept-url pattern="/travelRequest"
+			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />		
 		<intercept-url pattern="/search"
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
 			<intercept-url pattern="/logout"
