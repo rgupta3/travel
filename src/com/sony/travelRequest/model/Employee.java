@@ -38,7 +38,22 @@ public class Employee {
 	@Pattern(regex="^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Invalid Email")
 	private String emailId;
 	private String grade;
-
+	private String projectCode;
+	private String slaNumber;
+	
+	public String getProjectCode() {
+		return projectCode;
+	}
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
+	public String getSlaNumber() {
+		return slaNumber;
+	}
+	public void setSlaNumber(String slaNumber) {
+		this.slaNumber = slaNumber;
+	}
+	
 	public Employee() {
 		grade="Select";
 	}

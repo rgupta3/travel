@@ -8,9 +8,6 @@
 		<id name="id" type="int" column="ID">
 			<generator class="increment" />
 		</id>
-		<property name="status" type="java.lang.String">
-			<column name="STATUS" />
-		</property>
 		<property name="amount" type="float">
 			<column name="AMOUNT" />
 		</property>
@@ -29,9 +26,6 @@
 		<property name="country" type="java.lang.String">
 			<column name="COUNTRY" />
 		</property>
-		<property name="conversionRate" type="float">
-			<column name="CONVERSIONRATE" />
-		</property>
 		<list name="hotelResv" inverse="false" table="HOTELRESV" lazy="false">
 			<key>
 				<column name="ID" />
@@ -44,14 +38,20 @@
 				<property name="name" type="java.lang.String">
 					<column name="NAME" />
 				</property>
-				<property name="checkIn" type="java.lang.String">
+				<property name="checkIn" type="java.util.Date">
 					<column name="CHECKIN" />
 				</property>
-				<property name="checkOut" type="java.lang.String">
+				<property name="checkOut" type="java.util.Date">
 					<column name="CHECKOUT" />
+				</property>
+				<property name="amountPerDay" type="float">
+					<column name="AMOUNTPERDAY" />
 				</property>
 				<property name="amount" type="float">
 					<column name="AMOUNT" />
+				</property>
+				<property name="amountINR" type="float">
+					<column name="AMOUNTINR" />
 				</property>
 			</composite-element>
 		</list>
@@ -94,17 +94,18 @@
 			</key>
 			<list-index column="idx"></list-index>
 			<composite-element class="com.sony.travelRequest.model.RequestApproval">
+				
 				<property name="approvorType" type="java.lang.String">
 					<column name="APPROVORTYPE" />
-				</property>
-				<property name="approved" type="boolean">
-					<column name="approved" />
 				</property>
 				<property name="comments" type="java.lang.String">
 					<column name="COMMENTS" />
 				</property>
-				<property name="processed" type="boolean">
-					<column name="PROCESSED" />
+				<property name="status" type="java.lang.String">
+					<column name="STATUS" />
+				</property> 
+				<property name="timestamp" type="java.util.Date">
+					<column name="TIMESTAMP" />
 				</property>
 			</composite-element>
 		</list>
@@ -153,8 +154,8 @@
 		<many-to-one name="employee" class="com.sony.travelRequest.model.Employee"
 			column="EMPLOYEE_ID" not-null="true" cascade="all" unique="true"
 			lazy="false" />
-		<!--<many-to-one name="TravelSettlement" class="com.sony.travelRequest.model.TravelSettlement"
+		<many-to-one name="TravelSettlement" class="com.sony.travelRequest.model.TravelSettlement"
 			column="SETTLEMENT_ID" not-null="true" cascade="all" unique="true"
 			lazy="false" />
-	--></class>
+	</class>
 </hibernate-mapping>

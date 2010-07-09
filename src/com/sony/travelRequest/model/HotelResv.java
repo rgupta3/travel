@@ -11,14 +11,18 @@
 
 package com.sony.travelRequest.model;
 
+import java.util.Date;
+
 
 public class HotelResv {
 	
 	private String place;
 	private String name;
-	private String checkIn;
-	private String checkOut;
+	private Date checkIn;
+	private Date checkOut;
+	private float amountPerDay;
 	private float amount;
+	private float amountINR;
 	
 	public String getPlace() {
 		return place;
@@ -32,16 +36,16 @@ public class HotelResv {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getCheckIn() {
+	public Date getCheckIn() {
 		return checkIn;
 	}
-	public void setCheckIn(String checkIn) {
+	public void setCheckIn(Date checkIn) {
 		this.checkIn = checkIn;
 	}
-	public String getCheckOut() {
+	public Date getCheckOut() {
 		return checkOut;
 	}
-	public void setCheckOut(String checkOut) {
+	public void setCheckOut(Date checkOut) {
 		this.checkOut = checkOut;
 	}
 	public float getAmount() {
@@ -49,6 +53,18 @@ public class HotelResv {
 	}
 	public void setAmount(float amount) {
 		this.amount = amount;
+	}
+	public float getAmountINR() {
+		return amountINR;
+	}
+	public void setAmountINR(float amountINR) {
+		this.amountINR = amountINR;
+	}
+	public float getAmountPerDay() {
+		return amountPerDay;
+	}
+	public void setAmountPerDay(float amountPerDay) {
+		this.amountPerDay = amountPerDay;
 	}
 
 }

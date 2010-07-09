@@ -13,7 +13,7 @@
         <property name="arrivalDate" type="java.util.Date">
             <column name="ARRIVALDATE" />
         </property>
-        <property name="noOfDays" type="int">
+        <property name="noOfDays" type="float">
             <column name="NOOFDAYS" />
         </property>
         <property name="submissionDate" type="java.util.Date">
@@ -30,9 +30,6 @@
         </property>
          <property name="reportingManager" type="java.lang.String">
             <column name="REPORTINGMANAGER" />
-        </property>
-        <property name="projectCode" type="java.lang.String">
-            <column name="PROJECTCODE" />
         </property>
         <list name="advanceAmounts" inverse="false" table="ADVANCEAMOUNT" cascade="all"
 			lazy="false">

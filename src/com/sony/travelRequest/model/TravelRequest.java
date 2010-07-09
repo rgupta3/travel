@@ -18,11 +18,11 @@ import java.util.List;
 import org.hibernate.validator.NotEmpty;
 
 import org.hibernate.validator.NotNull;
-
-public class TravelRequest {
+import com.sony.travelRequest.util.*;
+public class TravelRequest implements RequestStatus{
 	
-	private int id;
 	private String status;
+	private int id;
 	@NotNull
 	private float amount;
 	@NotEmpty
@@ -32,7 +32,8 @@ public class TravelRequest {
 	private String payment;
 	private Date date;
 	private boolean control;
-	private float conversionRate;
+	private float conversionRateDollar;
+	private float conversionRateINR;
 	private List<HotelResv> hotelResv = new ArrayList<HotelResv>();
 	private List<TravelResv> travelResv = new ArrayList<TravelResv>();
 	private List<RequestApproval> requestApprovals = new ArrayList<RequestApproval>();
@@ -47,27 +48,41 @@ public class TravelRequest {
 	private boolean disable5;
 	private boolean disableCountry;
 	private boolean renderForm;
-	/*private TravelSettlement travelSettlement = new TravelSettlement();
-	
-	
+	private TravelSettlement travelSettlement = new TravelSettlement();
 	public TravelSettlement getTravelSettlement() {
 		return travelSettlement;
 	}
 	public void setTravelSettlement(TravelSettlement travelSettlement) {
 		this.travelSettlement = travelSettlement;
-	}*/
+	}
 /*
 	public void setOptions(String[] options) {
 		this.options = options;
 	}
 	*/
-	public float getConversionRate()
+	public String getStatus()
 	{
-		return this.conversionRate;
+		return this.status;
 	}
-	public void setConversionRate(float conversionRate)
+	public void setStatus(String status)
 	{
-		this.conversionRate = conversionRate;
+		this.status = status;
+	}
+	public float getConversionRateDollar()
+	{
+		return this.conversionRateDollar;
+	}
+	public void setConversionRateDollar(float conversionRateDollar)
+	{
+		this.conversionRateDollar = conversionRateDollar;
+	}
+	public float getConversionRateINR()
+	{
+		return this.conversionRateINR;
+	}
+	public void setConversionRateINR(float conversionRateINR)
+	{
+		this.conversionRateINR = conversionRateINR;
 	}
 	public void enableAllFields()
 	{
@@ -135,6 +150,7 @@ public class TravelRequest {
 		this.date = Calendar.getInstance().getTime();
 		hotelResv.add(new HotelResv());
 		travelResv.add(new TravelResv());
+		travelResv.add(new TravelResv());
 		chargeableType="chargeable";
 		payment="client";
 		disable1=true;
@@ -153,14 +169,6 @@ public class TravelRequest {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 	public float getAmount() {
@@ -307,11 +315,11 @@ public class TravelRequest {
 		return emailHeader.toString();
 	}
 
-	public String getEmailBodyForEmployeeTravelDeskApproved(boolean approved, String comments) {
+	public String getEmailBodyForEmployeeTravelDeskApproved(String approved, String comments) {
 		String approvedStr = null;
-		if(approved) {
+		if(approved==REQUEST_APPROVED_BY_FINANCE) {
 			approvedStr = "approved";
-		}else { 
+		}else if(approved==REQUEST_REJECTED_BY_FINANCE){ 
 			approvedStr = "rejected";
 		}
 
@@ -323,11 +331,11 @@ public class TravelRequest {
 		return emailBody.toString();
 	}
 	
-	public String getEmailSubjectForEmployeeTravelDeskApproved(boolean approved) {
+	public String getEmailSubjectForEmployeeTravelDeskApproved(String approved) {
 		String approvedStr = null;
-		if(approved) {
+		if(approved.equals(REQUEST_APPROVED_BY_FINANCE)) {
 			approvedStr = "approved";
-		}else { 
+		}else if(approved.equals(REQUEST_REJECTED_BY_FINANCE)){ 
 			approvedStr = "rejected";
 		}
 

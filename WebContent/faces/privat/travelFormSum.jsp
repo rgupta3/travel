@@ -24,6 +24,11 @@
 	<h2>Travel Summary</h2>
 	
 	<h:form id="travelForm"> <h:messages />
+	<label><b>Travel Request ID :
+	<h:outputText id="travelReqId" 
+					value="#{travelRequest.id}" >
+					
+				</h:outputText></b><br></br></label>
 	<label>Status :<b>
 	<h:outputText id="status" 
 					value="#{travelRequest.status}" >
@@ -34,8 +39,8 @@
 			action="#{travelProcessor.sendReqId}" />
 			</h:panelGroup>
 		<label>Initiator Name  <h:outputText id="initiator" value="xyz"/>
-		</label><br><br>Type of travel * <h:outputText id="type" value="#{travelRequest.type}"/>
-		<br><br>Country * <h:outputText id="country" value="#{travelRequest.country}"></h:outputText><br>Grade *    <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>
+		</label><br><br>Type of travel  <h:outputText id="type" value="#{travelRequest.type}"/>
+		<br><br>Country  <h:outputText id="country" value="#{travelRequest.country}"></h:outputText><br>Grade     <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>
 		<table style="width: 883px; height: 122px">
 			<tr>
 				<td></td>
@@ -64,7 +69,7 @@
 				<td style="width: 346px"><h:outputText id="unit" 
 					value="#{travelRequest.employee.unit}" >
 				</h:outputText> </td>
-				<td style="width: 122px">Project Name *</td>
+				<td style="width: 122px">Project Name </td>
 				<td style="width: 170px"><h:outputText id="projectName" 
 					value="#{travelRequest.employee.projectName}" >
 				</h:outputText> </td>
@@ -75,9 +80,10 @@
 					value="#{travelRequest.employee.emailId}" >
 					
 				</h:outputText></td>
-				<td style="width: 136px">Tel.Ext.No </td>
-				<td style="width: 161px"><h:outputText id="telExt"
-					value="#{travelRequest.employee.telephoneExt}" /></td>
+					<td style="width: 122px">Project Code</td>
+				<td style="width: 170px"><h:outputText id="projectCode" 
+					value="#{travelRequest.employee.projectCode}" >
+				</h:outputText> </td>
 			</tr>
 			<tr>
 				<td>Department </td>
@@ -85,16 +91,18 @@
 					value="#{travelRequest.employee.department}" >
 					
 				</h:outputText></td>
-				<td style="width: 136px">Mobile Number *</td>
-				<td style="width: 161px"><h:outputText id="mobileNumber"
-					value="#{travelRequest.employee.mobileNumber}" /></td>
+				<td style="width: 136px">Tel.Ext.No </td>
+				<td style="width: 161px"><h:outputText id="telExt"
+					value="#{travelRequest.employee.telephoneExt}" /></td>
 			</tr>
 			<tr>				
 				<td style="width: 169px">Purpose of travel </td>
 				<td><h:outputText id="purpose" 
 					value="#{travelRequest.travelDetails.purpose}" >
 				</h:outputText> </td>
-				<td></td><td></td>
+				<td style="width: 136px">Mobile Number </td>
+				<td style="width: 161px"><h:outputText id="mobileNumber"
+					value="#{travelRequest.employee.mobileNumber}" /></td>
 			</tr>
 			<tr>
 				<td style="width: 140px">Duration: From </td>
@@ -119,10 +127,39 @@
 				<td style="width: 247px"><h:outputText id="chargeableType"
 					value="#{travelRequest.chargeableType}">
 
-				</h:outputText></td>
-				<td></td>
+				</h:outputText></td></tr><tr>
+				<td><h:outputText rendered="#{travelRequest.chargeableType=='chargeable'}" value="SLA Number:" />
+				</td><td> <h:outputText rendered="#{travelRequest.chargeableType=='chargeable'}" value="#{travelRequest.employee.slaNumber}">
+				</h:outputText> </td>
 			</tr>
-
+<tr>	<td><h:outputText rendered="#{loginBean.role=='finance'}"
+					value="Conversion Rate (Local To Dollar)" /></td>
+<td>
+<h:inputText rendered="#{loginBean.role=='finance'}" id="conversionRateDollar" value="#{travelRequest.conversionRateDollar}" >
+<a4j:support ajaxSingle="true"
+action="#{travelProcessor.computeHotelINR}"
+	event="onkeyup"
+			reRender=
+			"hAmountINR,totalAirportTransportDollar,conveyanceDollar,otherAllowanceDollar,totalDailyAllowanceDollar,totalAllowanceDollar,
+			totalAirportTransportINR,conveyanceINR,otherAllowanceINR,totalDailyAllowanceINR,totalAllowanceINR" status="waitStatus"></a4j:support>
+				<f:convertNumber type="number" />
+				</h:inputText>	
+				
+				</td></tr>
+				<tr>	<td><h:outputText rendered="#{loginBean.role=='finance'}"
+					value="Conversion Rate (Dollar to INR)" /></td>
+<td>
+<h:inputText rendered="#{loginBean.role=='finance'}" id="conversionRateINR" value="#{travelRequest.conversionRateINR}" >
+<a4j:support ajaxSingle="true"
+action="#{travelProcessor.computeHotelINR}"
+		event="onkeyup"
+			reRender=
+			"hAmountINR,totalAirportTransportDollar,conveyanceDollar,otherAllowanceDollar,totalDailyAllowanceDollar,totalAllowanceDollar,
+			totalAirportTransportINR,conveyanceINR,otherAllowanceINR,totalDailyAllowanceINR,totalAllowanceINR" status="waitStatus"></a4j:support>
+				<f:convertNumber type="number" />
+				</h:inputText>	
+				
+				</td></tr>
 		</table>
 		<br>
 		<rich:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
@@ -209,6 +246,13 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
+					<h:outputText value="Hotel name" />
+				</f:facet>
+				<h:outputText id="hName" value="#{hotelResvItem.name}">
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
 					<h:outputText value="In" />
 				</f:facet>
 				<h:outputText id="in" value="#{hotelResvItem.checkIn}">
@@ -223,20 +267,26 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Hotel name" />
+					<h:outputText value="Per Day Amount" />
 				</f:facet>
-				<h:outputText id="hName" value="#{hotelResvItem.name}">
+				<h:outputText id="hAmountPerDay" value="#{hotelResvItem.amountPerDay}">
 				</h:outputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Amount" />
+					<h:outputText value="Total Amount" />
 				</f:facet>
 				<h:outputText id="hAmount" value="#{hotelResvItem.amount}">
 					<f:convertNumber type="number" />
 				</h:outputText>
 			</h:column>
-			
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Total Amount INR" />
+				</f:facet>
+				<h:outputText id="hAmountINR" value="#{hotelResvItem.amountINR}">
+				</h:outputText>
+			</h:column>
 		</rich:dataTable>
 		<br>
 		<rich:dataTable id="approvalDataTable" value="#{travelRequest.requestApprovals}"
@@ -255,9 +305,9 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Approved" />
+					<h:outputText value="Status" />
 				</f:facet>
-				<h:outputText id="travelapproved" value="#{requestApprovalItem.approved}">
+				<h:outputText id="travelstatus" value="#{requestApprovalItem.status}">
 				</h:outputText>
 			</h:column>
 			<h:column>
@@ -270,23 +320,28 @@
 		</rich:dataTable>
 	
 		<table>
-		<tr>	<td>Conversion Rate</td>
-<td>
-<h:inputText id="conversionRate" value="#{travelRequest.conversionRate}" >
-<a4j:support ajaxSingle="true"
-			event="onchanged"
-			reRender=
-			"totalAirportTransportINR,conveyanceINR,otherAllowanceINR,totalDailyAllowanceINR,totalAllowanceINR" status="waitStatus"></a4j:support>
-				</h:inputText>	</td></tr>
+		<tr>
+		<td></td>
+		<td></td>
+		<td><h:outputText value="Dollars" rendered="#{loginBean.role=='finance'}"></h:outputText></td>
+		<td><h:outputText value="INR" rendered="#{loginBean.role=='finance'}"></h:outputText></td></tr>
 		<tr>
 				<td>Airport Transport (Advance Amt.)</td>
-				<td><h:outputText id="perDayAllowance"
+				<td><h:outputText id="perDayAllowance" 
 					value="#{travelRequest.travelDetails.allowance.airportTransport}">
 					<f:convertNumber type="number" />
 				</h:outputText>
 				<h:outputText id="currency1" value="#{travelRequest.travelDetails.allowance.currency}"> 
-					</h:outputText><h:outputText id="totalAirportTransportINR"
-					value="#{travelRequest.conversionRate}"> 
+					</h:outputText>
+					x 2<h:outputText value="= "/><h:outputText id="totalAirportTransport" value="#{travelRequest.travelDetails.allowance.airportTransport * 2}"> 
+					</h:outputText>
+					</td>
+					
+					<td><h:outputText rendered="#{loginBean.role=='finance'}" id="totalAirportTransportDollar"
+					value="#{2*travelRequest.travelDetails.allowance.airportTransport * travelRequest.conversionRateDollar}"> 
+					</h:outputText></td>
+					<td><h:outputText rendered="#{loginBean.role=='finance'}" id="totalAirportTransportINR"
+					value="#{2*travelRequest.travelDetails.allowance.airportTransport * travelRequest.conversionRateDollar *travelRequest.conversionRateINR}"> 
 					</h:outputText></td>
 			</tr>
 			<tr>
@@ -302,12 +357,22 @@
 					value="#{travelRequest.travelDetails.allowance.dailyAllowance}">
 					<f:convertNumber type="number" />
 				</h:outputText>
-				<h:outputText id="currency2" value="#{travelRequest.travelDetails.allowance.currency}"> 
-					</h:outputText><h:outputText id="totalDailyAllowanceINR"
-					value="#{travelRequest.travelDetails.allowance.dailyAllowance 
-					*travelRequest.travelDetails.allowance.days
-					*travelRequest.conversionRate}"> 
-					</h:outputText></td>
+				<h:outputText id="currency2" value="#{travelRequest.travelDetails.allowance.currency}" /> 
+				x 
+					<h:outputText id="daysOutput" value="#{travelRequest.travelDetails.allowance.days}" />
+					= <h:outputText id="totalDailyAllowance" 
+					value="#{travelRequest.travelDetails.allowance.dailyAllowance *travelRequest.travelDetails.allowance.days}"> 
+					</h:outputText>
+					</td><td>
+	
+					<h:outputText id="totalDailyAllowanceDollar" rendered="#{loginBean.role=='finance'}"
+					value="#{travelRequest.travelDetails.allowance.dailyAllowance * travelRequest.travelDetails.allowance.days * travelRequest.conversionRateDollar}" /> 
+					</td>
+					<td>
+	
+					<h:outputText id="totalDailyAllowanceINR" rendered="#{loginBean.role=='finance'}"
+					value="#{travelRequest.travelDetails.allowance.dailyAllowance * travelRequest.travelDetails.allowance.days * travelRequest.conversionRateDollar * travelRequest.conversionRateINR}" /> 
+					</td>
 			</tr>
 			<tr>
 				<td>Conveyance*</td>
@@ -316,9 +381,15 @@
 					<f:convertNumber type="number" />
 				</h:outputText>
 				<h:outputText id="currency3" value="#{travelRequest.travelDetails.allowance.currency}"> 
-					</h:outputText><h:outputText id="conveyanceINR" value="#{travelRequest.travelDetails.allowance.conveyance *travelRequest.conversionRate}" >
+					</h:outputText></td><td><h:outputText rendered="#{loginBean.role=='finance'}" 
+					 id="conveyanceDollar" value="#{travelRequest.travelDetails.allowance.conveyance *travelRequest.conversionRateDollar}" >
 					
 				</h:outputText> </td>
+			<td><h:outputText rendered="#{loginBean.role=='finance'}" 
+					 id="conveyanceINR" value="#{travelRequest.travelDetails.allowance.conveyance *travelRequest.conversionRateDollar *travelRequest.conversionRateINR}" >
+					
+				</h:outputText> </td>	
+		
 			</tr>
 			
 			<tr>
@@ -327,7 +398,10 @@
 					<f:convertNumber type="number" />
 				</h:outputText>
 				<h:outputText id="currency5" value="#{travelRequest.travelDetails.allowance.currency}"> 
-					</h:outputText><h:outputText id="otherAllowanceINR" value="#{travelRequest.travelDetails.allowance.otherAllowance *travelRequest.conversionRate}" >
+					</h:outputText></td><td><h:outputText rendered="#{loginBean.role=='finance'}" id="otherAllowanceDollar" value="#{travelRequest.travelDetails.allowance.otherAllowance *travelRequest.conversionRateDollar}" >
+					
+				</h:outputText> </td>
+				<td><h:outputText rendered="#{loginBean.role=='finance'}" id="otherAllowanceINR" value="#{travelRequest.travelDetails.allowance.otherAllowance *travelRequest.conversionRateDollar*travelRequest.conversionRateINR}" >
 					
 				</h:outputText> </td>
 			</tr>
@@ -338,7 +412,10 @@
 				</h:outputText>
 				<h:outputText id="currency4" value="#{travelRequest.travelDetails.allowance.currency}"> 
 					</h:outputText>
-					<h:outputText id="totalAllowanceINR" value="#{travelRequest.amount *travelRequest.conversionRate}" >
+				</td><td>	<h:outputText rendered="#{loginBean.role=='finance'}" id="totalAllowanceDollar" value="#{travelRequest.amount *travelRequest.conversionRateDollar}" >
+					
+				</h:outputText> </td>
+				<td>	<h:outputText rendered="#{loginBean.role=='finance'}" id="totalAllowanceINR" value="#{travelRequest.amount *travelRequest.conversionRateDollar*travelRequest.conversionRateINR}" >
 					
 				</h:outputText> </td>
 			</tr>

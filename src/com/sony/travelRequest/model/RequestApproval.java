@@ -10,36 +10,38 @@
 //
 
 package com.sony.travelRequest.model;
+import java.util.Date;
+
+import com.sony.travelRequest.util.*;
 
 public class RequestApproval {
 
-	private Boolean approved;
+	private String status;
 	private String comments;
-	private Boolean processed;
 	private String approvorType;
+	private Date timestamp;
 
-	public Boolean getApproved() {
-		return approved;
+	public Date getTimestamp()
+	{
+		return this.timestamp;
 	}
-
-	public void setApproved(Boolean approved) {
-		this.approved = approved;
+	public void setTimestamp(Date timestamp)
+	{
+		this.timestamp = timestamp;
 	}
-
+	public String getStatus() {
+		return this.status;
+	}
+	public void setStatus(String status){
+		this.status = status;
+	}
+	
 	public String getComments() {
 		return comments;
 	}
 
 	public void setComments(String comments) {
 		this.comments = comments;
-	}
-
-	public Boolean getProcessed() {
-		return processed;
-	}
-
-	public void setProcessed(Boolean processed) {
-		this.processed = processed;
 	}
 
 	public String getApprovorType() {

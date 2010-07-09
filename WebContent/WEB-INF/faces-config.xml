@@ -158,12 +158,12 @@
 <navigation-rule>
 		<from-view-id>/faces/privat/travelSettlement.jsp</from-view-id>
 		<navigation-case>
-			<from-outcome>invalid</from-outcome>
-			<to-view-id>/faces/privat/notExist.jsp</to-view-id>
+			<from-outcome>travelSettlementSummary</from-outcome>
+			<to-view-id>/faces/privat/travelSettlementSum.jsp</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>/travelSummary</from-outcome>
-			<to-view-id>/faces/privat/travelForm.jsp</to-view-id>
+			<from-outcome>accessDenied</from-outcome>
+			<to-view-id>/accessDenied.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 </faces-config>

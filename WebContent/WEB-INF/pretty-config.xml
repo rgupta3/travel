@@ -38,7 +38,7 @@
 	</url-mapping>
 	<url-mapping id="finTravelSettlement">
 		<pattern>
-			/employee/settlement/#{travelParamBean.reqId}
+			/travelSettlement/#{travelParamBean.reqId}
 			</pattern>
 		<view-id>/faces/privat/travelSettlement.jsf</view-id>
 		<action phaseId="RESTORE_VIEW"> #{travelProcessor.sendReqIdForSettlement} </action>

@@ -13,6 +13,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import com.sony.travelRequest.model.TravelRequest;
+import com.sony.travelRequest.util.RequestStatus;
 
 /**
  * Home object for domain model class TravelRequest.
@@ -20,7 +21,7 @@ import com.sony.travelRequest.model.TravelRequest;
  * @see com.sony.travelRequest.model.TravelRequest
  * @author Hibernate Tools
  */
-public class TravelRequestDao extends HibernateDaoSupport {
+public class TravelRequestDao extends HibernateDaoSupport implements RequestStatus{
 
 	public TravelRequestDao() {
 		super();
@@ -137,7 +138,8 @@ public class TravelRequestDao extends HibernateDaoSupport {
 					new HibernateCallback() {
 						public Object doInHibernate(Session session) {
 							Criteria criteria = session.createCriteria(
-									TravelRequest.class).add( Restrictions.like("status", "pending") ).addOrder(
+									TravelRequest.class);
+							criteria.addOrder(
 									Order.asc("date"));
 							return criteria.list();
 						}

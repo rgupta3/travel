@@ -1,10 +1,11 @@
 package com.sony.travelRequest.model;
 
 import java.util.ArrayList;
+import com.sony.travelRequest.util.RequestStatus;
 import java.util.Date;
 import java.util.List;
 
-public class TravelSettlement {
+public class TravelSettlement implements RequestStatus{
 
 	private int id;
 	private Date departureDate;
@@ -46,14 +47,22 @@ public class TravelSettlement {
 	private boolean disableOthersTableRowDelete;
 	private boolean disableEntertainmentTableRowDelete;
 	private boolean disableMiscellaneousTableRowDelete;
+	private String status;
+	public void setStatus(String status)
+	{
+		this.status = status;
+	}
+	public String getStatus()
+	{
+		return this.status;
+	}
 	
-	
-	/*TravelSettlement(){
+	public TravelSettlement(){
 		
 		
 		advanceAmounts.add(new AdvanceAmount());
 		lodgingExpenses.add(new LodgingExpense());
-		travelingDailyAllowanceExpenses.add(new TravelingDailyAllowanceExpense());
+		travelingDailyAllowanceExpense.add(new TravelingDailyAllowanceExpense());
 		conveyanceExpenses.add(new ConveyanceExpense());
 		othersExpenses.add(new OthersExpense());
 		entertainmentExpenses.add(new EntertainmentExpense());
@@ -65,7 +74,7 @@ public class TravelSettlement {
 		disableOthersTableRowDelete=true;
 		disableEntertainmentTableRowDelete=true;
 		disableMiscellaneousTableRowDelete=true;
-	}*/
+	}
 	
 	
 	public int getId() {
@@ -362,5 +371,60 @@ public class TravelSettlement {
 
 	public void setDisableMiscellaneousTableRowDelete(boolean disableMiscellaneousTableRowDelete) {
 		this.disableMiscellaneousTableRowDelete = disableMiscellaneousTableRowDelete;
+	}
+
+	public String getEmailBodyForFinanceInitiation(int reqId) {
+		StringBuilder emailBody = new StringBuilder("You initiated a new travel settlement. Please click this url to see the summary: ");
+		emailBody.append(" http://localhost:8080/travel/travelSettlement/").append(reqId);
+		System.out.println("\ngetEmailBodyForFinanceInitiation\n\n"+emailBody.toString());
+		return emailBody.toString();
+	}
+	
+	public String getEmailSubjectForFinanceInitiation(int reqId) {
+		StringBuilder emailHeader = new StringBuilder("Travel Settlement initiated for Request Id:").append(reqId);
+		System.out.println("\ngetEmailSubjectForFinanceInitiation\n\n"+emailHeader.toString());
+		return emailHeader.toString();
+	}
+
+	public String getEmailBodyForEmployeeTravelDeskApproved(String approved, String comments,int id) {
+		String approvedStr = null;
+		if(approved==SETTLEMENT_APPROVED_BY_FINANCE) {
+			approvedStr = "approved";
+		}else if(approved==SETTLEMENT_REJECTED_BY_FINANCE){ 
+			approvedStr = "rejected";
+		}
+
+		StringBuilder emailBody = new StringBuilder("Your travel settlement with id:").append(id).append(" has been ");
+		emailBody.append(approvedStr)/*.append( with the following comments:")*/;
+		emailBody.append(". Please click this url to see the details of your request:");
+		emailBody.append(" http://localhost:8080/travel/travelSettlement/").append(id);
+		System.out.println("\ngetEmailBodyForEmployeeTravelDeskApproved\n\n"+emailBody.toString());
+		return emailBody.toString();
+	}
+	
+	public String getEmailSubjectForEmployeeTravelDeskApproved(String approved,int id) {
+		String approvedStr = null;
+		if(approved.equals(SETTLEMENT_APPROVED_BY_FINANCE)) {
+			approvedStr = "approved";
+		}else if(approved.equals(SETTLEMENT_REJECTED_BY_FINANCE)){ 
+			approvedStr = "rejected";
+		}
+
+		StringBuilder emailHeader = new StringBuilder("Travel Settlement").append(approvedStr).append(" for Id:"+id);
+		System.out.println("\ngetEmailSubjectForEmployeeTravelDeskApproved\n\n"+emailHeader.toString());
+		return emailHeader.toString();
+	}
+
+	public String getEmailBodyForEmployee(int reqId) {
+		StringBuilder emailBody = new StringBuilder("A new Travel settlement is awaiting. Please click this url to work on this settlment:");
+		emailBody.append(" http://localhost:8080/travel/travelSettlement/").append(reqId);
+		System.out.println("\ngetEmailBodyForEmployee\n\n"+emailBody.toString());
+		return emailBody.toString();
+	}
+	
+	public String getEmailSubjectForEmployee(int reqId) {
+		StringBuilder emailBody = new StringBuilder("Travel Settlement for Request Id ").append(reqId).append(" waiting for your action");
+		System.out.println("\ngetEmailSubjectForEmployee\n\n"+emailBody.toString());
+		return emailBody.toString();
 	}
 }

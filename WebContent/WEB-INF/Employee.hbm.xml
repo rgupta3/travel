@@ -31,6 +31,12 @@
 		<property name="emailId" type="java.lang.String">
 			<column name="EMAILID" />
 		</property>
+		<property name="projectCode" type="java.lang.String">
+			<column name="PROJECTCODE" />
+		</property>
+		<property name="slaNumber" type="java.lang.String">
+			<column name="SLA_NUMBER" />
+		</property>
 		<property name="grade" type="java.lang.String">
 			<column name="GRADE" />
 		</property>

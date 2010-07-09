@@ -37,7 +37,7 @@
 				<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields1}" event="onclick"
 						reRender=
-						"travelForm,country,grade,travelDataTable,currency1,currency2,currency3,currency4,currency5,dailyAllowance,totalAllowance" status="waitStatus"></a4j:support>
+						"projectCode,slaNumber,slaLabel,travelForm,country,grade,travelDataTable,currency1,currency2,currency3,currency4,currency5,dailyAllowance,totalAllowance" status="waitStatus"></a4j:support>
 				</h:selectOneRadio>
 				</td>
 				<td style="width: 123px">Country *</td>
@@ -67,7 +67,8 @@
 					<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields2}" event="onchange"
 						reRender=
-						"totalAllowance,dailyAllowance,totalDailyAllowance,date1,name,designation,unit,projectName,emailId,
+						"totalAllowance,dailyAllowance,totalDailyAllowance,date1,name,designation,unit,projectName,projectCode,slaLabel,
+						slaNumber,emailId,
 						telExt,department,mobileNumber,purpose,fromDate,toDate,chargeableType,
 						travelDataTable,paidBy,hotelDataTable,otherAllowance,otherAllowanceDetail,submit" status="waitStatus"></a4j:support>
 				</h:selectOneMenu></td>
@@ -111,12 +112,9 @@
 					value="#{travelRequest.employee.emailId}" disabled="#{travelRequest.disable2}">					
 				<rich:ajaxValidator event="onblur" />
 				</h:inputText>	<rich:message for="emailId" style="color:red; font-size:10px;" /></td>
-				<td >Tel.Ext.No </td>
-				<td>
-				<h:inputText id="telExt"
-					value="#{travelRequest.employee.telephoneExt}" disabled="#{travelRequest.disable2}">
-					<rich:ajaxValidator event="onblur" />
-				</h:inputText>	<rich:message for="telExt" style="color:red; font-size:10px;" /></td>
+				<td >Project Code</td><td>
+				<h:inputText id="projectCode" value="#{travelRequest.employee.projectCode}" disabled="#{travelRequest.disable2}">
+				</h:inputText></td>
 			</tr>
 			<tr>
 				<td>Department *</td>
@@ -125,11 +123,11 @@
 					<f:selectItem id="ORMC" itemLabel="ORMC" itemValue="ORMC" />
 					<f:selectItem id="SARD" itemLabel="SARD" itemValue="SARD" />
 				</h:selectOneMenu> </td>
-				<td>Mobile Number *</td>
-				<td><h:inputText id="mobileNumber"
-					value="#{travelRequest.employee.mobileNumber}" disabled="#{travelRequest.disable2}">
-					<rich:ajaxValidator event="onblur" />
-				</h:inputText><rich:message for="mobileNumber" style="color:red; font-size:10px; width:120px;" />	</td>
+				<td>Tel.Ext.No </td>
+				<td>
+				<h:inputText id="telExt" value="#{travelRequest.employee.telephoneExt}" disabled="#{travelRequest.disable2}">
+					<rich:ajaxValidator event="onblur"/>
+				</h:inputText>	<rich:message for="telExt" style="color:red; font-size:10px;"/></td>
 			</tr>
 			<tr>				
 				<td style="width: 169px">Purpose of travel *</td>
@@ -137,8 +135,11 @@
 					value="#{travelRequest.travelDetails.purpose}" disabled="#{travelRequest.disable2}">
 				<rich:ajaxValidator event="onblur" />
 				</h:inputText>	<rich:message for="purpose" style="color:red; font-size:10px;" /> </td>
-				<td></td>
-				<td></td>
+				<td>Mobile Number *</td>
+				<td><h:inputText id="mobileNumber"
+					value="#{travelRequest.employee.mobileNumber}" disabled="#{travelRequest.disable2}">
+					<rich:ajaxValidator event="onblur" />
+				</h:inputText><rich:message for="mobileNumber" style="color:red; font-size:10px; width:120px;" />	</td>
 			
 			</tr>
 			<tr>
@@ -170,21 +171,22 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}">
 		</table>
 		<table>
 			<tr>
-				<td></td>
+				
 				<td style="width: 247px"><h:selectOneRadio id="chargeableType" 
 					value="#{travelRequest.chargeableType}" disabled="#{travelRequest.disable2}"> 
-					<f:selectItem id="chargeable" itemLabel="Chargeable" 
-						itemValue="chargeable" />
-					<f:selectItem id="non-chargeable" itemLabel="Non-chargeable"
-						itemValue="non-chargeable" />
-				<rich:ajaxValidator event="onblur" />
-				</h:selectOneRadio>	<rich:message for="chargeableType" style="color:red; font-size:10px;" /></td>
-				<td></td>
+					<f:selectItem id="chargeable" itemLabel="Chargeable" itemValue="chargeable" />
+					<f:selectItem id="non-chargeable" itemLabel="Non-chargeable" itemValue="non-chargeable" />
+						<a4j:support ajaxSingle="true" event="onclick" reRender="slaNumber" status="waitStatus"></a4j:support>	
+				</h:selectOneRadio>	</td>
+				<td><h:outputText id="slaLabel" value="SLA Number:" />
+				<h:inputText id="slaNumber"
+				value="#{travelRequest.employee.slaNumber}" disabled="#{travelRequest.chargeableType=='non-chargeable'}">
+				</h:inputText> </td>
 			</tr>
 			<tr>
 				
 			</tr>
-		</table>
+		</table><br>
 		<br>		
 		<rich:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
 			var="travelResvItem" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5"
@@ -300,21 +302,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 				<h:inputText id="place" value="#{hotelResvItem.place}" disabled="#{travelRequest.disable3}">
 				</h:inputText>
 			</h:column>
-			<h:column>
-				<f:facet name="header">
-					<h:outputText value="In" />
-				</f:facet>
-				<h:inputText id="in" value="#{hotelResvItem.checkIn}" disabled="#{travelRequest.disable3}">
-				</h:inputText>
-			</h:column>
-			<h:column>
-				<f:facet name="header">
-					<h:outputText value="Out" />
-				</f:facet>
-				<h:inputText id="out" value="#{hotelResvItem.checkOut}" disabled="#{travelRequest.disable3}">
-				</h:inputText>
-			</h:column>
-			<h:column>
+				<h:column>
 				<f:facet name="header">
 					<h:outputText value="Hotel name" />
 				</f:facet>
@@ -323,7 +311,43 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Amount" /><h:outputText id="currencyAmount2" 
+					<h:outputText value="In" />
+				</f:facet>
+				<a4j:outputPanel ajaxRendered="true">
+					<rich:calendar id="in" value="#{hotelResvItem.checkIn}" datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable3}">
+					<a4j:support ajaxSingle="true"
+						event="onchanged"
+						status="waitStatus">
+						</a4j:support>
+					</rich:calendar>
+				</a4j:outputPanel>				
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Out" />
+				</f:facet>
+				<a4j:outputPanel ajaxRendered="true">
+					<rich:calendar id="out" value="#{hotelResvItem.checkOut}" datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable3}">
+						<a4j:support ajaxSingle="true"
+						event="onchanged"
+						status="waitStatus">
+						</a4j:support>
+					</rich:calendar>
+				</a4j:outputPanel>				
+			</h:column>
+						
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Per Day Amount" />
+				</f:facet>
+				<h:inputText id="hAmountPerDay" value="#{hotelResvItem.amountPerDay}" disabled="#{travelRequest.disable3}">
+				</h:inputText>
+			</h:column>
+		
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Total Amount" /><h:outputText id="currencyAmount2" 
 					value="#{travelRequest.travelDetails.allowance.currency}"> 
 					</h:outputText>
 				</f:facet>
@@ -333,6 +357,16 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 						action="#{travelProcessor.calculateAmount}" event="onchange"
 						reRender=
 						"totalAllowance" status="waitStatus"></a4j:support>
+				</h:inputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Total Amount INR" /><h:outputText
+					value="#{travelRequest.travelDetails.allowance.currency}"> 
+					</h:outputText>
+				</f:facet>
+				<h:inputText id="hAmountINR" value="#{hotelResvItem.amountINR}" disabled="#{travelRequest.disable3}">
+					<f:convertNumber type="number" />
 				</h:inputText>
 			</h:column>
 			<h:column>

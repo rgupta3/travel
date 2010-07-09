@@ -28,6 +28,9 @@
 			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
 		<intercept-url pattern="/summary/finance/**"
 			access="ROLE_SUPERVISOR" />
+		<intercept-url pattern="/travelSettlement/**"
+			access="ROLE_SUPERVISOR,ROLE_USER,ROLE_TELLER" />
+			
 		<intercept-url pattern="/**"
 			 access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		
