@@ -32,9 +32,14 @@ public class TravelRequest implements RequestStatus{
 	private String payment;
 	private Date date;
 	private boolean control;
-	private float conversionRateDollar;
-	private float conversionRateINR;
+	
+	private float conversionRateLocal=(float)1.0;
+	
+	private float conversionRateLocaltoINR=(float)1.0;
+	
+	private float conversionRateINR=(float)1.0;
 	private List<HotelResv> hotelResv = new ArrayList<HotelResv>();
+	private List<HotelResv> apartmentResv = new ArrayList<HotelResv>();
 	private List<TravelResv> travelResv = new ArrayList<TravelResv>();
 	private List<RequestApproval> requestApprovals = new ArrayList<RequestApproval>();
 	private TravelDetails travelDetails = new TravelDetails();
@@ -68,13 +73,21 @@ public class TravelRequest implements RequestStatus{
 	{
 		this.status = status;
 	}
-	public float getConversionRateDollar()
+	public float getConversionRateLocal()
 	{
-		return this.conversionRateDollar;
+		return this.conversionRateLocal;
 	}
-	public void setConversionRateDollar(float conversionRateDollar)
+	public void setConversionRateLocal(float conversionRateLocal)
 	{
-		this.conversionRateDollar = conversionRateDollar;
+		this.conversionRateLocal = conversionRateLocal;
+	}
+	public float getConversionRateLocaltoINR()
+	{
+		return this.conversionRateLocaltoINR;
+	}
+	public void setConversionRateLocaltoINR(float conversionRateLocaltoINR)
+	{
+		this.conversionRateLocaltoINR = conversionRateLocaltoINR;
 	}
 	public float getConversionRateINR()
 	{
@@ -225,6 +238,13 @@ public class TravelRequest implements RequestStatus{
 
 	public void setHotelResv(List<HotelResv> hotelResv) {
 		this.hotelResv = hotelResv;
+	}
+	public List<HotelResv> getApartmentResv() {
+		return apartmentResv;
+	}
+
+	public void setApartmentResv(List<HotelResv> apartmentResv) {
+		this.apartmentResv = apartmentResv;
 	}
 
 	public List<TravelResv> getTravelResv() {

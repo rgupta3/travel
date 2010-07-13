@@ -20,9 +20,9 @@ public class HotelResv {
 	private String name;
 	private Date checkIn;
 	private Date checkOut;
-	private float amountPerDay;
 	private float amount;
 	private float amountINR;
+	private float amountPerDay;
 	
 	public String getPlace() {
 		return place;
@@ -48,6 +48,12 @@ public class HotelResv {
 	public void setCheckOut(Date checkOut) {
 		this.checkOut = checkOut;
 	}
+	public float getAmountPerDay() {
+		return amountPerDay;
+	}
+	public void setAmountPerDay(float amountPerDay) {
+		this.amountPerDay = amountPerDay;
+	}
 	public float getAmount() {
 		return amount;
 	}
@@ -60,11 +66,4 @@ public class HotelResv {
 	public void setAmountINR(float amountINR) {
 		this.amountINR = amountINR;
 	}
-	public float getAmountPerDay() {
-		return amountPerDay;
-	}
-	public void setAmountPerDay(float amountPerDay) {
-		this.amountPerDay = amountPerDay;
-	}
-
 }

@@ -37,17 +37,19 @@
 				<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields1}" event="onclick"
 						reRender=
-						"projectCode,slaNumber,slaLabel,travelForm,country,grade,travelDataTable,currency1,currency2,currency3,currency4,currency5,dailyAllowance,totalAllowance" status="waitStatus"></a4j:support>
+						"apartmentDataTable,projectCode,slaNumber,slaLabel,travelForm,country,grade,travelDataTable,currency1,currency2,currency3,currency4,currency5,dailyAllowance" status="waitStatus"></a4j:support>
 				</h:selectOneRadio>
 				</td>
 				<td style="width: 123px">Country *</td>
-				<td style="width: 320px"><h:selectOneMenu id="country" 
+				<td style="width: 320px"><h:selectOneMenu 
+				
+				id="country" 
 					value="#{travelRequest.country}" disabled="#{travelRequest.disableCountry}" >
 					<f:selectItems value="#{travelProcessor.list1}"/>
 					<a4j:support ajaxSingle="true"
-						action="#{travelProcessor.processAllowance}" event="onchange"
+						action="#{travelProcessor.setCurrency}" event="onchange"
 						reRender=
-						"dailyAllowance,totalAllowance,totalDailyAllowance" status="waitStatus"></a4j:support>
+						"travelForm,dailyAllowance,totalDailyAllowance,apartmentDataTable" status="waitStatus"></a4j:support>
 				</h:selectOneMenu></td>
 			</tr>
 			
@@ -67,7 +69,7 @@
 					<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields2}" event="onchange"
 						reRender=
-						"totalAllowance,dailyAllowance,totalDailyAllowance,date1,name,designation,unit,projectName,projectCode,slaLabel,
+						"dailyAllowance,totalDailyAllowance,date1,name,designation,unit,projectName,projectCode,slaLabel,
 						slaNumber,emailId,
 						telExt,department,mobileNumber,purpose,fromDate,toDate,chargeableType,
 						travelDataTable,paidBy,hotelDataTable,otherAllowance,otherAllowanceDetail,submit" status="waitStatus"></a4j:support>
@@ -152,7 +154,7 @@ disabled="#{travelRequest.disable2}">
 <a4j:support ajaxSingle="true"
 						action="#{travelProcessor.computeDays}" event="onchanged"
 						reRender=
-						"days,daysOutput,totalDailyAllowance,totalAllowance" status="waitStatus"></a4j:support>				
+						"days,daysOutput,totalDailyAllowance," status="waitStatus"></a4j:support>				
 					</rich:calendar>
 
 </a4j:outputPanel></td>
@@ -164,7 +166,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}">
 <a4j:support ajaxSingle="true"
 						action="#{travelProcessor.computeDays}" event="onchanged"
 						reRender=
-						"days,daysOutput,totalDailyAllowance,totalAllowance" status="waitStatus"></a4j:support>						
+						"days,daysOutput,totalDailyAllowance," status="waitStatus"></a4j:support>						
 					</rich:calendar>
 </a4j:outputPanel> </td>
 			</tr>
@@ -177,7 +179,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}">
 					<f:selectItem id="chargeable" itemLabel="Chargeable" itemValue="chargeable" />
 					<f:selectItem id="non-chargeable" itemLabel="Non-chargeable" itemValue="non-chargeable" />
 						<a4j:support ajaxSingle="true" event="onclick" reRender="slaNumber" status="waitStatus"></a4j:support>	
-				</h:selectOneRadio>	</td>
+				</h:selectOneRadio>	</td></tr><tr>
 				<td><h:outputText id="slaLabel" value="SLA Number:" />
 				<h:inputText id="slaNumber"
 				value="#{travelRequest.employee.slaNumber}" disabled="#{travelRequest.chargeableType=='non-chargeable'}">
@@ -250,17 +252,13 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 				</f:facet>
 				<h:inputText id="tAmount" value="#{travelResvItem.amount}" disabled="#{travelRequest.disable2}">
 					<f:convertNumber type="number" />
-				<a4j:support ajaxSingle="true"
-						action="#{travelProcessor.calculateAmount}" event="onchange"
-						reRender=
-						"totalAllowance" status="waitStatus"></a4j:support>
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Action" />
 				</f:facet>
-				<a4j:commandButton value="Delete" action="#{travelProcessor.removeTravelResvRow}" reRender="travelDataTable,totalAllowance" disabled="#{travelRequest.disable4}">
+				<a4j:commandButton value="Delete" action="#{travelProcessor.removeTravelResvRow}" reRender="travelDataTable," disabled="#{travelRequest.disable4}">
   	<f:setPropertyActionListener value="#{row}" 
   	    target="#{travelProcessor.rowIndex}" />
       </a4j:commandButton>
@@ -283,10 +281,12 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 			<a4j:support ajaxSingle="true"
 						action="#{travelProcessor.enableFields3}" event="onclick"
 						reRender=
-						"hotelDataTable,totalAllowance" status="waitStatus"></a4j:support>
+						"apartmentDataTable,hotelDataTable," status="waitStatus"></a4j:support>
 				</h:selectOneRadio></td>
 				<td></td>
 			</tr>
+			<tr><td>Local Currency :</td><td>
+			<h:outputText id="localCurrency" value="#{travelRequest.travelDetails.allowance.currency}" /></td></tr>
 		</table>
 		<rich:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
 			var="hotelResvItem" rowKeyVar="row2" bgcolor="#F1F1F1" border="10" cellpadding="5"
@@ -336,15 +336,13 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					</rich:calendar>
 				</a4j:outputPanel>				
 			</h:column>
-						
-			<h:column>
+		<h:column>
 				<f:facet name="header">
 					<h:outputText value="Per Day Amount" />
 				</f:facet>
 				<h:inputText id="hAmountPerDay" value="#{hotelResvItem.amountPerDay}" disabled="#{travelRequest.disable3}">
 				</h:inputText>
 			</h:column>
-		
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Total Amount" /><h:outputText id="currencyAmount2" 
@@ -353,10 +351,6 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 				</f:facet>
 				<h:inputText id="hAmount" value="#{hotelResvItem.amount}" disabled="#{travelRequest.disable3}">
 					<f:convertNumber type="number" />
-					<a4j:support ajaxSingle="true"
-						action="#{travelProcessor.calculateAmount}" event="onchange"
-						reRender=
-						"totalAllowance" status="waitStatus"></a4j:support>
 				</h:inputText>
 			</h:column>
 			<h:column>
@@ -373,7 +367,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 				<f:facet name="header">
 					<h:outputText value="Action" />
 				</f:facet>
-				<a4j:commandButton value="Delete" action="#{travelProcessor.removeHotelResvRow}" reRender="hotelDataTable,totalAllowance" disabled="#{travelRequest.disable5}">
+				<a4j:commandButton value="Delete" action="#{travelProcessor.removeHotelResvRow}" reRender="hotelDataTable," disabled="#{travelRequest.disable5}">
   	<f:setPropertyActionListener value="#{row2}" 
   	    target="#{travelProcessor.rowIndex}" />
       </a4j:commandButton>
@@ -388,6 +382,8 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 						
 			</f:facet>
 		</rich:dataTable>
+		<br></br>
+		
 		<br>
 		<table style="margin-top:20px;">
 			<tr>
@@ -397,7 +393,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					disabled="true">
 					<f:convertNumber type="number" />
 				</h:inputText> <h:outputText id="currency1" 
-					value="#{travelRequest.travelDetails.allowance.currency}"> 
+					value="#{travelProcessor.allowanceCurrency}"> 
 					</h:outputText> x 2<h:outputText value="= "/><h:outputText id="totalAirportTransport" 
 					value="#{travelRequest.travelDetails.allowance.airportTransport * 2}"> 
 					</h:outputText></td>
@@ -419,7 +415,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					disabled="true">
 					<f:convertNumber type="number" />
 				</h:inputText> <h:outputText id="currency2" 
-					value="#{travelRequest.travelDetails.allowance.currency}">
+					value="#{travelProcessor.allowanceCurrency}">
 					</h:outputText> x 
 					<h:outputText id="daysOutput" value="#{travelRequest.travelDetails.allowance.days}" />
 					= <h:outputText id="totalDailyAllowance" 
@@ -434,7 +430,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					disabled="true">
 					<f:convertNumber type="number" />
 				</h:inputText> <h:outputText id="currency3" 
-					value="#{travelRequest.travelDetails.allowance.currency}">
+					value="#{travelProcessor.allowanceCurrency}">
 					</h:outputText></td>
 					
 					
@@ -445,12 +441,8 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					value="#{travelRequest.travelDetails.allowance.otherAllowance}"
 					disabled="#{travelRequest.disable2}">
 					<f:convertNumber type="number" />
-					<a4j:support ajaxSingle="true"
-						action="#{travelProcessor.calculateAmount}" event="onchange"
-						reRender=
-						"totalAllowance" status="waitStatus"></a4j:support>
 				</h:inputText> <h:outputText id="currency4" 
-					value="#{travelRequest.travelDetails.allowance.currency}">
+					value="#{travelProcessor.allowanceCurrency}">
 					</h:outputText> 
 					
 					
@@ -459,16 +451,6 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 					disabled="#{travelRequest.disable2}">(Specify)
 				</h:inputText></td>
 							
-			</tr>
-			<tr>
-				<td>Amount </td>
-				<td><h:inputText id="totalAllowance" value="#{travelRequest.amount}" disabled="true">
-					<f:convertNumber type="number" />
-				</h:inputText><h:outputText id="currency5" 
-					value="#{travelRequest.travelDetails.allowance.currency}">
-					</h:outputText></td>
-				
-					
 			</tr>
 			<tr>
 				<td>Recommended by </td>

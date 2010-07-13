@@ -38,7 +38,7 @@
 					<rich:calendar id="departureDate" disabled="#{loginBean.role!='finance'}"
 						value="#{travelRequest.travelSettlement.departureDate}" datePattern="MM/dd/yy HH:mm">
 						<a4j:support ajaxSingle="true" action="#{travelProcessor.computeDaysForSettlement}" event="onchanged"
-						reRender="noOfDays,travelingDailyAllowanceNoOfDays" status="waitStatus" ></a4j:support>
+						reRender="travelingDailyAllowanceForexAmount,noOfDays,travelingDailyAllowanceNoOfDays,displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus" ></a4j:support>
 					</rich:calendar>
 				</a4j:outputPanel></td>
 			</tr>
@@ -52,7 +52,7 @@
 				<td>Arrival Date *</td>
 				<td><a4j:outputPanel ajaxRendered="true">
 					<rich:calendar id="arrivalDate" value="#{travelRequest.travelSettlement.arrivalDate}" datePattern="MM/dd/yy HH:mm" disabled="#{loginBean.role!='finance'}">					
-						<a4j:support ajaxSingle="true" action="#{travelProcessor.computeDaysForSettlement}" event="onchanged" reRender="noOfDays,travelingDailyAllowanceNoOfDays" status="waitStatus"/>
+						<a4j:support ajaxSingle="true" action="#{travelProcessor.computeDaysForSettlement}" event="onchanged" reRender="travelingDailyAllowanceForexAmount,noOfDays,travelingDailyAllowanceNoOfDays,displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus"/>
 					</rich:calendar>
 				</a4j:outputPanel></td>
 			</tr>
@@ -99,7 +99,7 @@
 		
 		<rich:dataTable id="advanceTable" value="#{travelRequest.travelSettlement.advanceAmounts}" var="advance" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
-				<h:outputText value="DETAILS OF ADVENCE OF FOREX TAKEN"/>
+				<h:outputText value="DETAILS OF ADVANCE OF FOREX TAKEN"/>
 			</f:facet>
 			<h:column>
 				<f:facet name="header">
@@ -216,7 +216,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Location / Organised by / Hotel Name"/>
 				</f:facet>
 				<h:inputText id="lodgingDetails" value="#{lodging.details}" disabled="#{loginBean.role=='finance'}">
 				</h:inputText>
@@ -316,7 +316,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Zone / Class / Details / Rate"/>
 				</f:facet>
 				<h:inputText id="travelingDailyAllowanceDetails" value="#{travelling.details}" disabled="#{loginBean.role!='finance'}">
 				</h:inputText>
@@ -330,9 +330,10 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Bill No."/>
+					<h:outputText value="Rate of Allowance"/>
 				</f:facet>
 				<h:inputText id="travelingDailyAllowanceExpensesBillNo" value="#{travelling.billNo}" disabled="#{loginBean.role!='finance'}">
+				<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateForex}" event="onchange" reRender="travelingDailyAllowanceForexAmount,displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus"/>
 				</h:inputText>
 			</h:column>
 			<h:column>
@@ -391,7 +392,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="From Location - To Location"/>
 				</f:facet>
 				<h:inputText id="conveyanceDetails" value="#{conveyance.details}" disabled="#{loginBean.role=='finance'}">
 				</h:inputText>
@@ -492,7 +493,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Details"/>
 				</f:facet>
 				<h:inputText id="othersDetails" value="#{others.details}" disabled="#{loginBean.role=='finance'}">
 				</h:inputText>
@@ -593,7 +594,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Purpose"/>
 				</f:facet>
 				<h:inputText id="entertainmentDetails" value="#{entertainment.details}" disabled="#{loginBean.role=='finance'}">
 				</h:inputText>
@@ -694,7 +695,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Details"/>
 				</f:facet>
 				<h:inputText id="miscellaneousDetails" value="#{miscellaneous.details}" disabled="#{loginBean.role=='finance'}">
 				</h:inputText>

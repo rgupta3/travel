@@ -26,6 +26,15 @@
 		<property name="country" type="java.lang.String">
 			<column name="COUNTRY" />
 		</property>
+		<property name="conversionRateINR" type="float">
+					<column name="CONVERSION_USD_INR" />
+				</property>
+				<property name="conversionRateLocal" type="float">
+					<column name="CONVERSION_USD_LOCAL" />
+				</property>
+				<property name="conversionRateLocaltoINR" type="float">
+					<column name="CONVERSION_LOCAL_INR" />
+				</property>
 		<list name="hotelResv" inverse="false" table="HOTELRESV" lazy="false">
 			<key>
 				<column name="ID" />

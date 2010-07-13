@@ -24,7 +24,7 @@
 	<div id="page-bgtop">
 	<div id="content">
 	<div class="post"><h:outputText value="#{msg.outputname_header}" />
-	<h2>Travel Settlement Form</h2>
+	<h3>Travel Settlement Form</h3>
 	<h:form id="travelSettlementForm">
 	<label><b>Travel Settlement ID : <h:outputText id="travelReqId" value="#{travelRequest.id}"/></b></label>	
 	<table style="width: 883px; height: 122px; margin-top: 30px;">
@@ -92,7 +92,7 @@
 		
 		<rich:dataTable id="advanceTable" value="#{travelRequest.travelSettlement.advanceAmounts}" var="advance" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
-				<h:outputText value="DETAILS OF ADVENCE OF FOREX TAKEN"/>
+				<h:outputText value="DETAILS OF ADVANCE OF FOREX TAKEN"/>
 			</f:facet>
 			<h:column>
 				<f:facet name="header">
@@ -194,7 +194,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Location / Organised by / Hotel Name"/>
 				</f:facet>
 				<h:outputText id="lodgingDetails" value="#{lodging.details}" >
 				</h:outputText>
@@ -282,7 +282,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Zone / Class / Details / Rate"/>
 				</f:facet>
 				<h:outputText id="travelingDailyAllowanceDetails" value="#{travelling.details}" >
 				</h:outputText>
@@ -354,7 +354,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="From Location - To Location"/>
 				</f:facet>
 				<h:outputText id="conveyanceDetails" value="#{conveyance.details}">
 				</h:outputText>
@@ -440,7 +440,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Details"/>
 				</f:facet>
 				<h:outputText id="othersDetails" value="#{others.details}" >
 				</h:outputText>
@@ -527,7 +527,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Purpose"/>
 				</f:facet>
 				<h:outputText id="entertainmentDetails" value="#{entertainment.details}" >
 				</h:outputText>
@@ -614,7 +614,7 @@
 			</h:column>
 			<h:column>
 				<f:facet name="header">
-					<h:outputText value="Base of calculations"/>
+					<h:outputText value="Details"/>
 				</f:facet>
 				<h:outputText id="miscellaneousDetails" value="#{miscellaneous.details}" >
 				</h:outputText>
@@ -717,9 +717,8 @@
 				<td><h:outputText id="totalExpenses" value="#{travelRequest.travelSettlement.totalOfAllExpenses}"/></td><td><h:outputText id="totalExpensesINR" value="#{travelRequest.travelSettlement.totlaExpenses}"/></td>
 			</tr>
 		</table>
-		<br>
-		<br>
-		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <h2>Settlement of Travel Advance</h2>
+	
+		<br></br><h3>Settlement of Travel Advance</h3>
 		
 		<table class="sample" >
 			<tr>
@@ -736,7 +735,42 @@
 				<td>Difference - Paid/Recovered</td><td><h:outputText id="finalDifferenceINR" value="#{travelRequest.travelSettlement.difference}"/></td>
 			</tr>
 		</table>
-		
+		<rich:dataTable id="approvalDataTable" value="#{travelRequest.requestApprovals}"
+			var="requestApprovalItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
+			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
+			rules="all"  rendered="#{not empty travelRequest.requestApprovals}" style="margin-top:20px;">
+			<f:facet name="header">
+				<h:outputText value="Travel Approval details" />
+			</f:facet>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Timestamp" />
+				</f:facet>
+				<h:outputText id="timestamp" value="#{requestApprovalItem.timestamp}">
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Approver" />
+				</f:facet>
+				<h:outputText id="approver" value="#{requestApprovalItem.approvorType}">
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText id="travelstatus" value="#{requestApprovalItem.status}">
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Comments" />
+				</f:facet>
+				<h:outputText id="comments" value="#{requestApprovalItem.comments}">
+				</h:outputText>
+			</h:column>
+		</rich:dataTable>
 		<br>
 		<h:panelGroup id="travelSettlApprovalId" rendered="#{travelRequest.travelSettlement.status=='SETTLEMENT_FILLED_BY_EMPLOYEE' && loginBean.role=='finance'}">
 				Comments :

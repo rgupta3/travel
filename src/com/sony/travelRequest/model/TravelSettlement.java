@@ -396,7 +396,7 @@ public class TravelSettlement implements RequestStatus{
 
 		StringBuilder emailBody = new StringBuilder("Your travel settlement with id:").append(id).append(" has been ");
 		emailBody.append(approvedStr)/*.append( with the following comments:")*/;
-		emailBody.append(". Please click this url to see the details of your request:");
+		emailBody.append(". Please click this url to see the details of your settlement:");
 		emailBody.append(" http://localhost:8080/travel/travelSettlement/").append(id);
 		System.out.println("\ngetEmailBodyForEmployeeTravelDeskApproved\n\n"+emailBody.toString());
 		return emailBody.toString();
@@ -425,6 +425,18 @@ public class TravelSettlement implements RequestStatus{
 	public String getEmailSubjectForEmployee(int reqId) {
 		StringBuilder emailBody = new StringBuilder("Travel Settlement for Request Id ").append(reqId).append(" waiting for your action");
 		System.out.println("\ngetEmailSubjectForEmployee\n\n"+emailBody.toString());
+		return emailBody.toString();
+	}
+	public String getEmailBodyForEmployeeFilled(int reqId) {
+		StringBuilder emailBody = new StringBuilder("A new Travel settlement is awaiting. Please click this url to work on this settlment:");
+		emailBody.append(" http://localhost:8080/travel/travelSettlement/").append(reqId);
+		System.out.println("\nggetEmailBodyForEmployeeFilled\n\n"+emailBody.toString());
+		return emailBody.toString();
+	}
+	
+	public String getEmailSubjectForEmployeeFilled(int reqId) {
+		StringBuilder emailBody = new StringBuilder("Travel Settlement for Request Id ").append(reqId).append(" waiting for your action");
+		System.out.println("\ngetEmailBodyForEmployeeFilled\n\n"+emailBody.toString());
 		return emailBody.toString();
 	}
 }

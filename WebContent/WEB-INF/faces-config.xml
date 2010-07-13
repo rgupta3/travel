@@ -165,5 +165,9 @@
 			<from-outcome>accessDenied</from-outcome>
 			<to-view-id>/accessDenied.jsp</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>notExist</from-outcome>
+			<to-view-id>/faces/privat/notExist.jsp</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 </faces-config>
