@@ -33,7 +33,9 @@
 	<h:outputText id="status" 
 					value="#{travelRequest.status}" >
 					
-				</h:outputText></b><br></br></label>
+				</h:outputText></b><br>
+				<h:commandLink style="font-size: 16px;" rendered="#{travelRequest.status=='REQUEST_APPROVED_BY_FINANCE' && loginBean.role=='finance'}" value="Initiate Settlement" action="#{travelProcessor.initiateSettlement}"></h:commandLink>
+				 <br></label>
 		<label>Initiator Name  <h:outputText id="initiator" value="xyz"/>
 		</label><br><br>Type of travel  <h:outputText id="type" value="#{travelRequest.type}"/>
 		<br><br>Country  <h:outputText id="country" value="#{travelRequest.country}"></h:outputText><br>Grade     <h:outputText id="grade" value="#{travelRequest.employee.grade}"/>

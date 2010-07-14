@@ -132,6 +132,10 @@
 			<from-outcome>notExist</from-outcome>
 			<to-view-id>/faces/privat/notExist.jsp</to-view-id>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>travelSettlement</from-outcome>
+			<to-view-id>/faces/privat/travelSettlement.jsp</to-view-id>
+		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<from-view-id>/faces/privat/employeeDashboard.jsp</from-view-id>

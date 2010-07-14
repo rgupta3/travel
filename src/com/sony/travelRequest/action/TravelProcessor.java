@@ -1596,7 +1596,11 @@ public class TravelProcessor implements RequestStatus{
 		travelRequest.getTravelSettlement().getTravelingDailyAllowanceExpense().get(0).setForexAmount(diff*rateOfAllowance);
 		calculateTotalTravelling();
 	}
-	
+	public String initiateSettlement()
+	{
+		travelParamBean.setReqId(travelRequest.getId());
+		return this.sendReqIdForSettlement();
+	}
 	public String sendReqIdForSettlement() {
 		findEmployeeId();
 		if(travelRequest.getId()!=travelParamBean.getReqId())
