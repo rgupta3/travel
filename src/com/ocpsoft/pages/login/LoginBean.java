@@ -6,14 +6,12 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.BadCredentialsException;
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.ui.AbstractProcessingFilter;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.ocpsoft.pretty.PrettyContext;
@@ -50,7 +48,7 @@ public class LoginBean {
 		facesUtils.getExternalContext().dispatch("/j_spring_security_check");
 		facesUtils.getFacesContext().responseComplete();
 		handleErrorMessage();
-		/*if(SecurityContextHolder.getContext().getAuthentication() != null)
+		if(SecurityContextHolder.getContext().getAuthentication() != null)
 		{
 		Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
@@ -58,7 +56,7 @@ public class LoginBean {
 		if ( obj instanceof UserDetails ) 
 		{
 			username= ( (UserDetails)obj ).getUsername();
-			authorities = ( (UserDetails)obj ).getAuthorities();
+/*			authorities = ( (UserDetails)obj ).getAuthorities();
 			for(GrantedAuthority role:authorities)
 			{
 				System.out.println(role.getAuthority());
@@ -67,13 +65,11 @@ public class LoginBean {
 					this.role="finance";
 				}
 			}
-		} else {
+*/		} else {
 
 		    username = obj.toString();
 		}
-		int id= Integer.valueOf(username);
-		System.out.println("ID "+id+this.role);
-		}*/
+		}
 		return null;
 
 		/*
@@ -98,7 +94,7 @@ public class LoginBean {
 	@PostConstruct
 	//@SuppressWarnings("unused")
 	private void handleErrorMessage() {
-		Exception e = (Exception) FacesContext
+/*		Exception e = (Exception) FacesContext
 				.getCurrentInstance()
 				.getExternalContext()
 				.getSessionMap()
@@ -113,18 +109,18 @@ public class LoginBean {
 					.put(
 							AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY,
 							null);
-			/*FacesContext.getCurrentInstance().addMessage(
+			FacesContext.getCurrentInstance().addMessage(
 					"loginForm:j_username",
 					new FacesMessage("Invalid inputs", "Invalid inputs"));
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_ERROR,
 							"Username or password not valid.", null));
-			System.out.println("Username or password not valid");*/
+			System.out.println("Username or password not valid");
 			
 			this.errorMessage="Invalid Credentials!!";
 
-		}
+		}*/
 	}
 
 	public String getUsername() {

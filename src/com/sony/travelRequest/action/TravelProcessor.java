@@ -13,6 +13,7 @@ package com.sony.travelRequest.action;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -21,16 +22,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
-import org.springframework.security.GrantedAuthority;
-import org.springframework.security.context.SecurityContextHolder;
-import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.ocpsoft.pretty.util.FacesElUtils;
-import com.sony.travelRequest.dao.AuthoritiesDao;
+import com.sony.security.CustomAuthunticationProvider;
 import com.sony.travelRequest.dao.EmployeeDao;
 import com.sony.travelRequest.dao.TravelRequestDao;
 import com.sony.travelRequest.model.AdvanceAmount;
-import com.sony.travelRequest.model.Authorities;
 import com.sony.travelRequest.model.ConveyanceExpense;
 import com.sony.travelRequest.model.EmailConstants;
 import com.sony.travelRequest.model.Employee;
@@ -43,13 +43,9 @@ import com.sony.travelRequest.model.RequestApproval;
 import com.sony.travelRequest.model.TravelParamBean;
 import com.sony.travelRequest.model.TravelRequest;
 import com.sony.travelRequest.model.TravelResv;
-import com.sony.travelRequest.model.TravelSettlement;
 import com.sony.travelRequest.model.TravelingDailyAllowanceExpense;
 import com.sony.travelRequest.util.EmailComponent;
 import com.sony.travelRequest.util.RequestStatus;
-//import com.sony.travelRequest.model.LodgingExpense;
-//import com.sony.travelRequest.model.MiscellaneousExpense;
-//import com.sony.travelRequest.model.OthersExpense;
 
 
 public class TravelProcessor implements RequestStatus{
@@ -604,35 +600,21 @@ public class TravelProcessor implements RequestStatus{
 	
 	public void findEmployeeId()
 	{
-		if(employeeId==null)
-		{
-		Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username;
-		GrantedAuthority authorities[];
-		if ( obj instanceof UserDetails ) 
-		{
-			username= ( (UserDetails)obj ).getUsername();
-			//Authorities a = new Authorities();
-		//	AuthoritiesDao b = new AuthoritiesDao();
-		//	a=b.findById(username);
-		//	System.out.println("a.role is:"+a.getAuthority());
-			authorities = ( (UserDetails)obj ).getAuthorities();
-			for(GrantedAuthority role:authorities)
-			{
-				if(role.getAuthority().equals("ROLE_SUPERVISOR"))
-				{
-					financeDesk = true;
-				}
-			}
-		} else {
-
-		    username = obj.toString();
-		}
+System.out.println("emp id = "+employeeId);
 		
-		System.out.println("Finance Desk + "+financeDesk);
-		employeeId = username;
+		if (employeeId==null) {
+			System.out.println("inside");
+			String username;
+			username = CustomAuthunticationProvider.getUserid();
+			System.out.println("username = "+username);
+
+			if (username.equals("501200I647")) {
+				financeDesk = true;
+			}
+
+			employeeId = username;
 		}
-		receivedEmpDetails=false;
+		receivedEmpDetails = false;
 	}
 	public String computeHotelINR()
 	{	
