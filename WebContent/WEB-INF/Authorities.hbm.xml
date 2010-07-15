@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Apr 14, 2010 7:36:48 PM by Hibernate Tools 3.3.0.GA -->
+<hibernate-mapping>
+	<class name="com.sony.travelRequest.model.Authorities" table="AUTHORITIES" lazy="false">
+		<id name="username" type="java.lang.String" column="USERNAME">
+		</id>
+		<property name="authority" type="java.lang.String">
+			<column name="AUTHORITY" />
+		</property>
+	</class>
+</hibernate-mapping>

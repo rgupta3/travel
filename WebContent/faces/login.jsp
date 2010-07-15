@@ -42,7 +42,7 @@
 	<div id="page">
 	<div id="page-bgtop">
 	<div id="content">
-	<div class="post">
+	<div class="post" style="height: 26em;">
 	
 	
 	
@@ -90,9 +90,9 @@
 	</div>
 	</div>
 	<!-- end #page -->
-	<div id="footer-bgcontent" style="margin-top:300px;">
+	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

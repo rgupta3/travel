@@ -163,7 +163,7 @@ public class TravelRequestDao extends HibernateDaoSupport implements RequestStat
 
 	}
 	
-	public List<TravelRequest> findElementforEmp(final String searchItem, final String searchElement,final int id) {
+	public List<TravelRequest> findElementforEmp(final String searchItem, final String searchElement,final String id) {
 		
 		List<TravelRequest> result = (List<TravelRequest>) getHibernateTemplate().execute(
 				new HibernateCallback() {
@@ -177,7 +177,7 @@ public class TravelRequestDao extends HibernateDaoSupport implements RequestStat
 		
 	}
 
-	public List<TravelRequest> findbyEmployeeId(final int id) {
+	public List<TravelRequest> findbyEmployeeId(final String id) {
 		
 		List<TravelRequest> result = (List<TravelRequest>) getHibernateTemplate().execute(
 				new HibernateCallback() {

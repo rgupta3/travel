@@ -110,7 +110,7 @@ public class EmployeeDao extends HibernateDaoSupport {
 	 * catch (RuntimeException re) { log.error("get failed", re); throw re; } }
 	 */
 
-	public Employee findById(int id) {
+	public Employee findById(String id) {
 		log.debug("getting Employee instance with id: " + id);
 		Employee instance = null;
 		try {

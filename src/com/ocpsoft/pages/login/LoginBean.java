@@ -50,7 +50,7 @@ public class LoginBean {
 		facesUtils.getExternalContext().dispatch("/j_spring_security_check");
 		facesUtils.getFacesContext().responseComplete();
 		handleErrorMessage();
-		if(SecurityContextHolder.getContext().getAuthentication() != null)
+		/*if(SecurityContextHolder.getContext().getAuthentication() != null)
 		{
 		Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
@@ -73,7 +73,7 @@ public class LoginBean {
 		}
 		int id= Integer.valueOf(username);
 		System.out.println("ID "+id+this.role);
-		}
+		}*/
 		return null;
 
 		/*

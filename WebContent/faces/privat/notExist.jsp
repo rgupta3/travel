@@ -41,7 +41,7 @@
 	<div id="page">
 	<div id="page-bgtop">
 	
-	<div style="margin-left:20px;">	
+	<div style="margin-left:20px; height: 26em;">	
 
 	<h3>Oops!! The page you requested for does not exist!!</h3>
 	</div>
@@ -52,9 +52,9 @@
 	</div>
 	</div>
 	<!-- end #page -->
-	<div id="footer-bgcontent" style="margin-top:360px;">
+	<div id="footer-bgcontent" >
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

@@ -35,7 +35,7 @@
 				</h:inputText></td>
 				<td style="width: 123px">Departure Date*</td>
 				<td style="width: 320px"><a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="departureDate" disabled="#{loginBean.role!='finance'}"
+					<rich:calendar id="departureDate" disabled="#{!travelProcessor.financeDesk}"
 						value="#{travelRequest.travelSettlement.departureDate}" datePattern="MM/dd/yy HH:mm">
 						<a4j:support ajaxSingle="true" action="#{travelProcessor.computeDaysForSettlement}" event="onchanged"
 						reRender="travelingDailyAllowanceForexAmount,noOfDays,travelingDailyAllowanceNoOfDays,displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus" ></a4j:support>
@@ -51,7 +51,7 @@
 				</h:inputText></td>
 				<td>Arrival Date *</td>
 				<td><a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="arrivalDate" value="#{travelRequest.travelSettlement.arrivalDate}" datePattern="MM/dd/yy HH:mm" disabled="#{loginBean.role!='finance'}">					
+					<rich:calendar id="arrivalDate" value="#{travelRequest.travelSettlement.arrivalDate}" datePattern="MM/dd/yy HH:mm" disabled="#{!travelProcessor.financeDesk}">					
 						<a4j:support ajaxSingle="true" action="#{travelProcessor.computeDaysForSettlement}" event="onchanged" reRender="travelingDailyAllowanceForexAmount,noOfDays,travelingDailyAllowanceNoOfDays,displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus"/>
 					</rich:calendar>
 				</a4j:outputPanel></td>
@@ -62,14 +62,14 @@
 				</h:inputText></td>
 				<td>Date of Submission *</td>
 				<td><a4j:outputPanel ajaxRendered="true">
-					<rich:calendar disabled="#{loginBean.role!='finance'}" id="submissionDate" value="#{travelRequest.travelSettlement.submissionDate}" datePattern="MM/dd/yy" >
+					<rich:calendar disabled="#{!travelProcessor.financeDesk}" id="submissionDate" value="#{travelRequest.travelSettlement.submissionDate}" datePattern="MM/dd/yy" >
 					</rich:calendar>
 				</a4j:outputPanel></td>
 			</tr>
 			<tr>
 				<td>Reporting Manager *</td>
 				<td><h:inputText id="reportingManager"
-					value="#{travelRequest.travelSettlement.reportingManager}" readonly="#{loginBean.role!='finance'}">
+					value="#{travelRequest.travelSettlement.reportingManager}" readonly="#{!travelProcessor.financeDesk}">
 				</h:inputText></td>
 				<td>No. of Days *</td>
 				<td><h:inputText id="noOfDays" value="#{travelRequest.travelSettlement.noOfDays}" readonly="true">
@@ -97,7 +97,7 @@
 		
 		
 		
-		<rich:dataTable id="advanceTable" value="#{travelRequest.travelSettlement.advanceAmounts}" var="advance" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
+		<rich:dataTable id="advanceTable" value="#{travelRequest.travelSettlement.advanceAmounts}" var="advance" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="1" cellspacing="1" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
 				<h:outputText value="DETAILS OF ADVANCE OF FOREX TAKEN"/>
 			</f:facet>
@@ -106,7 +106,7 @@
 					<h:outputText value="Date" /> 
 				</f:facet>
 					<a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="advanceAmountDate" value="#{advance.date}" datePattern="MM/dd/yy" disabled="#{loginBean.role!='finance'}">
+					<rich:calendar id="advanceAmountDate" value="#{advance.date}" datePattern="MM/dd/yy" disabled="#{!travelProcessor.financeDesk}">
 					<a4j:support ajaxSingle="true" event="onchanged"/>
 					</rich:calendar>
 				</a4j:outputPanel>		
@@ -115,28 +115,28 @@
 				<f:facet name="header">
 					<h:outputText value="Base of calculations"/>
 				</f:facet>
-				<h:inputText id="advanceAmountType" value="#{advance.type}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountType" value="#{advance.type}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="advanceAmountCurrency" value="#{advance.currency}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountCurrency" value="#{advance.currency}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Bill No."/>
 				</f:facet>
-				<h:inputText id="advanceAmountBillNo" value="#{advance.billNo}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountBillNo" value="#{advance.billNo}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="advanceAmountForexAmount" value="#{advance.forexAmount}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountForexAmount" value="#{advance.forexAmount}" disabled="#{!travelProcessor.financeDesk}">
 					<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalAdvance}" event="onchange" reRender="totalAdvance,totalAdvanceINR,finalAdvanceINR,finalDifferenceINR,advanceAmountINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -145,7 +145,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="advanceAmountConversionRate" value="#{advance.conversionRate}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountConversionRate" value="#{advance.conversionRate}" disabled="#{!travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalAdvance}" event="onchange" reRender="totalAdvance,totalAdvanceINR,finalAdvanceINR,finalDifferenceINR,advanceAmountINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -154,7 +154,7 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in RS"/>
 				</f:facet>
-				<h:inputText id="advanceAmountINRAmount" value="#{advance.INRAmount}" readonly="true" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountINRAmount" value="#{advance.INRAmount}" readonly="true" disabled="#{!travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>				
 				</h:inputText>
 			</h:column>
@@ -162,14 +162,14 @@
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="advanceAmountRemarks" value="#{advance.remarks}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="advanceAmountRemarks" value="#{advance.remarks}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Delete"/>
 				</f:facet>
-						<a4j:commandButton value="Delete" action="#{travelProcessor.removeAdvanceTableRow}" reRender="advanceTable,totalAdvance,totalAdvanceINR,finalAdvanceINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableAdvanceTableRowDelete || loginBean.role!='finance'}">
+						<a4j:commandButton value="Delete" action="#{travelProcessor.removeAdvanceTableRow}" reRender="advanceTable,totalAdvance,totalAdvanceINR,finalAdvanceINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableAdvanceTableRowDelete || !travelProcessor.financeDesk}">
   							<f:setPropertyActionListener value="#{row}" target="#{travelProcessor.rowIndex}"/>
      				 	</a4j:commandButton>
 			</h:column>
@@ -177,7 +177,7 @@
 			
 					
 			<f:facet name="footer">
-				<a4j:commandButton value="Add Row" action="#{travelProcessor.addAdvanceTableRow}" reRender="advanceTable" id="addRowAdvance" disabled="#{loginBean.role!='finance'}">
+				<a4j:commandButton value="Add Row" action="#{travelProcessor.addAdvanceTableRow}" reRender="advanceTable" id="addRowAdvance" disabled="#{!travelProcessor.financeDesk}">
 				</a4j:commandButton>
 			</f:facet>			
 		</rich:dataTable>
@@ -200,7 +200,7 @@
 		</table>
 
 		
-		<rich:dataTable id="lodgingTable" value="#{travelRequest.travelSettlement.lodgingExpenses}" var="lodging" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
+		<rich:dataTable id="lodgingTable" value="#{travelRequest.travelSettlement.lodgingExpenses}" var="lodging" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="1" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
 				<h:outputText value="A: LODGING"/>
 			</f:facet>
@@ -209,7 +209,7 @@
 					<h:outputText value="Date" />
 				</f:facet>
 					<a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="lodgingDate" value="#{lodging.date}" datePattern="MM/dd/yy" disabled="#{loginBean.role=='finance'}">
+					<rich:calendar id="lodgingDate" value="#{lodging.date}" datePattern="MM/dd/yy" disabled="#{travelProcessor.financeDesk}">
 					<a4j:support ajaxSingle="true" event="onchanged"/>
 					</rich:calendar>
 				</a4j:outputPanel>	
@@ -218,28 +218,28 @@
 				<f:facet name="header">
 					<h:outputText value="Location / Organised by / Hotel Name"/>
 				</f:facet>
-				<h:inputText id="lodgingDetails" value="#{lodging.details}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingDetails" value="#{lodging.details}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="lodgingCurrency" value="#{lodging.currency}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingCurrency" value="#{lodging.currency}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Bill No."/>
 				</f:facet>
-				<h:inputText id="lodgingBillNo" value="#{lodging.billNo}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingBillNo" value="#{lodging.billNo}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="lodgingForexAmount" value="#{lodging.forexAmount}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingForexAmount" value="#{lodging.forexAmount}" disabled="#{travelProcessor.financeDesk}">
 					<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalLodging}" event="onchange" reRender="totalLodging,totalLodgingINR,displayTotalLodging,displayTotalLodgingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,lodgingINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -248,7 +248,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="lodgingConversionRate" value="#{lodging.conversionRate}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingConversionRate" value="#{lodging.conversionRate}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalLodging}" event="onchange" reRender="totalLodging,totalLodgingINR,displayTotalLodging,displayTotalLodgingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,lodgingINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -257,7 +257,7 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in RS"/>										
 				</f:facet>
-				<h:inputText id="lodgingINRAmount" value="#{lodging.INRAmount}" readonly="true" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingINRAmount" value="#{lodging.INRAmount}" readonly="true" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>										
 				</h:inputText>
 			</h:column>
@@ -265,20 +265,20 @@
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="lodgingRemarks" value="#{lodging.remarks}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="lodgingRemarks" value="#{lodging.remarks}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Delete"/>
 				</f:facet>
-						<a4j:commandButton value="Delete" action="#{travelProcessor.removeLodgingTableRow}" reRender="lodgingTable,totalLodging,displayTotalLodging,totalExpenses,totalLodgingINR,displayTotalLodgingINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableLodgingTableRowDelete || loginBean.role=='finance'}">
+						<a4j:commandButton value="Delete" action="#{travelProcessor.removeLodgingTableRow}" reRender="lodgingTable,totalLodging,displayTotalLodging,totalExpenses,totalLodgingINR,displayTotalLodgingINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableLodgingTableRowDelete || travelProcessor.financeDesk}">
   							<f:setPropertyActionListener value="#{row}" target="#{travelProcessor.rowIndex}"/>
      				 	</a4j:commandButton>
 			</h:column>
 			
 			<f:facet name="footer">
-				<a4j:commandButton value="Add Row" reRender="lodgingTable" action="#{travelProcessor.addLodgingTableRow}" id="addRowLodging" disabled="#{loginBean.role=='finance'}">
+				<a4j:commandButton value="Add Row" reRender="lodgingTable" action="#{travelProcessor.addLodgingTableRow}" id="addRowLodging" disabled="#{travelProcessor.financeDesk}">
 				</a4j:commandButton>
 			</f:facet>			
 		</rich:dataTable>
@@ -302,7 +302,7 @@
 		
 		
 		
-		<rich:dataTable id="travellingTable" value="#{travelRequest.travelSettlement.travelingDailyAllowanceExpense}" var="travelling" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
+		<rich:dataTable id="travellingTable" value="#{travelRequest.travelSettlement.travelingDailyAllowanceExpense}" var="travelling" bgcolor="#F1F1F1" border="5" cellpadding="1" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
 				<h:outputText value="B: TRAVELLING DAILY ADVANCE"/>
 			</f:facet>		
@@ -310,7 +310,7 @@
 				<f:facet name="header">
 					<h:outputText value="No. of days"/>
 				</f:facet>
-					<h:inputText id="travelingDailyAllowanceNoOfDays" value="#{travelRequest.travelSettlement.noOfDays}" disabled="#{loginBean.role!='finance'}" readonly="true">
+					<h:inputText id="travelingDailyAllowanceNoOfDays" value="#{travelRequest.travelSettlement.noOfDays}" disabled="#{!travelProcessor.financeDesk}" readonly="true">
 						<f:convertNumber type="number"/>
 					</h:inputText>					
 			</h:column>
@@ -318,21 +318,21 @@
 				<f:facet name="header">
 					<h:outputText value="Zone / Class / Details / Rate"/>
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceDetails" value="#{travelling.details}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceDetails" value="#{travelling.details}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceCurrency" value="#{travelling.currency}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceCurrency" value="#{travelling.currency}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Rate of Allowance"/>
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceExpensesBillNo" value="#{travelling.billNo}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceExpensesBillNo" value="#{travelling.billNo}" disabled="#{!travelProcessor.financeDesk}">
 				<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateForex}" event="onchange" reRender="travelingDailyAllowanceForexAmount,displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus"/>
 				</h:inputText>
 			</h:column>
@@ -340,7 +340,7 @@
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceForexAmount" value="#{travelling.forexAmount}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceForexAmount" value="#{travelling.forexAmount}" disabled="#{!travelProcessor.financeDesk}">
 					<f:convertNumber type="number"/>
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalTravelling}" event="onchange" reRender="displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -349,7 +349,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceConversionRate" value="#{travelling.conversionRate}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceConversionRate" value="#{travelling.conversionRate}" disabled="#{!travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalTravelling}" event="onchange" reRender="displayTotalTravelling,displayTotalTravellingINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,travelingDailyAllowanceINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -358,7 +358,7 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in RS"/>					
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceINRAmount" value="#{travelling.INRAmount}" readonly="true" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceINRAmount" value="#{travelling.INRAmount}" readonly="true" disabled="#{!travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 				</h:inputText>
 			</h:column>
@@ -366,7 +366,7 @@
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="travelingDailyAllowanceRemarks" value="#{travelling.remarks}" disabled="#{loginBean.role!='finance'}">
+				<h:inputText id="travelingDailyAllowanceRemarks" value="#{travelling.remarks}" disabled="#{!travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>						
 			<f:facet name="footer">				
@@ -376,7 +376,7 @@
 						
 		
 		
-		<rich:dataTable id="conveyanceTable" value="#{travelRequest.travelSettlement.conveyanceExpenses}" var="conveyance" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
+		<rich:dataTable id="conveyanceTable" value="#{travelRequest.travelSettlement.conveyanceExpenses}" var="conveyance" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="1" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
 				<h:outputText value="C: CONVEYANCE"/>
 			</f:facet>
@@ -385,7 +385,7 @@
 					<h:outputText value="Date"/>
 				</f:facet>
 					<a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="conveyanceDate" value="#{conveyance.date}" datePattern="MM/dd/yy" disabled="#{loginBean.role=='finance'}">
+					<rich:calendar id="conveyanceDate" value="#{conveyance.date}" datePattern="MM/dd/yy" disabled="#{travelProcessor.financeDesk}">
 						<a4j:support ajaxSingle="true" event="onchanged"/>
 					</rich:calendar>
 				</a4j:outputPanel>	
@@ -394,28 +394,28 @@
 				<f:facet name="header">
 					<h:outputText value="From Location - To Location"/>
 				</f:facet>
-				<h:inputText id="conveyanceDetails" value="#{conveyance.details}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceDetails" value="#{conveyance.details}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="conveyanceCurrency" value="#{conveyance.currency}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceCurrency" value="#{conveyance.currency}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Bill No."/>
 				</f:facet>
-				<h:inputText id="conveyanceBillNo" value="#{conveyance.billNo}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceBillNo" value="#{conveyance.billNo}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="conveyanceForexAmount" value="#{conveyance.forexAmount}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceForexAmount" value="#{conveyance.forexAmount}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalConveyance}" event="onchange" reRender="totalConveyance,totalConveyanceINR,displayTotalConveyance,displayTotalConveyanceINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,conveyanceINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -424,7 +424,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="conveyanceConversionRate" value="#{conveyance.conversionRate}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceConversionRate" value="#{conveyance.conversionRate}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalConveyance}" event="onchange" reRender="totalConveyance,totalConveyanceINR,displayTotalConveyance,displayTotalConveyanceINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,conveyanceINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -433,7 +433,7 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in RS"/>
 				</f:facet>
-				<h:inputText id="conveyanceINRAmount" value="#{conveyance.INRAmount}" readonly="true" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceINRAmount" value="#{conveyance.INRAmount}" readonly="true" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					
 				</h:inputText>
@@ -442,20 +442,20 @@
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="conveyanceRemarks" value="#{conveyance.remarks}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="conveyanceRemarks" value="#{conveyance.remarks}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Delete"/>
 				</f:facet>
-						<a4j:commandButton value="Delete" action="#{travelProcessor.removeConveyanceTableRow}" reRender="conveyanceTable,totalConveyance,displayTotalConveyance,totalExpenses,totalConveyanceINR,displayTotalConveyanceINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableConveyanceTableRowDelete || loginBean.role=='finance'}">
+						<a4j:commandButton value="Delete" action="#{travelProcessor.removeConveyanceTableRow}" reRender="conveyanceTable,totalConveyance,displayTotalConveyance,totalExpenses,totalConveyanceINR,displayTotalConveyanceINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableConveyanceTableRowDelete || travelProcessor.financeDesk}">
   							<f:setPropertyActionListener value="#{row}" target="#{travelProcessor.rowIndex}"/>
      				 	</a4j:commandButton>
 			</h:column>
 			
 			<f:facet name="footer">
-				<a4j:commandButton value="Add Row" reRender="conveyanceTable" action="#{travelProcessor.addConveyanceTableRow}" id="addRowConveyance" disabled="#{loginBean.role=='finance'}" >
+				<a4j:commandButton value="Add Row" reRender="conveyanceTable" action="#{travelProcessor.addConveyanceTableRow}" id="addRowConveyance" disabled="#{travelProcessor.financeDesk}" >
 				</a4j:commandButton>
 			</f:facet>			
 		</rich:dataTable>
@@ -477,7 +477,7 @@
 		</table>			
 		
 		
-		<rich:dataTable id="othersTable" value="#{travelRequest.travelSettlement.othersExpenses}" var="others" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
+		<rich:dataTable id="othersTable" value="#{travelRequest.travelSettlement.othersExpenses}" var="others" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
 				<h:outputText value="D: Others - Telephone/Fax/Etc."/>
 			</f:facet>
@@ -486,7 +486,7 @@
 					<h:outputText value="Date"/>
 				</f:facet>
 					<a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="othersDate" value="#{others.date}" datePattern="MM/dd/yy" disabled="#{loginBean.role=='finance'}" >
+					<rich:calendar id="othersDate" value="#{others.date}" datePattern="MM/dd/yy" disabled="#{travelProcessor.financeDesk}" >
 						<a4j:support ajaxSingle="true" event="onchanged"/>
 					</rich:calendar>
 				</a4j:outputPanel>	
@@ -495,28 +495,28 @@
 				<f:facet name="header">
 					<h:outputText value="Details"/>
 				</f:facet>
-				<h:inputText id="othersDetails" value="#{others.details}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="othersDetails" value="#{others.details}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="othersCurrency" value="#{others.currency}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="othersCurrency" value="#{others.currency}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Bill No."/>
 				</f:facet>
-				<h:inputText id="othersBillNo" value="#{others.billNo}" disabled="#{loginBean.role=='finance'}"> 
+				<h:inputText id="othersBillNo" value="#{others.billNo}" disabled="#{travelProcessor.financeDesk}"> 
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="othersForexAmount" value="#{others.forexAmount}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="othersForexAmount" value="#{others.forexAmount}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalOthers}" event="onchange" reRender="totalOthers,totalOthersINR,displayTotalOthers,displayTotalOthersINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,othersINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -525,7 +525,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="othersConversionRate" value="#{others.conversionRate}" disabled="#{loginBean.role=='finance'}" >
+				<h:inputText id="othersConversionRate" value="#{others.conversionRate}" disabled="#{travelProcessor.financeDesk}" >
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalOthers}" event="onchange" reRender="totalOthers,totalOthersINR,displayTotalOthers,displayTotalOthersINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,othersINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -534,7 +534,7 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in RS"/>
 				</f:facet>
-				<h:inputText id="othersINRAmount" value="#{others.INRAmount}" readonly="true" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="othersINRAmount" value="#{others.INRAmount}" readonly="true" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>										
 				</h:inputText>
 			</h:column>
@@ -542,20 +542,20 @@
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="othersRemarks" value="#{others.remarks}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="othersRemarks" value="#{others.remarks}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Delete"/>
 				</f:facet>
-						<a4j:commandButton value="Delete" action="#{travelProcessor.removeOthersTableRow}" reRender="othersTable,totalOthers,displayTotalOthers,totalExpenses,totalOthersINR,displayTotalOthersINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableOthersTableRowDelete || loginBean.role=='finance'}" >
+						<a4j:commandButton value="Delete" action="#{travelProcessor.removeOthersTableRow}" reRender="othersTable,totalOthers,displayTotalOthers,totalExpenses,totalOthersINR,displayTotalOthersINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableOthersTableRowDelete || travelProcessor.financeDesk}" >
   							<f:setPropertyActionListener value="#{row}" target="#{travelProcessor.rowIndex}"/>
      				 	</a4j:commandButton>
 			</h:column>
 			
 			<f:facet name="footer">
-				<a4j:commandButton value="Add Row" reRender="othersTable" action="#{travelProcessor.addOthersTableRow}" id="addRowOthers" disabled="#{loginBean.role=='finance'}">
+				<a4j:commandButton value="Add Row" reRender="othersTable" action="#{travelProcessor.addOthersTableRow}" id="addRowOthers" disabled="#{travelProcessor.financeDesk}">
 				</a4j:commandButton>
 			</f:facet>			
 		</rich:dataTable>
@@ -578,7 +578,7 @@
 		
 		
 		
-		<rich:dataTable id="entertainmentTable" value="#{travelRequest.travelSettlement.entertainmentExpenses}" var="entertainment" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;" >
+		<rich:dataTable id="entertainmentTable" value="#{travelRequest.travelSettlement.entertainmentExpenses}" var="entertainment" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;" >
 			<f:facet name="header">
 				<h:outputText value="E: Entertainment/Gift/Etc."/>
 			</f:facet>
@@ -587,7 +587,7 @@
 					<h:outputText value="Date"/>
 				</f:facet>
 					<a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="entertainmentDate" value="#{entertainment.date}" datePattern="MM/dd/yy" disabled="#{loginBean.role=='finance'}">
+					<rich:calendar id="entertainmentDate" value="#{entertainment.date}" datePattern="MM/dd/yy" disabled="#{travelProcessor.financeDesk}">
 						<a4j:support ajaxSingle="true" event="onchanged"/>
 					</rich:calendar>
 				</a4j:outputPanel>	
@@ -596,28 +596,28 @@
 				<f:facet name="header">
 					<h:outputText value="Purpose"/>
 				</f:facet>
-				<h:inputText id="entertainmentDetails" value="#{entertainment.details}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="entertainmentDetails" value="#{entertainment.details}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="entertainmentCurrency" value="#{entertainment.currency}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="entertainmentCurrency" value="#{entertainment.currency}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Bill No."/>
 				</f:facet>
-				<h:inputText id="entertainmentBillNo" value="#{entertainment.billNo}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="entertainmentBillNo" value="#{entertainment.billNo}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="entertainmentForexAmount" value="#{entertainment.forexAmount}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="entertainmentForexAmount" value="#{entertainment.forexAmount}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalEntertainment}" event="onchange" reRender="totalEntertainment,totalEntertainmentINR,displayTotalEntertainment,displayTotalEntertainmentINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,entertainmentINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -626,7 +626,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="entertainmentConversionRate" value="#{entertainment.conversionRate}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="entertainmentConversionRate" value="#{entertainment.conversionRate}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalEntertainment}" event="onchange" reRender="totalEntertainment,totalEntertainmentINR,displayTotalEntertainment,displayTotalEntertainmentINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,entertainmentINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -635,27 +635,27 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in"/>
 				</f:facet>
-				<h:inputText id="entertainmentINRAmount" value="#{entertainment.INRAmount}" readonly="true" disabled="#{loginBean.role=='finance'}">				
+				<h:inputText id="entertainmentINRAmount" value="#{entertainment.INRAmount}" readonly="true" disabled="#{travelProcessor.financeDesk}">				
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="entertainmentRemarks" value="#{entertainment.remarks}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="entertainmentRemarks" value="#{entertainment.remarks}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Delete"/>
 				</f:facet>
-						<a4j:commandButton value="Delete" action="#{travelProcessor.removeEntertainmentTableRow}" reRender="entertainmentTable,totalEntertainment,displayTotalEntertainment,totalExpenses,totalEntertainmentINR,displayTotalEntertainmentINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableEntertainmentTableRowDelete || loginBean.role=='finance'}" >
+						<a4j:commandButton value="Delete" action="#{travelProcessor.removeEntertainmentTableRow}" reRender="entertainmentTable,totalEntertainment,displayTotalEntertainment,totalExpenses,totalEntertainmentINR,displayTotalEntertainmentINR,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableEntertainmentTableRowDelete || travelProcessor.financeDesk}" >
   							<f:setPropertyActionListener value="#{row}" target="#{travelProcessor.rowIndex}"/>
      				 	</a4j:commandButton>
 			</h:column>
 			
 			<f:facet name="footer">
-				<a4j:commandButton value="Add Row" reRender="entertainmentTable" action="#{travelProcessor.addEntertainmentTableRow}" id="addRowEntertainment" disabled="#{loginBean.role=='finance'}">
+				<a4j:commandButton value="Add Row" reRender="entertainmentTable" action="#{travelProcessor.addEntertainmentTableRow}" id="addRowEntertainment" disabled="#{travelProcessor.financeDesk}">
 				</a4j:commandButton>
 			</f:facet>			
 		</rich:dataTable>
@@ -679,7 +679,7 @@
 
 
 		
-		<rich:dataTable id="miscellaneousTable" value="#{travelRequest.travelSettlement.miscellaneousExpenses}" var="miscellaneous" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:20px;">
+		<rich:dataTable id="miscellaneousTable" value="#{travelRequest.travelSettlement.miscellaneousExpenses}" var="miscellaneous" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:20px;">
 			<f:facet name="header">
 				<h:outputText value="F: Miscellaneous"/>
 			</f:facet>
@@ -688,7 +688,7 @@
 					<h:outputText value="Date"/>
 				</f:facet>
 					<a4j:outputPanel ajaxRendered="true">
-					<rich:calendar id="miscellaneousDate" value="#{miscellaneous.date}" datePattern="MM/dd/yy" disabled="#{loginBean.role=='finance'}">
+					<rich:calendar id="miscellaneousDate" value="#{miscellaneous.date}" datePattern="MM/dd/yy" disabled="#{travelProcessor.financeDesk}">
 						<a4j:support ajaxSingle="true" event="onchanged"/>
 					</rich:calendar>
 				</a4j:outputPanel>	
@@ -697,28 +697,28 @@
 				<f:facet name="header">
 					<h:outputText value="Details"/>
 				</f:facet>
-				<h:inputText id="miscellaneousDetails" value="#{miscellaneous.details}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousDetails" value="#{miscellaneous.details}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Currency"/>
 				</f:facet>
-				<h:inputText id="miscellaneousCurrency" value="#{miscellaneous.currency}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousCurrency" value="#{miscellaneous.currency}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Bill No."/>
 				</f:facet>
-				<h:inputText id="miscellaneousBillNo" value="#{miscellaneous.billNo}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousBillNo" value="#{miscellaneous.billNo}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Forex Amount"/>
 				</f:facet>
-				<h:inputText id="miscellaneousForexAmount" value="#{miscellaneous.forexAmount}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousForexAmount" value="#{miscellaneous.forexAmount}" disabled="#{travelProcessor.financeDesk}">
 					<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalMiscellaneous}" event="onchange" reRender="totalMiscellaneous,totalMiscellaneousINR,displayTotalMiscellaneous,displayTotalMiscellaneousINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,miscellaneousINRAmount" status="waitStatus"/>					
 				</h:inputText>
@@ -727,7 +727,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conversion Rate"/>
 				</f:facet>
-				<h:inputText id="miscellaneousConversionRate" value="#{miscellaneous.conversionRate}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousConversionRate" value="#{miscellaneous.conversionRate}" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>					
 					<a4j:support ajaxSingle="true" action="#{travelProcessor.calculateTotalMiscellaneous}" event="onchange" reRender="totalMiscellaneous,totalMiscellaneousINR,displayTotalMiscellaneous,displayTotalMiscellaneousINR,totalExpenses,totalExpensesINR,finalExpensesINR,finalDifferenceINR,miscellaneousINRAmount" status="waitStatus"/>
 				</h:inputText>
@@ -736,7 +736,7 @@
 				<f:facet name="header">
 					<h:outputText value="INR Ammount in"/>
 				</f:facet>
-				<h:inputText id="miscellaneousINRAmount" value="#{miscellaneous.INRAmount}" readonly="true" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousINRAmount" value="#{miscellaneous.INRAmount}" readonly="true" disabled="#{travelProcessor.financeDesk}">
 				<f:convertNumber type="number"/>										
 				</h:inputText>
 			</h:column>
@@ -744,20 +744,20 @@
 				<f:facet name="header">
 					<h:outputText value="Remarks"/>
 				</f:facet>
-				<h:inputText id="miscellaneousRemarks" value="#{miscellaneous.remarks}" disabled="#{loginBean.role=='finance'}">
+				<h:inputText id="miscellaneousRemarks" value="#{miscellaneous.remarks}" disabled="#{travelProcessor.financeDesk}">
 				</h:inputText>
 			</h:column>
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="Delete"/>
 				</f:facet>
-						<a4j:commandButton value="Delete" action="#{travelProcessor.removeMiscellaneousTableRow}" reRender="miscellaneousTable,totalMiscellaneous,displayTotalMiscellaneous,totalExpenses,totalMiscellaneousINR,displayTotalMiscellaneous,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableMiscellaneousTableRowDelete || loginBean.role=='finance'}">
+						<a4j:commandButton value="Delete" action="#{travelProcessor.removeMiscellaneousTableRow}" reRender="miscellaneousTable,totalMiscellaneous,displayTotalMiscellaneous,totalExpenses,totalMiscellaneousINR,displayTotalMiscellaneous,totalExpensesINR,finalAdvanceINR,finalExpensesINR,finalDifferenceINR" disabled="#{travelRequest.travelSettlement.disableMiscellaneousTableRowDelete || travelProcessor.financeDesk}">
   							<f:setPropertyActionListener value="#{row}" target="#{travelProcessor.rowIndex}"/>
      				 	</a4j:commandButton>
 			</h:column>
 			
 			<f:facet name="footer">
-				<a4j:commandButton value="Add Row" reRender="miscellaneousTable" action="#{travelProcessor.addMiscellaneousTableRow}" id="addRowMiscellaneous" disabled="#{loginBean.role=='finance'}">
+				<a4j:commandButton value="Add Row" reRender="miscellaneousTable" action="#{travelProcessor.addMiscellaneousTableRow}" id="addRowMiscellaneous" disabled="#{travelProcessor.financeDesk}">
 				</a4j:commandButton>
 			</f:facet>
 			</rich:dataTable>
@@ -842,8 +842,7 @@
 	<!-- end #page -->
 	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights
-	reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

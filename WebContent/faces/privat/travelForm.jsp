@@ -191,8 +191,8 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}">
 		</table><br>
 		<br>		
 		<rich:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
-			var="travelResvItem" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0" dir="LTR" frame="box"
+			var="travelResvItem" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="1"
+			cellspacing="1" first="0" rows="0" dir="LTR" frame="box"
 			rules="all" style="width:883px; margin-top: 20px;" >
 			<f:facet name="header">
 				<h:outputText value="Proposed travel details *" />
@@ -289,8 +289,8 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 			<h:outputText id="localCurrency" value="#{travelRequest.travelDetails.allowance.currency}" /></td></tr>
 		</table>
 		<rich:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
-			var="hotelResvItem" rowKeyVar="row2" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0"  dir="LTR" frame="box"
+			var="hotelResvItem" rowKeyVar="row2" bgcolor="#F1F1F1" border="5" cellpadding="1"
+			cellspacing="1" first="0" rows="0"  dir="LTR" frame="box"
 			rules="all"  style="width:883px;" >
 			<f:facet name="header">
 				<h:outputText value="Hotel reservation details " />
@@ -482,7 +482,7 @@ datePattern="MM/dd/yy HH:mm" disabled="#{travelRequest.disable2}"
 	<!-- end #page -->
 	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

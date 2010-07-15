@@ -26,9 +26,9 @@
 	<h2>Travel Application</h2>
 	<h:form id="form">
 	 	<rich:dataTable id="DataTable1" value="#{travelProcessor.employeeTravelRequests}"
-			var="travelReq" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="5"  dir="LTR" frame="box"
-			rules="all"  style="width:883px;" rowKeyVar="row" rendered="#{loginBean.role!='finance'}">
+			var="travelReq" bgcolor="#F1F1F1" border="5" cellpadding="1"
+			cellspacing="1" first="0" rows="5"  dir="LTR" frame="box"
+			rules="all"  style="width:883px;" rowKeyVar="row" rendered="#{!travelProcessor.financeDesk}">
 			<f:facet name="header">
 				<h:outputText value="List of Travel Requests" />
 			</f:facet>
@@ -83,9 +83,9 @@
 </f:facet>
 		</rich:dataTable>
 	 	<rich:dataTable id="DataTable2" value="#{travelProcessor.travelRequests}" 
-	 	var="travelReq" bgcolor="#F1F1F1" border="10" cellpadding="5" 
-	 	cellspacing="3" first="0" rows="5" dir="LTR" frame="box" 
-	 	rules="all" style="width:883px;" rowKeyVar="row" rendered="#{loginBean.role=='finance'}">
+	 	var="travelReq" bgcolor="#F1F1F1" border="5" cellpadding="1" 
+	 	cellspacing="1" first="0" rows="5" dir="LTR" frame="box" 
+	 	rules="all" style="width:883px;" rowKeyVar="row" rendered="#{travelProcessor.financeDesk}">
 			<f:facet name="header">
 				<h:outputText value="List of Travel Requests"/>
 			</f:facet>
@@ -153,7 +153,7 @@
 	<!-- end #page -->
 	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

@@ -90,7 +90,7 @@
 		
 		
 		
-		<rich:dataTable id="advanceTable" value="#{travelRequest.travelSettlement.advanceAmounts}" var="advance" rowKeyVar="row" bgcolor="#F1F1F1" border="10" cellpadding="5" cellspacing="3" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
+		<rich:dataTable id="advanceTable" value="#{travelRequest.travelSettlement.advanceAmounts}" var="advance" rowKeyVar="row" bgcolor="#F1F1F1" border="5" cellpadding="1" cellspacing="1" first="0" rows="0" dir="LTR" frame="box" rules="all" style="width:883px; margin-top:40px;">
 			<f:facet name="header">
 				<h:outputText value="DETAILS OF ADVANCE OF FOREX TAKEN"/>
 			</f:facet>
@@ -772,7 +772,7 @@
 			</h:column>
 		</rich:dataTable>
 		<br>
-		<h:panelGroup id="travelSettlApprovalId" rendered="#{travelRequest.travelSettlement.status=='SETTLEMENT_FILLED_BY_EMPLOYEE' && loginBean.role=='finance'}">
+		<h:panelGroup id="travelSettlApprovalId" rendered="#{travelRequest.travelSettlement.status=='SETTLEMENT_FILLED_BY_EMPLOYEE' && travelProcessor.financeDesk}">
 				Comments :
 				<h:inputTextarea id="comments" value="#{travelProcessor.approvalComment}"/>
 				<br/><center>
@@ -789,8 +789,7 @@
 	<!-- end #page -->
 	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights
-	reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

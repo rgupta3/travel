@@ -26,9 +26,11 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.userdetails.UserDetails;
 
 import com.ocpsoft.pretty.util.FacesElUtils;
+import com.sony.travelRequest.dao.AuthoritiesDao;
 import com.sony.travelRequest.dao.EmployeeDao;
 import com.sony.travelRequest.dao.TravelRequestDao;
 import com.sony.travelRequest.model.AdvanceAmount;
+import com.sony.travelRequest.model.Authorities;
 import com.sony.travelRequest.model.ConveyanceExpense;
 import com.sony.travelRequest.model.EmailConstants;
 import com.sony.travelRequest.model.Employee;
@@ -52,7 +54,7 @@ import com.sony.travelRequest.util.RequestStatus;
 
 public class TravelProcessor implements RequestStatus{
 
-	private int employeeId;
+	private String employeeId;
 	private boolean financeDesk =false;
 
 	private TravelRequest travelRequest;
@@ -602,7 +604,7 @@ public class TravelProcessor implements RequestStatus{
 	
 	public void findEmployeeId()
 	{
-		if(employeeId==0)
+		if(employeeId==null)
 		{
 		Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username;
@@ -610,6 +612,10 @@ public class TravelProcessor implements RequestStatus{
 		if ( obj instanceof UserDetails ) 
 		{
 			username= ( (UserDetails)obj ).getUsername();
+			//Authorities a = new Authorities();
+		//	AuthoritiesDao b = new AuthoritiesDao();
+		//	a=b.findById(username);
+		//	System.out.println("a.role is:"+a.getAuthority());
 			authorities = ( (UserDetails)obj ).getAuthorities();
 			for(GrantedAuthority role:authorities)
 			{
@@ -622,9 +628,9 @@ public class TravelProcessor implements RequestStatus{
 
 		    username = obj.toString();
 		}
-		int id= Integer.valueOf(username);
 		
-		employeeId = id;
+		System.out.println("Finance Desk + "+financeDesk);
+		employeeId = username;
 		}
 		receivedEmpDetails=false;
 	}
@@ -982,7 +988,7 @@ public class TravelProcessor implements RequestStatus{
 			{
 				System.out.println(travelRequest.getEmployee().getId()+ "\n\n\nequals\n\n"+employeeId);
 				
-				if(travelRequest!=null && travelRequest.getEmployee().getId()==employeeId)
+				if(travelRequest!=null && travelRequest.getEmployee().getId().equals(employeeId))
 				{
 					new FacesElUtils().setValue(FacesContext.getCurrentInstance(), "#{travelRequest}", travelRequest);
 					//Calendar cal = Calendar.getInstance();

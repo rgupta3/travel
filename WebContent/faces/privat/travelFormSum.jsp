@@ -34,7 +34,7 @@
 					value="#{travelRequest.status}" >
 					
 				</h:outputText></b><br>
-				<h:commandLink style="font-size: 16px;" rendered="#{travelRequest.status=='REQUEST_APPROVED_BY_FINANCE' && loginBean.role=='finance'}" value="Initiate Settlement" action="#{travelProcessor.initiateSettlement}"></h:commandLink>
+				<h:commandLink style="font-size: 16px;" rendered="#{travelRequest.status=='REQUEST_APPROVED_BY_FINANCE' && travelProcessor.financeDesk}" value="Initiate Settlement" action="#{travelProcessor.initiateSettlement}"></h:commandLink>
 				 <br></label>
 		<label>Initiator Name  <h:outputText id="initiator" value="xyz"/>
 		</label><br><br>Type of travel  <h:outputText id="type" value="#{travelRequest.type}"/>
@@ -130,10 +130,10 @@
 				</td><td> <h:outputText rendered="#{travelRequest.chargeableType=='chargeable'}" value="#{travelRequest.employee.slaNumber}">
 				</h:outputText> </td>
 			</tr>
-<tr>	<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"
+<tr>	<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"
 					value="Conversion Rate (Dollar to Local)" /></td>
 <td>
-<h:inputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="conversionRateLocal" value="#{travelRequest.conversionRateLocal}" >
+<h:inputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="conversionRateLocal" value="#{travelRequest.conversionRateLocal}" >
 <a4j:support ajaxSingle="true"
 	event="onkeyup"
 	action="#{travelProcessor.calculateAmount}"
@@ -144,10 +144,10 @@
 				</h:inputText>
 				
 				</td></tr>
-				<tr>	<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}"
+				<tr>	<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}"
 					value="Conversion Rate (Dollar to INR)" /></td>
 <td>
-<h:inputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}" id="conversionRateINR" value="#{travelRequest.conversionRateINR}" >
+<h:inputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}" id="conversionRateINR" value="#{travelRequest.conversionRateINR}" >
 <a4j:support ajaxSingle="true"
 action="#{travelProcessor.computeHotelINR}"
 		event="onkeyup"
@@ -158,10 +158,10 @@ action="#{travelProcessor.computeHotelINR}"
 				</h:inputText>	
 				
 				</td></tr>
-<tr>	<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"
+<tr>	<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"
 					value="Conversion Rate (Local to INR)" /></td>
 <td>
-<h:inputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="conversionRateLocaltoINR" value="#{travelRequest.conversionRateLocaltoINR}" >
+<h:inputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="conversionRateLocaltoINR" value="#{travelRequest.conversionRateLocaltoINR}" >
 <a4j:support ajaxSingle="true"
 action="#{travelProcessor.computeHotelINR}"
 	event="onkeyup"
@@ -177,8 +177,8 @@ action="#{travelProcessor.computeHotelINR}"
 		</table>
 		<br>
 		<rich:dataTable id="travelDataTable" value="#{travelRequest.travelResv}"
-			var="travelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
+			var="travelResvItem" bgcolor="#F1F1F1" border="5" cellpadding="1"
+			cellspacing="1" first="0" rows="0" width="100%" dir="LTR" frame="box"
 			rules="all"  >
 			<f:facet name="header">
 				<h:outputText value="Proposed travel details " />
@@ -247,8 +247,8 @@ action="#{travelProcessor.computeHotelINR}"
 			<h:outputText id="localCurrency" value="#{travelRequest.travelDetails.allowance.currency}" /></td></tr>
 		</table>
 		<rich:dataTable id="hotelDataTable" value="#{travelRequest.hotelResv}"
-			var="hotelResvItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
+			var="hotelResvItem" bgcolor="#F1F1F1" border="5" cellpadding="1"
+			cellspacing="1" first="0" rows="0" width="100%" dir="LTR" frame="box"
 			rules="all" >
 			<f:facet name="header">
 				<h:outputText value="Hotel reservation details " />
@@ -307,8 +307,8 @@ action="#{travelProcessor.computeHotelINR}"
 		</rich:dataTable>
 		<br>
 		<rich:dataTable id="approvalDataTable" value="#{travelRequest.requestApprovals}"
-			var="requestApprovalItem" bgcolor="#F1F1F1" border="10" cellpadding="5"
-			cellspacing="3" first="0" rows="0" width="100%" dir="LTR" frame="box"
+			var="requestApprovalItem" bgcolor="#F1F1F1" border="5" cellpadding="1"
+			cellspacing="1" first="0" rows="0" width="100%" dir="LTR" frame="box"
 			rules="all"  rendered="#{not empty travelRequest.requestApprovals}">
 			<f:facet name="header">
 				<h:outputText value="Travel Approval details" />
@@ -347,8 +347,8 @@ action="#{travelProcessor.computeHotelINR}"
 		<tr>
 		<td></td>
 		<td></td>
-		<td><h:outputText value="#{travelRequest.travelDetails.allowance.currency}" rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"></h:outputText></td>
-		<td><h:outputText value="INR" rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}"></h:outputText></td></tr>
+		<td><h:outputText value="#{travelRequest.travelDetails.allowance.currency}" rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"></h:outputText></td>
+		<td><h:outputText value="INR" rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}"></h:outputText></td></tr>
 		<tr>
 				<td>Airport Transport (Advance Amt.)</td>
 				<td><h:outputText id="perDayAllowance" 
@@ -361,11 +361,11 @@ action="#{travelProcessor.computeHotelINR}"
 					</h:outputText>
 					</td>
 					
-					<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="totalAirportTransportLocal"
+					<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="totalAirportTransportLocal"
 					value="#{2*travelRequest.travelDetails.allowance.airportTransport * travelRequest.conversionRateLocal}"> 
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 					</h:outputText></td>
-					<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}" id="totalAirportTransportINR"
+					<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}" id="totalAirportTransportINR"
 					value="#{2*travelRequest.travelDetails.allowance.airportTransport * travelRequest.conversionRateINR}"> 
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 					
@@ -392,14 +392,14 @@ action="#{travelProcessor.computeHotelINR}"
 					</h:outputText>
 					</td><td>
 	
-					<h:outputText id="totalDailyAllowanceLocal" rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"
+					<h:outputText id="totalDailyAllowanceLocal" rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}"
 					value="#{travelRequest.travelDetails.allowance.dailyAllowance * travelRequest.travelDetails.allowance.days * travelRequest.conversionRateLocal}" > 
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 					</h:outputText>
 					</td>
 					<td>
 	
-					<h:outputText id="totalDailyAllowanceINR" rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}"
+					<h:outputText id="totalDailyAllowanceINR" rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}"
 					value="#{travelRequest.travelDetails.allowance.dailyAllowance * travelRequest.travelDetails.allowance.days * travelRequest.conversionRateINR}" > 
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 					</h:outputText>
@@ -412,11 +412,11 @@ action="#{travelProcessor.computeHotelINR}"
 					<f:convertNumber type="number" />
 				</h:outputText>
 				<h:outputText id="currency3" value="#{travelProcessor.allowanceCurrency}"> 
-					</h:outputText></td><td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" 
+					</h:outputText></td><td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" 
 					 id="conveyanceLocal" value="#{travelRequest.travelDetails.allowance.conveyance *travelRequest.conversionRateLocal}" >
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 				</h:outputText> </td>
-			<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}" 
+			<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}" 
 					 id="conveyanceINR" value="#{travelRequest.travelDetails.allowance.conveyance *travelRequest.conversionRateINR}" >
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 				</h:outputText> </td>	
@@ -429,24 +429,24 @@ action="#{travelProcessor.computeHotelINR}"
 					<f:convertNumber type="number" />
 				</h:outputText>
 				<h:outputText id="currency5" value="#{travelProcessor.allowanceCurrency}"> 
-					</h:outputText></td><td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="otherAllowanceLocal" value="#{travelRequest.travelDetails.allowance.otherAllowance *travelRequest.conversionRateLocal}" >
+					</h:outputText></td><td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="otherAllowanceLocal" value="#{travelRequest.travelDetails.allowance.otherAllowance *travelRequest.conversionRateLocal}" >
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 				</h:outputText> </td>
-				<td><h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}" id="otherAllowanceINR" value="#{travelRequest.travelDetails.allowance.otherAllowance*travelRequest.conversionRateINR}" >
+				<td><h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}" id="otherAllowanceINR" value="#{travelRequest.travelDetails.allowance.otherAllowance*travelRequest.conversionRateINR}" >
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 				</h:outputText> </td>
 			</tr>
 			<tr>
-				<td><h:outputText rendered="#{travelRequest.status!='REQUEST_INITIATED_BY_EMPLOYEE' || loginBean.role=='finance'}" value="Amount" /></td>
-				<td><h:outputText rendered="#{travelRequest.status!='REQUEST_INITIATED_BY_EMPLOYEE' || loginBean.role=='finance'}" id="totalAllowance" value="#{travelRequest.amount/travelRequest.conversionRateINR}">
+				<td><h:outputText rendered="#{travelRequest.status!='REQUEST_INITIATED_BY_EMPLOYEE' || travelProcessor.financeDesk}" value="Amount" /></td>
+				<td><h:outputText rendered="#{travelRequest.status!='REQUEST_INITIATED_BY_EMPLOYEE' || travelProcessor.financeDesk}" id="totalAllowance" value="#{travelRequest.amount/travelRequest.conversionRateINR}">
 					<f:convertNumber type="number" />
 				</h:outputText>
-				<h:outputText rendered="#{travelRequest.status!='REQUEST_INITIATED_BY_EMPLOYEE' || loginBean.role=='finance'}" id="currency4" value="#{travelProcessor.allowanceCurrency}"> 
+				<h:outputText rendered="#{travelRequest.status!='REQUEST_INITIATED_BY_EMPLOYEE' || travelProcessor.financeDesk}" id="currency4" value="#{travelProcessor.allowanceCurrency}"> 
 					</h:outputText>
-				</td><td>	<h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="totalAllowanceLocal" value="#{travelRequest.amount /travelRequest.conversionRateINR *travelRequest.conversionRateLocal}" >
+				</td><td>	<h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international' && travelRequest.travelDetails.allowance.currency!='USD'}" id="totalAllowanceLocal" value="#{travelRequest.amount /travelRequest.conversionRateINR *travelRequest.conversionRateLocal}" >
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 				</h:outputText> </td>
-				<td>	<h:outputText rendered="#{loginBean.role=='finance' && travelRequest.type=='international'}" id="totalAllowanceINR" value="#{travelRequest.amount}" >
+				<td>	<h:outputText rendered="#{travelProcessor.financeDesk && travelRequest.type=='international'}" id="totalAllowanceINR" value="#{travelRequest.amount}" >
 					<f:convertNumber type="number" maxFractionDigits="2"/>
 				</h:outputText> </td>
 			</tr>
@@ -466,7 +466,7 @@ action="#{travelProcessor.computeHotelINR}"
 			</tr>
 		</table>
 		<br/><br/>
-		<h:panelGroup id="travelApprovalId" rendered="#{travelRequest.status=='REQUEST_INITIATED_BY_EMPLOYEE' && loginBean.role=='finance'}">
+		<h:panelGroup id="travelApprovalId" rendered="#{travelRequest.status=='REQUEST_INITIATED_BY_EMPLOYEE' && travelProcessor.financeDesk}">
 				Comments :
 				<h:inputTextarea id="comments" value="#{travelProcessor.approvalComment}"></h:inputTextarea>
 				<br></br><center>
@@ -486,7 +486,7 @@ action="#{travelProcessor.computeHotelINR}"
 	<!-- end #page -->
 	<div id="footer-bgcontent">
 	<div id="footer">
-	<p><a href="#"> Copyright (c) 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

@@ -42,7 +42,7 @@
 	<div id="page">
 	<div id="page-bgtop">
 	
-	<div style="margin-left:20px;">	
+	<div style="margin-left:20px; height: 26em;">	
 
 	<h2>Logged out</h2>
 	<br>
@@ -55,9 +55,9 @@
 	</div>
 	</div>
 	<!-- end #page -->
-	<div id="footer-bgcontent" style="margin-top:360px;">
+	<div id="footer-bgcontent" >
 	<div id="footer">
-	<p><a href="#"> Copyright &copy; 2010 www.sony.com. All rights reserved. Design by suhas.</a></p>
+	<p></p>
 	</div>
 	</div>
 	<!-- end #footer --></div>

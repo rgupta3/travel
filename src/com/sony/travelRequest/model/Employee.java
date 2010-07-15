@@ -17,7 +17,7 @@ import org.hibernate.validator.Pattern;
 
 public class Employee {
 
-	private int id;
+	private String id;
 	@NotEmpty
     @Pattern(regex=".*[^\\s].*", message="Invalid Name")
 	private String name;
@@ -58,10 +58,10 @@ public class Employee {
 		grade="Select";
 	}
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {

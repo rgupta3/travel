@@ -19,5 +19,6 @@
 		<mapping resource="Employee.hbm.xml" />
 		<mapping resource="TravelSettlement.hbm.xml" />
 		<mapping resource="Expense.hbm.xml"/>
+		<mapping resource="Authorities.hbm.xml"/>
 	</session-factory>
 </hibernate-configuration>

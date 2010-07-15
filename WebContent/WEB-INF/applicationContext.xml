@@ -36,6 +36,7 @@
 				<value>WEB-INF/Employee.hbm.xml</value>
 				<value>WEB-INF/TravelSettlement.hbm.xml</value>
 				<value>WEB-INF/Expense.hbm.xml</value>
+				<value>WEB-INF/Authorities.hbm.xml</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
